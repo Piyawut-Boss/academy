@@ -76,6 +76,12 @@
       "relation": "manyToMany",
       "target": "api::course.course",
       "mappedBy": "users"
+    },
+    "progress": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::progress.progress",
+      "inversedBy": "users_permissions_users"
     }
   }
 }
