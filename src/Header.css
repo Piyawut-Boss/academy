@@ -1,54 +1,48 @@
-/* สไตล์ของ header */
 .header-container {
-    background-color: #473e91; /* สีม่วงเข้ม */
-    padding: 20px;
+    background-color: #473E91; /* สีพื้นหลังของ header */
     color: white;
-    display: flex;
-    justify-content: space-between; /* จัดตำแหน่งให้หัวข้ออยู่ทางซ้ายและปุ่มไปทางขวา */
-    align-items: center;
-    border-radius: 8px;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* ขนาดของหัวข้อ */
-  .header-container h1 {
-    font-size: 2rem;
+    padding: 10px 20px; 
+    display: flex; 
+    justify-content: flex-start; /* จัดตำแหน่งทั้งหมดไปทางซ้าย */
+    align-items: center; 
+    height: 60px; 
+}
+
+.header-container .logo {
+    display: flex; /* ใช้ flexbox สำหรับจัดตำแหน่งโลโก้ */
+    align-items: center; /* จัดตำแหน่งแนวตั้งให้กลาง */
+}
+
+.header-container .logo-image {
+    width: 120px; /* ปรับขนาดความกว้างของภาพ */
+    height: auto; /* ปรับความสูงอัตโนมัติเพื่อไม่ให้เบี้ยว */
+    margin-right: 10px; /* ช่องว่างระหว่างภาพและข้อความ */
+}
+
+.nav-list {
+    list-style-type: none;
     margin: 0;
-  }
-  
-  /* การจัดการตำแหน่งปุ่ม */
-  .button-container {
+    padding: 0;
     display: flex;
-    gap: 10px; /* ระยะห่างระหว่างปุ่ม */
-  }
-  
-  /* สไตล์ปุ่ม Login */
-  .login-button {
-    padding: 10px 20px;
-    background-color: #473e91;
+    justify-content: flex-start; /* จัดตำแหน่งเมนูไปทางซ้าย */
+    gap: 20px; /* เพิ่มช่องว่างระหว่างเมนู */
+    margin-left: 20px; /* เพิ่มช่องว่างจากโลโก้ */
+}
+
+.nav-list a {
     color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-list a:hover {
+    text-decoration: underline;
+}
+
+.nav-list button {
+    background-color: transparent;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-  
-  .login-button:hover {
-    background-color: #3a357f; /* สีเมื่อ hover */
-  }
-  
-  /* สไตล์ปุ่ม Course */
-  .course-button {
-    padding: 10px 20px;
-    background-color: #28a745; /* สีเขียว */
     color: white;
-    border: none;
-    border-radius: 5px;
     cursor: pointer;
-    font-size: 1rem;
-  }
-  
-  .course-button:hover {
-    background-color: #218838; /* สีเขียวเข้มขึ้นเมื่อ hover */
-  }
-  
+    font-weight: bold;
+}

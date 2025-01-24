@@ -13,6 +13,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(''); // เคลียร์ข้อความผิดพลาดก่อน
 
     try {
       const response = await axios.post('http://localhost:1337/api/auth/local', {
@@ -21,24 +22,32 @@ const Login = () => {
       });
 
       setIsLoading(false);
-      setError('');
-      localStorage.setItem('jwt', response.data.jwt);
-      navigate('/course');
 
-      // เพิ่มการแจ้งเตือนเมื่อล็อกอินสำเร็จ
+      // เก็บ JWT และข้อมูลผู้ใช้ลง localStorage
+      const user = {
+        username: response.data.user.username,
+        email: response.data.user.email,
+      };
+      localStorage.setItem('jwt', response.data.jwt); // เก็บ JWT
+      localStorage.setItem('user', JSON.stringify(user)); // เก็บข้อมูลผู้ใช้
+
+      // แจ้งเตือนเมื่อเข้าสู่ระบบสำเร็จ
       notification.success({
         message: 'Login Successful!',
         description: 'You have successfully logged in.',
       });
+
+      // นำผู้ใช้ไปยังหน้า Course
+      navigate('/course');
     } catch (error) {
       setIsLoading(false);
       console.error('Login failed:', error.response?.data || error.message);
-      setError('Invalid username or password');
+      setError(error.response?.data?.message || 'Invalid username or password');
 
-      // เพิ่มการแจ้งเตือนเมื่อล็อกอินล้มเหลว
+      // แจ้งเตือนเมื่อเข้าสู่ระบบล้มเหลว
       notification.error({
         message: 'Login Failed',
-        description: 'Please check your username and password.',
+        description: error.response?.data?.message || 'Please check your username and password.',
       });
     }
   };
@@ -67,7 +76,7 @@ const Login = () => {
             required
           />
         </div>
-        {error && <p className="error-message">{error}</p>}
+        {error && <p className="error-message">{error}</p>} {/* แสดงข้อความ error */}
         <Button
           type="primary"
           htmlType="submit"
