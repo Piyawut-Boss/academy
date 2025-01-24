@@ -1,0 +1,60 @@
+/* Container สำหรับ Home */
+.home-container {
+  text-align: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  font-family: Arial, sans-serif;
+}
+
+/* สไตล์ของ header */
+.header-container {
+  background-color: #473e91; /* สีม่วงเข้ม */
+  padding: 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between; /* จัดตำแหน่งให้หัวข้ออยู่ทางซ้ายและปุ่มไปทางขวา */
+  align-items: center;
+  border-radius: 8px;
+}
+
+/* ขนาดของหัวข้อ */
+.header-container h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+/* การจัดการตำแหน่งปุ่ม */
+.button-container {
+  display: flex;
+  gap: 10px; /* ระยะห่างระหว่างปุ่ม */
+}
+
+/* สไตล์ปุ่ม Login */
+.login-button {
+  padding: 10px 20px;
+  background-color: #473e91;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.login-button:hover {
+  background-color: #3a357f; /* สีเมื่อ hover */
+}
+
+/* สไตล์ปุ่ม Course */
+.course-button {
+  padding: 10px 20px;
+  background-color: #28a745; /* สีเขียว */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.course-button:hover {
+  background-color: #218838; /* สีเขียวเข้มขึ้นเมื่อ hover */
+}
