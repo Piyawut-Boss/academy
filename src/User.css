@@ -1,0 +1,69 @@
+/* User Profile Page Styling */
+.user-profile {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .profile-title {
+    font-size: 2rem;
+    color: #473E91; /* สีม่วงเข้ม */
+  }
+  
+  .welcome-message {
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
+  .user-details {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .username {
+    font-weight: bold;
+  }
+  
+  .email {
+    font-style: italic;
+  }
+  
+  /* Profile Circle */
+  .profile-circle {
+    background-color: #473E91; /* สีม่วงเข้ม */
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+  }
+  
+  .smiley-face {
+    font-size: 2rem;
+    color: #fff;
+  }
+  
+  /* Error Message Styling */
+  .error-message {
+    background-color: #f8d7da;
+    padding: 20px;
+    color: #721c24;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+  
+  /* Loading State */
+  .loading {
+    font-size: 1.5rem;
+    text-align: center;
+    color: #888;
+  }
+  
