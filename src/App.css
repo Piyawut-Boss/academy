@@ -12,3 +12,11 @@
   overflow: auto;
   padding-bottom: 300px; /* เพิ่มระยะห่างจาก Footer */
 }
+
+/* กำหนด Footer ให้ไปอยู่ที่ด้านล่างสุด */
+footer {
+  margin-top: auto; /* ให้ footer ขยับไปอยู่ด้านล่างสุด */
+  padding: 20px;
+  background-color: #f1f1f1; /* เพิ่มสีพื้นหลังให้ footer */
+  text-align: center;
+}

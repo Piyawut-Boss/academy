@@ -37,9 +37,11 @@ body {
   border-radius: 8px;
   overflow: hidden;
   width: 100%;
+  height: 500px;
   max-width: 300px;
   transition: transform 0.3s ease;
   margin-bottom: 20px;
+  position: relative;
 }
 
 .course-card:hover {
@@ -90,6 +92,7 @@ body {
   padding: 0 15px;
   margin-top: 10px;
   font-size: 1.1em;
+  display: block; /* ให้ราคาและราคาลดแสดงในบรรทัดใหม่ */
 }
 
 .price-original {
@@ -108,6 +111,11 @@ body {
   margin-top: 10px;
   display: flex; /* ใช้ flexbox เพื่อจัดเรียงปุ่มในแถวเดียวกัน */
   gap: 10px; /* เพิ่มระยะห่างระหว่างปุ่ม */
+  position: absolute; /* ทำให้ปุ่มอยู่ที่ตำแหน่งที่กำหนด */
+  bottom: 15px; /* ขยับปุ่มขึ้นจากก้นการ์ด */
+  left: 50%; /* ขยับจากกึ่งกลาง */
+  transform: translateX(-50%); /* ให้ปุ่มอยู่ตรงกลาง */
+  width: auto; /* ปรับให้ปุ่มไม่ขยายเต็มความกว้าง */
 }
 
 /* ปุ่มสมัครเรียน */
@@ -115,13 +123,13 @@ body {
   background-color: #473e91;
   color: white;
   border: none;
-  padding: 10px 8px;
+  padding: 10px 25px; /* ปรับขนาด padding */
   font-size: 1em;
-  flex: 1; /* ทำให้ปุ่มขยายเต็มความกว้างที่เหลือ */
   cursor: pointer;
   border-radius: 5px;
   margin-bottom: 10px;
   transition: background-color 0.3s ease;
+  white-space: nowrap; /* ข้อความในปุ่มไม่ให้แตกบรรทัด */
 }
 
 .enroll-button:hover {
@@ -133,13 +141,13 @@ body {
   background-color: #e74c3c;
   color: white;
   border: none;
-  padding: 10px 8px;
+  padding: 10px 25px; /* ปรับขนาด padding */
   font-size: 1em;
-  flex: 1; /* ทำให้ปุ่มขยายเต็มความกว้างที่เหลือ */
   cursor: pointer;
   border-radius: 5px;
   margin-bottom: 15px;
   transition: background-color 0.3s ease;
+  white-space: nowrap; /* ข้อความในปุ่มไม่ให้แตกบรรทัด */
 }
 
 .details-button:hover {

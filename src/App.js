@@ -11,6 +11,7 @@ import Howto from './Howto';
 import Aboutus from './Aboutus'; 
 import Promotion from './Promotion'; // เพิ่มการนำเข้า Promotion
 import HeaderPromote from './HeaderPromote'; 
+import './App.css'; // นำเข้าไฟล์ app.css
 
 function Layout() {
   const location = useLocation(); // ใช้ useLocation เพื่อดึงข้อมูล URL ปัจจุบัน
@@ -20,7 +21,8 @@ function Layout() {
     <>
       {!isLoginPage && <HeaderPromote />} {/* ถ้าไม่ใช่หน้า Login จะให้แสดง HeaderPromote */}
       {!isLoginPage && <Header />} {/* ถ้าไม่ใช่หน้า Login จะให้แสดง Header */}
-      {!isLoginPage && <Footer />} {/* ถ้าไม่ใช่หน้า Login จะให้แสดง Footer */}
+      {/* Footer จะแสดงแค่ไม่ใช่หน้า Login */}
+      {!isLoginPage && <Footer />}
     </>
   );
 }
@@ -48,4 +50,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
