@@ -3,46 +3,46 @@
     color: white;
     padding: 10px 20px; 
     display: flex; 
-    justify-content: flex-start; /* จัดตำแหน่งทั้งหมดไปทางซ้าย */
+    justify-content: space-between; 
     align-items: center; 
     height: 60px; 
-}
-
-.header-container .logo {
+  }
+  
+  .header-container .logo {
     display: flex; /* ใช้ flexbox สำหรับจัดตำแหน่งโลโก้ */
     align-items: center; /* จัดตำแหน่งแนวตั้งให้กลาง */
-}
-
-.header-container .logo-image {
+  }
+  
+  .header-container .logo-image {
     width: 120px; /* ปรับขนาดความกว้างของภาพ */
     height: auto; /* ปรับความสูงอัตโนมัติเพื่อไม่ให้เบี้ยว */
     margin-right: 10px; /* ช่องว่างระหว่างภาพและข้อความ */
-}
-
-.nav-list {
+  }
+  
+  .nav-list {
     list-style-type: none;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: flex-start; /* จัดตำแหน่งเมนูไปทางซ้าย */
-    gap: 20px; /* เพิ่มช่องว่างระหว่างเมนู */
-    margin-left: 20px; /* เพิ่มช่องว่างจากโลโก้ */
-}
-
-.nav-list a {
+    gap: 20px;
+  }
+  
+  .nav-list a {
     color: white;
     text-decoration: none;
     font-weight: bold;
-}
-
-.nav-list a:hover {
+  }
+  
+  .nav-list a:hover {
     text-decoration: underline;
-}
-
-.nav-list button {
+  }
+  
+  .nav-list button {
     background-color: transparent;
     border: none;
     color: white;
     cursor: pointer;
     font-weight: bold;
-}
+  }
+  

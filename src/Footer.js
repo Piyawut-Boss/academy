@@ -3,7 +3,7 @@ import happyLearningLogo from './happy-learning-logo.png'; // นำเข้า
 
 function Footer() {
     const footerStyle = {
-        position: 'absolute',
+        position: 'fixed',  // ใช้ fixed เพื่อติดล่างสุดของหน้าจอ
         width: '100%',
         height: '250px', // กำหนดความสูง
         backgroundColor: '#777777', // สีพื้นหลัง
@@ -12,8 +12,9 @@ function Footer() {
         alignItems: 'center',
         justifyContent: 'space-between', // จัดตำแหน่งซ้าย-ขวา
         padding: '0 20px', // เพิ่มระยะห่างด้านซ้ายและขวา
-        bottom: 0,
+        bottom: 0, // ติดล่างสุด
         left: 0,
+        zIndex: 1000, // เพื่อให้ Footer อยู่ด้านบนสุด
     };
 
     const logoContainerStyle = {

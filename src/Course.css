@@ -1,19 +1,147 @@
+/* กำหนดให้พื้นหลังของหน้าเป็นสีอ่อน */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* ส่วนของ course-container ใช้ flexbox เพื่อจัดเรียงเนื้อหา */
 .course-container {
-    text-align: center;
-    margin: 20px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .course-container h1 {
-    color: #473e91;
-    font-size: 2rem;
-  }
-  
-  .course-container p {
-    color: #555;
-    font-size: 1.2rem;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* ส่วนหัวของหน้า */
+.course-container h1 {
+  font-size: 2.5em;
+  color: #473e91; /* สีม่วงตามที่คุณใช้ในสถาบัน */
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* การจัดเรียงคอร์สในกริด */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+/* การตกแต่งของการ์ดคอร์ส */
+.course-card {
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 300px;
+  transition: transform 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.course-card:hover {
+  transform: translateY(-10px);
+}
+
+/* การตกแต่งของภาพคอร์ส */
+.course-image {
+  width: 100%;
+  height: 200px;
+  background-color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 1.2em;
+  text-align: center;
+  object-fit: cover;
+}
+
+.course-image.no-image {
+  background-color: #f0f0f0;
+}
+
+.course-image.no-image .no-image-text {
+  color: #888;
+  font-size: 1em;
+}
+
+/* ชื่อคอร์ส */
+.course-card h3 {
+  font-size: 1.25em;
+  color: #333;
+  padding: 10px 15px;
+  margin: 0;
+}
+
+/* รายละเอียดคอร์ส */
+.course-card p {
+  font-size: 0.95em;
+  color: #777;
+  padding: 0 15px;
+  margin: 10px 0;
+}
+
+/* การแสดงราคา */
+.price {
+  padding: 0 15px;
+  margin-top: 10px;
+  font-size: 1.1em;
+}
+
+.price-original {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.price-discounted {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+/* กล่องปุ่ม */
+.buttons {
+  padding: 0 15px;
+  margin-top: 10px;
+  display: flex; /* ใช้ flexbox เพื่อจัดเรียงปุ่มในแถวเดียวกัน */
+  gap: 10px; /* เพิ่มระยะห่างระหว่างปุ่ม */
+}
+
+/* ปุ่มสมัครเรียน */
+.enroll-button {
+  background-color: #473e91;
+  color: white;
+  border: none;
+  padding: 10px 8px;
+  font-size: 1em;
+  flex: 1; /* ทำให้ปุ่มขยายเต็มความกว้างที่เหลือ */
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.enroll-button:hover {
+  background-color: #5b4fad;
+}
+
+/* ปุ่มอ่านรายละเอียดเพิ่มเติม */
+.details-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 8px;
+  font-size: 1em;
+  flex: 1; /* ทำให้ปุ่มขยายเต็มความกว้างที่เหลือ */
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.details-button:hover {
+  background-color: #c0392b;
+}

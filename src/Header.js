@@ -23,7 +23,7 @@ function Header() {
                     <li><Link to="/">หน้าหลัก</Link></li>
                     <li><Link to="/course">คอร์สเรียนทั้งหมด</Link></li>
                     <li><Link to="/howto">วิธีการสั่งซื้อ</Link></li>
-                    <li><Link to="/promotion">รวมโปรโมชั่น</Link></li> {/* เพิ่มลิงก์ใหม่ไปหน้า Promotion */}
+                    <li><Link to="/promotion">โปรโมชั่น</Link></li> {/* เพิ่มลิงก์ใหม่ไปหน้า Promotion */}
                     <li><Link to="/aboutus">เกี่ยวกับเรา</Link></li> {/* เพิ่มลิงก์ใหม่ */}
                     <li><Link to="/login">Login</Link></li>
                     <li><Link to="/user">User</Link></li>
