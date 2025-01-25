@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Card, Button, Row, Col } from 'antd';
 import './Course.css';
 
 function Course() {
@@ -7,7 +8,7 @@ function Course() {
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
-  const [showAllCourses, setShowAllCourses] = useState({}); // เก็บสถานะการแสดงทั้งหมดของแต่ละ category
+  const [showAllCourses, setShowAllCourses] = useState({});
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem('user');
@@ -70,39 +71,46 @@ function Course() {
   return (
     <div className="course-container">
       <h1>คอร์สเรียนทั้งหมด</h1>
-      
+
       {isLoggedIn ? (
         <div>
           <h2>คอร์สของฉัน</h2>
           {userCourses.length > 0 ? (
-            <div className="course-grid">
+            <Row gutter={[16, 16]}>
               {userCourses.map((course) => {
                 const { Title, Description, Price, realprice, id, Promotepic } = course;
                 const imageUrl = Promotepic ? `http://localhost:1337${Promotepic.url}` : '';
 
                 return (
-                  <div className="course-card" key={id}>
-                    <div className={`course-image ${!imageUrl ? 'no-image' : ''}`} style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : '' }}>
-                      {!imageUrl && <span className="no-image-text">ไม่มีภาพ</span>}
-                    </div>
-                    <h3>{Title ?? 'ชื่อคอร์สไม่ระบุ'}</h3>
-                    <p>{Description ?? 'รายละเอียดคอร์สไม่ระบุ'}</p>
-                    <div className="price">
-                      <span className="price-original">
-                        {Price ? Price.toLocaleString() : 'ราคาปกติไม่ระบุ'} บาท
-                      </span>
-                      <span className="price-discounted">
-                        {realprice ? realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท
-                      </span>
-                    </div>
-                    <div className="buttons">
-                      <button className="details-button">อ่านรายละเอียด</button>
-                      <button className="enroll-button">สมัครเรียน</button>
-                    </div>
-                  </div>
+                  <Col xs={24} sm={12} md={8} lg={6} key={id}>
+                    <Card
+                      hoverable
+                      cover={
+                        imageUrl ? (
+                          <img alt={Title} src={imageUrl} />
+                        ) : (
+                          <div className="no-image">
+                            <span>ไม่มีภาพ</span>
+                          </div>
+                        )
+                      }
+                    >
+                      <Card.Meta
+                        title={Title ?? 'ชื่อคอร์สไม่ระบุ'}
+                        description={Description ?? 'รายละเอียดคอร์สไม่ระบุ'}
+                      />
+                      <div className="price">
+                        <span className="price-original">{Price ? Price.toLocaleString() : 'ราคาปกติไม่ระบุ'} บาท</span>
+                        <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท</span>
+                      </div>
+                      {/* เพิ่มปุ่ม "อ่านรายละเอียด" */}
+                      <Button type="link" className="details-button">อ่านรายละเอียด</Button>
+                      <Button type="primary" className="enroll-button">สมัครเรียน</Button>
+                    </Card>
+                  </Col>
                 );
               })}
-            </div>
+            </Row>
           ) : (
             <p>ยังไม่มีคอร์สในรายการของคุณ</p>
           )}
@@ -120,41 +128,45 @@ function Course() {
 
           return (
             <div className="category-section" key={category}>
-              <h2>{category}</h2>
-              <div className="course-grid">
+              <h3>{category}</h3>
+              <Row gutter={[16, 16]}>
                 {filteredCourses.slice(0, showAllCourses[category] ? filteredCourses.length : 4).map((course) => {
                   const { Title, Description, Price, realprice, id, Promotepic } = course;
                   const imageUrl = Promotepic ? `http://localhost:1337${Promotepic.url}` : '';
 
                   return (
-                    <div className="course-card" key={id}>
-                      <div className={`course-image ${!imageUrl ? 'no-image' : ''}`} style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : '' }}>
-                        {!imageUrl && <span className="no-image-text">ไม่มีภาพ</span>}
-                      </div>
-                      <h3>{Title ?? 'ชื่อคอร์สไม่ระบุ'}</h3>
-                      <p>{Description ?? 'รายละเอียดคอร์สไม่ระบุ'}</p>
-                      <div className="price">
-                        <span className="price-original">
-                          {Price ? Price.toLocaleString() : 'ราคาปกติไม่ระบุ'} บาท
-                        </span>
-                        <span className="price-discounted">
-                          {realprice ? realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท
-                        </span>
-                      </div>
-                      <div className="buttons">
-                        <button className="details-button">อ่านรายละเอียด</button>
-                        <button className="enroll-button">สมัครเรียน</button>
-                      </div>
-                    </div>
+                    <Col xs={24} sm={12} md={8} lg={6} key={id}>
+                      <Card
+                        hoverable
+                        cover={
+                          imageUrl ? (
+                            <img alt={Title} src={imageUrl} />
+                          ) : (
+                            <div className="no-image">
+                              <span>ไม่มีภาพ</span>
+                            </div>
+                          )
+                        }
+                      >
+                        <Card.Meta
+                          title={Title ?? 'ชื่อคอร์สไม่ระบุ'}
+                          description={Description ?? 'รายละเอียดคอร์สไม่ระบุ'}
+                        />
+                        <div className="price">
+                          <span className="price-original">{Price ? Price.toLocaleString() : 'ราคาปกติไม่ระบุ'} บาท</span>
+                          <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท</span>
+                        </div>
+                        {/* เพิ่มปุ่ม "อ่านรายละเอียด" */}
+                        <Button type="link" className="details-button">อ่านรายละเอียด</Button>
+                        <Button type="primary" className="enroll-button">สมัครเรียน</Button>
+                      </Card>
+                    </Col>
                   );
                 })}
-              </div>
+              </Row>
               {filteredCourses.length > 4 && (
                 <div className="show-more" onClick={() => toggleShowAllCourses(category)}>
-                  <span className="show-more-text">
-                    {showAllCourses[category] ? 'ซ่อน' : 'แสดงทั้งหมด'}
-                  </span>
-                  <span className={`arrow ${showAllCourses[category] ? 'up' : 'down'}`}></span>
+                  <span>{showAllCourses[category] ? 'ซ่อน' : 'แสดงทั้งหมด'}</span>
                 </div>
               )}
             </div>

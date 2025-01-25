@@ -1,4 +1,4 @@
-/* กำหนดให้พื้นหลังของหน้าเป็นสีอ่อน */
+/* ปรับปรุงพื้นฐาน CSS */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -6,100 +6,27 @@ body {
   background-color: #f9f9f9;
 }
 
-/* ส่วนของ course-container ใช้ flexbox เพื่อจัดเรียงเนื้อหา */
 .course-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
   padding: 20px;
 }
 
-/* ส่วนหัวของหน้า */
-.course-container h1 {
-  font-size: 2.5em;
-  color: #473e91; /* สีม่วงตามที่คุณใช้ในสถาบัน */
-  text-align: center;
-  margin-bottom: 30px;
+/* กำหนดหัวข้อหมวดหมู่ */
+.category-section h3 {
+  font-size: 1.5em;
+  color: #473e91;
+  margin-bottom: 10px;
 }
 
-/* การจัดเรียงคอร์สในกริด */
-.course-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  justify-items: center;
-}
-
-/* การตกแต่งของการ์ดคอร์ส */
-.course-card {
-  background-color: #fff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-  width: 100%;
-  height: 500px;
-  max-width: 300px;
-  transition: transform 0.3s ease;
-  margin-bottom: 20px;
-  position: relative;
-}
-
-.course-card:hover {
-  transform: translateY(-10px);
-}
-
-/* การตกแต่งของภาพคอร์ส */
-.course-image {
-  width: 100%;
-  height: 200px;
-  background-color: #ddd;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  font-size: 1.2em;
-  text-align: center;
-  object-fit: cover;
-}
-
-.course-image.no-image {
-  background-color: #f0f0f0;
-}
-
-.course-image.no-image .no-image-text {
-  color: #888;
-  font-size: 1em;
-}
-
-/* ชื่อคอร์ส */
-.course-card h3 {
-  font-size: 1.25em;
-  color: #333;
-  padding: 10px 15px;
-  margin: 0;
-}
-
-/* รายละเอียดคอร์ส */
-.course-card p {
-  font-size: 0.95em;
-  color: #777;
-  padding: 0 15px;
-  margin: 10px 0;
-}
-
-/* การแสดงราคา */
 .price {
-  padding: 0 15px;
-  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   font-size: 1.1em;
-  display: flex; /* ใช้ flexbox เพื่อจัดการตำแหน่ง */
-  flex-direction: column; /* ให้ราคาและราคาลดแสดงในแนวตั้ง */
-  gap: 5px; /* เพิ่มระยะห่างระหว่างราคาและราคาลด */
 }
 
 .price-original {
   text-decoration: line-through;
-  color: #999;
+  color: #807f7f;
 }
 
 .price-discounted {
@@ -107,90 +34,124 @@ body {
   font-weight: bold;
 }
 
-/* กล่องปุ่ม */
-.buttons {
-  padding: 0 15px;
+.show-more {
+  cursor: pointer;
+  text-align: right;
+  color: #473e91;
+  font-weight: bold;
   margin-top: 10px;
-  display: flex; /* ใช้ flexbox เพื่อจัดเรียงปุ่มในแถวเดียวกัน */
-  gap: 10px; /* เพิ่มระยะห่างระหว่างปุ่ม */
-  position: absolute; /* ทำให้ปุ่มอยู่ที่ตำแหน่งที่กำหนด */
-  bottom: 15px; /* ขยับปุ่มขึ้นจากก้นการ์ด */
-  left: 50%; /* ขยับจากกึ่งกลาง */
-  transform: translateX(-50%); /* ให้ปุ่มอยู่ตรงกลาง */
-  width: auto; /* ปรับให้ปุ่มไม่ขยายเต็มความกว้าง */
 }
 
-/* ปุ่มสมัครเรียน */
+/* กรอบเปล่าที่แสดงเมื่อไม่มีภาพ */
+.no-image {
+  width: 100%;
+  height: 300px; /* กำหนดความสูงที่ต้องการ */
+  background-color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #888;
+  font-size: 1.2em;
+  text-align: center;
+  border: 1px solid #ccc; /* ขอบของกรอบ */
+}
+
+.no-image span {
+  color: #888;
+  font-size: 1.2em;
+}
+
+/* ทำให้การ์ดทุกอันมีขนาดเท่ากัน */
+.ant-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 450px; /* กำหนดความสูงขั้นต่ำให้การ์ด */
+  max-width: 300px; /* กำหนดความกว้างสูงสุด */
+  margin-bottom: 20px; /* ระยะห่างระหว่างการ์ด */
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ให้การ์ดมีการจัดวางที่เหมือนกัน */
+.ant-card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 15px;
+}
+
+/* ทำให้ชื่อคอร์ส, คำอธิบาย, ปุ่ม และราคา อยู่ในตำแหน่งเดียวกัน */
+.course-card h3 {
+  font-size: 1.25em;
+  color: #333;
+  margin: 0;
+  padding-bottom: 10px; /* ให้ระยะห่างระหว่างชื่อคอร์สกับคำอธิบาย */
+}
+
+.course-card p {
+  font-size: 0.95em;
+  color: #777;
+  padding-bottom: 10px; /* ระยะห่างระหว่างคำอธิบายกับราคา */
+  margin: 0;
+}
+
+/* จัดให้ราคาวางอยู่ในตำแหน่งสุดท้ายของการ์ด */
+.price {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 1.1em;
+  margin-top: auto; /* ทำให้ราคาอยู่ท้ายสุดของการ์ด */
+}
+
+/* ปรับให้ปุ่มอยู่ในแนวนอนและตำแหน่งที่ต้องการ */
+.buttons {
+  display: flex;
+  justify-content: space-between; /* วางปุ่มข้างกันทางซ้ายและขวา */
+  gap: 10px; /* ระยะห่างระหว่างปุ่ม */
+  margin-top: 10px;
+  width: 100%; /* ความกว้างเต็มพื้นที่ */
+}
+
+/* ปรับให้ปุ่มมีขนาดคงที่ */
+.details-button,
+.enroll-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  text-align: center;
+  width: 140px; /* กำหนดความกว้างที่แน่นอน */
+  height: 40px; /* กำหนดความสูงที่แน่นอน */
+}
+
+/* ปรับสไตล์ของปุ่ม อ่านรายละเอียด */
+.details-button {
+  background-color: white; /* พื้นหลังสีขาว */
+  color: #473e91; /* ตัวหนังสือเป็นสีม่วง */
+  border: 2px solid #473e91; /* เส้นขอบเป็นสีม่วง */
+  transition: background-color 0.3s ease, color 0.3s ease; /* เพิ่มการเปลี่ยนสี */
+}
+
+/* เมื่อชี้เมาส์ไปที่ปุ่ม อ่านรายละเอียด */
+.details-button:hover {
+  background-color: #3498db; /* เปลี่ยนเป็นสีฟ้าเมื่อชี้เมาส์ */
+  color: white; /* ตัวหนังสือเป็นสีขาว */
+  border-color: #3498db; /* เปลี่ยนเส้นขอบเป็นสีฟ้า */
+}
+
+/* ปรับสไตล์ของปุ่ม สมัครเรียน */
 .enroll-button {
   background-color: #473e91;
   color: white;
   border: none;
-  padding: 10px 25px; /* ปรับขนาด padding */
-  font-size: 1em;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-bottom: 10px;
   transition: background-color 0.3s ease;
-  white-space: nowrap; /* ข้อความในปุ่มไม่ให้แตกบรรทัด */
 }
 
 .enroll-button:hover {
   background-color: #5b4fad;
-}
-
-/* ปุ่มอ่านรายละเอียดเพิ่มเติม */
-.details-button {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 10px 25px; /* ปรับขนาด padding */
-  font-size: 1em;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-bottom: 15px;
-  transition: background-color 0.3s ease;
-  white-space: nowrap; /* ข้อความในปุ่มไม่ให้แตกบรรทัด */
-}
-
-.details-button:hover {
-  background-color: #c0392b;
-}
-
-/* ส่วนของคำว่าแสดงทั้งหมดและซ่อน */
-.show-more {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  cursor: pointer;
-  font-size: 1.1em;
-  color: #473e91;
-  gap: 10px; /* ระยะห่างระหว่างข้อความและลูกศร */
-  margin-top: 20px; /* เพิ่มระยะห่างจากด้านบน */
-  margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่าง */
-  width: 100%; /* ให้กว้างเต็มแถว */
-  padding-right: 10px; /* เพิ่มระยะห่างจากขอบขวา */
-  text-align: right; /* ให้ข้อความอยู่ทางขวา */
-}
-
-/* การตกแต่งข้อความแสดงทั้งหมดและซ่อน */
-.show-more-text {
-  font-weight: bold;
-  white-space: nowrap; /* ข้อความไม่ให้แตกบรรทัด */
-}
-
-/* การตกแต่งลูกศร */
-.arrow {
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  transition: transform 0.3s ease;
-}
-
-.arrow.down {
-  border-top: 7px solid #473e91;
-}
-
-.arrow.up {
-  border-bottom: 7px solid #473e91;
 }
