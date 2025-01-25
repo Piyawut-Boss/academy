@@ -1,0 +1,131 @@
+.aboutus-container {
+    font-family: Arial, sans-serif;
+    color: #473E91;
+    background-color: #fff;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .header {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+  
+  .introduction {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  
+  .introduction h2 {
+    color: #FFC900;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .introduction p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  
+  .banner {
+    width: 100%;
+    max-width: 900px;
+    margin-top: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+  }
+  
+  .feature-item {
+    background-color: #FFC900;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 350px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+  }
+  
+  .feature-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .feature-item h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+  
+  .teachers {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  
+  .teacher-list {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+  }
+  
+  .teacher-item {
+    background-color: #473E91;
+    color: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    max-width: 250px;
+    text-align: center;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .teacher-avatar {
+    width: 120px;
+    height: 120px;
+    background-color: #FFC900;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+  }
+  
+  .contact {
+    text-align: center;
+  }
+  
+  .contact-links a {
+    margin: 0 20px;
+    color: #473E91;
+    font-size: 1.4rem;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .contact-links a:hover {
+    color: #FFC900;
+  }
+
+  .ant-card {
+    border-radius: 15px !important;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .ant-btn-primary {
+    background-color: #473E91 !important;
+    border-color: #473E91 !important;
+  }
+
+  .ant-btn-primary:hover {
+    background-color: #FFC900 !important;
+    border-color: #FFC900 !important;
+    color: #473E91 !important;
+  }
