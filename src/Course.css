@@ -92,7 +92,9 @@ body {
   padding: 0 15px;
   margin-top: 10px;
   font-size: 1.1em;
-  display: block; /* ให้ราคาและราคาลดแสดงในบรรทัดใหม่ */
+  display: flex; /* ใช้ flexbox เพื่อจัดการตำแหน่ง */
+  flex-direction: column; /* ให้ราคาและราคาลดแสดงในแนวตั้ง */
+  gap: 5px; /* เพิ่มระยะห่างระหว่างราคาและราคาลด */
 }
 
 .price-original {
@@ -152,4 +154,43 @@ body {
 
 .details-button:hover {
   background-color: #c0392b;
+}
+
+/* ส่วนของคำว่าแสดงทั้งหมดและซ่อน */
+.show-more {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1.1em;
+  color: #473e91;
+  gap: 10px; /* ระยะห่างระหว่างข้อความและลูกศร */
+  margin-top: 20px; /* เพิ่มระยะห่างจากด้านบน */
+  margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่าง */
+  width: 100%; /* ให้กว้างเต็มแถว */
+  padding-right: 10px; /* เพิ่มระยะห่างจากขอบขวา */
+  text-align: right; /* ให้ข้อความอยู่ทางขวา */
+}
+
+/* การตกแต่งข้อความแสดงทั้งหมดและซ่อน */
+.show-more-text {
+  font-weight: bold;
+  white-space: nowrap; /* ข้อความไม่ให้แตกบรรทัด */
+}
+
+/* การตกแต่งลูกศร */
+.arrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  transition: transform 0.3s ease;
+}
+
+.arrow.down {
+  border-top: 7px solid #473e91;
+}
+
+.arrow.up {
+  border-bottom: 7px solid #473e91;
 }

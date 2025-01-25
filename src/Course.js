@@ -7,6 +7,7 @@ function Course() {
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+  const [showAllCourses, setShowAllCourses] = useState({}); // เก็บสถานะการแสดงทั้งหมดของแต่ละ category
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem('user');
@@ -19,7 +20,7 @@ function Course() {
 
     const fetchCourses = async () => {
       try {
-        const response = await fetch('http://localhost:1337/api/courses?populate=*'); // ใช้ populate=* เพื่อดึงข้อมูลทั้งหมดรวมถึงภาพ
+        const response = await fetch('http://localhost:1337/api/courses?populate=*');
         const data = await response.json();
         setCourses(data.data);
         setLoading(false);
@@ -52,6 +53,13 @@ function Course() {
       fetchUserCourses();
     }
   }, [isLoggedIn, user]);
+
+  const toggleShowAllCourses = (category) => {
+    setShowAllCourses(prev => ({
+      ...prev,
+      [category]: !prev[category],
+    }));
+  };
 
   if (loading) {
     return <p>กำลังโหลดข้อมูลคอร์ส...</p>;
@@ -114,7 +122,7 @@ function Course() {
             <div className="category-section" key={category}>
               <h2>{category}</h2>
               <div className="course-grid">
-                {filteredCourses.map((course) => {
+                {filteredCourses.slice(0, showAllCourses[category] ? filteredCourses.length : 4).map((course) => {
                   const { Title, Description, Price, realprice, id, Promotepic } = course;
                   const imageUrl = Promotepic ? `http://localhost:1337${Promotepic.url}` : '';
 
@@ -141,6 +149,14 @@ function Course() {
                   );
                 })}
               </div>
+              {filteredCourses.length > 4 && (
+                <div className="show-more" onClick={() => toggleShowAllCourses(category)}>
+                  <span className="show-more-text">
+                    {showAllCourses[category] ? 'ซ่อน' : 'แสดงทั้งหมด'}
+                  </span>
+                  <span className={`arrow ${showAllCourses[category] ? 'up' : 'down'}`}></span>
+                </div>
+              )}
             </div>
           );
         })}
