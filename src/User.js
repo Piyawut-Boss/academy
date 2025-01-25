@@ -4,6 +4,7 @@ import './User.css';  // นำเข้าไฟล์ CSS
 function User() {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [showHeart, setShowHeart] = useState(false);  // สถานะสำหรับการแสดงหัวใจ
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem('user');
@@ -14,6 +15,13 @@ function User() {
       setError('Please log in to view your profile');
     }
   }, []);
+
+  const handleClick = () => {
+    setShowHeart(true);
+    setTimeout(() => {
+      setShowHeart(false);  // หัวใจหายไปหลังจาก 1.5 วินาที
+    }, 1500);
+  };
 
   if (error) {
     return (
@@ -32,8 +40,9 @@ function User() {
       <h2 className="profile-title">User Profile</h2>
       <p className="welcome-message">Welcome to the User Profile page!</p>
 
-      <div className="profile-circle">
+      <div className="profile-circle" onClick={handleClick}>
         <span className="smiley-face">😊</span>
+        {showHeart && <span className="heart">❤️</span>}  {/* แสดงหัวใจเมื่อคลิก */}
       </div>
 
       <div className="user-details">

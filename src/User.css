@@ -66,4 +66,57 @@
     text-align: center;
     color: #888;
   }
+  /* เพิ่มเอฟเฟกต์เมื่อเมาส์ชี้ไปที่ไอคอนหน้ายิ้ม */
+.smiley-face:hover {
+    font-size: 2.5rem; /* ขยายขนาด */
+    transition: font-size 0.3s ease-in-out; /* เพิ่มความนุ่มนวลในการขยาย */
+  }
+/* เพิ่มสไตล์สำหรับหัวใจ */
+.heart {
+  font-size: 2rem;
+  color: red;
+  margin-left: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* ขยายหัวใจเมื่อแสดง */
+.heart:hover {
+  transform: scale(1.5);
+}
+
+/* เพิ่มเอฟเฟกต์เมื่อเมาส์ชี้ไปที่ไอคอนหน้ายิ้ม */
+.smiley-face:hover {
+  font-size: 2.5rem; /* ขยายขนาด */
+  transition: font-size 0.3s ease-in-out; /* เพิ่มความนุ่มนวลในการขยาย */
+}
+/* เพิ่มสไตล์สำหรับหัวใจ */
+.heart {
+    font-size: 2rem;
+    color: red;
+    position: absolute;
+    animation: heartAnimation 1.5s ease-out forwards;
+    z-index: 10;
+  }
+  
+  /* กำหนด animation ให้หัวใจลอยขึ้น */
+  @keyframes heartAnimation {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(-30px); /* ลอยขึ้น */
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-60px); /* ลอยขึ้นและหายไป */
+      opacity: 0;
+    }
+  }
+  
+  /* เพิ่มเอฟเฟกต์เมื่อเมาส์ชี้ไปที่ไอคอนหน้ายิ้ม */
+  .smiley-face:hover {
+    font-size: 2.5rem; /* ขยายขนาด */
+    transition: font-size 0.3s ease-in-out; /* เพิ่มความนุ่มนวลในการขยาย */
+  }
   
