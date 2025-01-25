@@ -13,6 +13,9 @@ function Header() {
         navigate('/login');
     };
 
+    // เช็คว่าผู้ใช้ล็อกอินแล้วหรือยัง
+    const isLoggedIn = localStorage.getItem('jwt') || localStorage.getItem('user');
+
     return (
         <header className="header-container">
             <div className="logo">
@@ -23,11 +26,17 @@ function Header() {
                     <li><Link to="/">หน้าหลัก</Link></li>
                     <li><Link to="/course">คอร์สเรียนทั้งหมด</Link></li>
                     <li><Link to="/howto">วิธีการสั่งซื้อ</Link></li>
-                    <li><Link to="/promotion">โปรโมชั่น</Link></li> {/* เพิ่มลิงก์ใหม่ไปหน้า Promotion */}
-                    <li><Link to="/aboutus">เกี่ยวกับเรา</Link></li> {/* เพิ่มลิงก์ใหม่ */}
-                    <li><Link to="/login">Login</Link></li>
-                    <li><Link to="/user">User</Link></li>
-                    <li><button onClick={handleLogout}>Logout</button></li>
+                    <li><Link to="/promotion">โปรโมชั่น</Link></li>
+                    <li><Link to="/aboutus">เกี่ยวกับเรา</Link></li>
+
+                    {/* แสดงปุ่ม Login หากยังไม่ได้ล็อกอิน */}
+                    {!isLoggedIn && <li><Link to="/login">Login</Link></li>}
+
+                    {/* แสดงปุ่ม User หากล็อกอินแล้ว */}
+                    {isLoggedIn && <li><Link to="/user">User</Link></li>}
+
+                    {/* แสดงปุ่ม Logout หากล็อกอินแล้ว */}
+                    {isLoggedIn && <li><button onClick={handleLogout}>Logout</button></li>}
                 </ul>
             </nav>
         </header>
