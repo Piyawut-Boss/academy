@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 import happyLearningLogo from './happy-learning-logo.png';
+import { ShoppingCartOutlined } from '@ant-design/icons';  // นำเข้าไอคอนจาก Ant Design
 
 function Header() {
     const navigate = useNavigate();
@@ -28,6 +29,9 @@ function Header() {
                     <li><Link to="/howto">วิธีการสั่งซื้อ</Link></li>
                     <li><Link to="/promotion">โปรโมชั่น</Link></li>
                     <li><Link to="/aboutus">เกี่ยวกับเรา</Link></li>
+
+                    {/* ใช้แค่ไอคอนตะกร้า */}
+                    <li><Link to="/shopping"><ShoppingCartOutlined style={{ fontSize: '24px' }} /></Link></li>
 
                     {/* แสดงปุ่ม Login หากยังไม่ได้ล็อกอิน */}
                     {!isLoggedIn && <li><Link to="/login">Login</Link></li>}

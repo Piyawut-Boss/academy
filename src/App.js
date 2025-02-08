@@ -1,27 +1,28 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { HeaderPromoteProvider } from './HeaderPromote'; 
-import Header from './Header'; 
-import Footer from './Footer'; // นำเข้า Footer
+import { HeaderPromoteProvider } from './HeaderPromote';
+import Header from './Header';
+import Footer from './Footer';
 import Home from './Home';
 import Login from './Login';
 import Course from './Course';
-import User from './User';  
-import Howto from './Howto';  
-import Aboutus from './Aboutus'; 
-import Promotion from './Promotion'; // เพิ่มการนำเข้า Promotion
-import HeaderPromote from './HeaderPromote'; 
-import './App.css'; // นำเข้าไฟล์ app.css
+import User from './User';
+import Howto from './Howto';
+import Aboutus from './Aboutus';
+import Promotion from './Promotion';
+import Shopping from './Shopping';  // เพิ่มหน้า Shopping
+import Payment from './Payment';  // เพิ่มหน้า Payment
+import HeaderPromote from './HeaderPromote';
+import './App.css';
 
 function Layout() {
-  const location = useLocation(); // ใช้ useLocation เพื่อดึงข้อมูล URL ปัจจุบัน
-  const isLoginPage = location.pathname === "/login"; // เช็คว่าหน้า URL คือ /login หรือไม่
+  const location = useLocation();
+  const isLoginPage = location.pathname === "/login";
 
   return (
     <>
-      {!isLoginPage && <HeaderPromote />} {/* ถ้าไม่ใช่หน้า Login จะให้แสดง HeaderPromote */}
-      {!isLoginPage && <Header />} {/* ถ้าไม่ใช่หน้า Login จะให้แสดง Header */}
-      {/* Footer จะแสดงแค่ไม่ใช่หน้า Login */}
+      {!isLoginPage && <HeaderPromote />}
+      {!isLoginPage && <Header />}
       {!isLoginPage && <Footer />}
     </>
   );
@@ -42,6 +43,8 @@ function App() {
               <Route path="/howto" element={<Howto />} />
               <Route path="/aboutus" element={<Aboutus />} />
               <Route path="/promotion" element={<Promotion />} />
+              <Route path="/shopping" element={<Shopping />} />  {/* เพิ่มเส้นทาง Shopping */}
+              <Route path="/payment" element={<Payment />} />  {/* เพิ่มเส้นทาง Payment */}
             </Routes>
           </div>
         </div>
