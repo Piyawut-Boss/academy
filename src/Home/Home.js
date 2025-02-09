@@ -1,7 +1,7 @@
 import React from "react";
 import { Layout, Row, Col, Card, Carousel, Badge, Typography } from "antd";
 import { TrophyOutlined, FileTextOutlined, GiftOutlined, VideoCameraOutlined } from "@ant-design/icons";
-import './Home.css'; 
+import './Home.css';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -16,6 +16,20 @@ const Home = () => {
           <div><img src="https://via.placeholder.com/1200x250" alt="Banner 2" /></div>
           <div><img src="https://via.placeholder.com/1200x250" alt="Banner 3" /></div>
         </Carousel>
+        <div className="section">
+          <Title level={2}><TrophyOutlined /> เหล่าพี่ ๆ ติวเตอร์</Title>
+          <Row gutter={[16, 16]} justify="center">
+            {["พี่ A", "พี่ B", "พี่ C"].map((name, index) => (
+              <Col key={index} xs={24} sm={8}>
+                <Badge.Ribbon>
+                  <Card hoverable className="leaderboard-card" title={name}>
+                    <Text>โรงเรียน XYZ</Text>
+                  </Card>
+                </Badge.Ribbon>
+              </Col>
+            ))}
+          </Row>
+        </div>
 
         <div className="section">
           <Title level={2}><TrophyOutlined /> นักเรียนที่ได้คะแนนสูงสุด</Title>
