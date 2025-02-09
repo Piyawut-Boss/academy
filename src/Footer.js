@@ -1,10 +1,9 @@
 import React from 'react';
 import happyLearningLogo from './Header/happy-learning-logo.png'; // นำเข้าภาพโลโก้
-import { MdLabelImportant } from 'react-icons/md';
 
 function Footer() {
     const footerStyle = {
-        position: 'relative' ,  // ใช้ fixed เพื่อติดล่างสุดของหน้าจอ
+        position: 'relative',  // ใช้ fixed เพื่อติดล่างสุดของหน้าจอ
         width: '100%',
         height: '250px', // กำหนดความสูง
         backgroundColor: '#777777', // สีพื้นหลัง
