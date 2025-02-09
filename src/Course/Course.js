@@ -70,6 +70,13 @@ function Course() {
     }));
   };
 
+  const addToCart = (course) => {
+    const storedCartCourses = localStorage.getItem('cartCourses');
+    const cartCourses = storedCartCourses ? JSON.parse(storedCartCourses) : [];
+    cartCourses.push(course);
+    localStorage.setItem('cartCourses', JSON.stringify(cartCourses));
+  };
+
   if (loading) {
     return <p>กำลังโหลดข้อมูลคอร์ส...</p>;
   }
@@ -124,7 +131,7 @@ function Course() {
                       </div>
                       <div className="buttons">
                           <Button type="link" className="details-button">อ่านรายละเอียด</Button>
-                          <Button type="primary" className="enroll-button">สมัครเรียน</Button>
+                          <Button type="primary" className="enroll-button" onClick={() => addToCart(course)}>สมัครเรียน</Button>
                         </div>
                     </Card>
                   </Col>
@@ -178,7 +185,7 @@ function Course() {
                         </div>
                         <div className="buttons">
                           <Button type="link" className="details-button">อ่านรายละเอียด</Button>
-                          <Button type="primary" className="enroll-button">สมัครเรียน</Button>
+                          <Button type="primary" className="enroll-button" onClick={() => addToCart(course)}>สมัครเรียน</Button>
                         </div>
                       </Card>
                     </Col>
