@@ -1,18 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { HeaderPromoteProvider } from './HeaderPromote';
-import Header from './Header';
-import Footer from './Footer';
-import Home from './Home';
-import Login from './Login';
-import Course from './Course';
-import User from './User';
-import Howto from './Howto';
-import Aboutus from './Aboutus';
-import Promotion from './Promotion';
-import Shopping from './Shopping';  // เพิ่มหน้า Shopping
-import Payment from './Payment';  // เพิ่มหน้า Payment
-import HeaderPromote from './HeaderPromote';
+import { HeaderPromoteProvider } from '../Header/HeaderPromote';
+import Header from '../Header/Header';
+import Footer from '../Footer';
+import Home from '../Home/Home'; 
+import Login from '../Login';
+import Course from '../Course/Course';
+import User from '../User/User';
+import Howto from '../Howto';
+import Aboutus from '../Aboutus/Aboutus';
+import Promotion from '../Promotion';
+import Shopping from '../Shopping/Shopping'; 
+import Payment from '../Payment/Payment';
+import HeaderPromote from '../Header/HeaderPromote';
 import './App.css';
 
 function Layout() {

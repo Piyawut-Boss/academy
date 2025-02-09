@@ -1,5 +1,5 @@
 import React from 'react';
-import happyLearningLogo from './happy-learning-logo.png'; // นำเข้าภาพโลโก้
+import happyLearningLogo from './Header/happy-learning-logo.png'; // นำเข้าภาพโลโก้
 import { MdLabelImportant } from 'react-icons/md';
 
 function Footer() {
