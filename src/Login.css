@@ -1,0 +1,103 @@
+/* การตั้งค่า Style สำหรับ Card */
+.login-container {
+    max-width: 800px!important;
+    max-height: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: Arial, sans-serif;
+    transition: transform 0.6s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* การตั้งค่า Style สำหรับ Heading */
+  .login-container h2 {
+    color: #473e91;
+    margin-bottom: 20px; /* เพิ่มระยะห่างระหว่างหัวข้อและฟอร์ม */
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  
+  /* การตั้งค่า Style สำหรับ Input */
+  .input-group {
+    display: flex;
+    justify-content: center; /* จัดกลางในแนวนอน */
+    align-items: center; /* จัดกลางในแนวตั้ง */
+    margin-bottom: 20px; /* ลดระยะห่างจากปุ่ม */
+  }
+  
+  .input-group input,
+  .input-group .ant-input-password {
+    width: 100%;
+    max-width: 400px; /* กำหนดความกว้างสูงสุด */
+    height: 45px; /* เพิ่มความสูงของ input */
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    box-sizing: border-box; /* ให้ padding และ border รวมในความกว้าง */
+  }
+  
+  .input-group input:focus,
+  .input-group .ant-input-password:focus {
+    border-color: #473e91;
+    outline: none;
+  }
+  
+  /* การตั้งค่า Style สำหรับ Error Message */
+  .error-message {
+    color: #f44336;
+    font-size: 14px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  /* การตั้งค่า Style สำหรับ Login Button */
+  .login-button {
+    width: 60%;
+    padding: 12px;
+    background-color: #473e91;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 15px; /* เพิ่ม margin-bottom ให้กับปุ่ม */
+  }
+  
+  .login-button:hover {
+    background-color: #3b347b;
+  }
+  
+  .login-button:disabled {
+    background-color: #a3a3a3;
+    cursor: not-allowed;
+  }
+  
+  /* การตั้งค่า Style สำหรับ Toggle Button */
+  .toggle-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #3b347b;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+  }
+  
+  .toggle-button:hover {
+    background-color: #645b9c;
+  }
+  
