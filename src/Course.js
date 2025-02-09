@@ -66,7 +66,18 @@ function Course() {
     return <p>กำลังโหลดข้อมูลคอร์ส...</p>;
   }
 
-  const categories = [...new Set(courses.flatMap(course => course.categories.map(category => category.Category)))];
+  // การตรวจสอบค่าก่อนใช้ flatMap
+  const categories = Array.isArray(courses) && courses.length > 0
+    ? [
+        ...new Set(
+          courses.flatMap(course =>
+            Array.isArray(course.categories)
+              ? course.categories.map(category => category.Category)
+              : []  // ถ้า categories เป็น null หรือ undefined จะไม่ทำการ map
+          )
+        )
+      ]
+    : []; // กรณีที่ courses เป็น null หรือ array ว่าง จะให้ categories เป็น array ว่าง
 
   return (
     <div className="course-container">
@@ -103,7 +114,6 @@ function Course() {
                         <span className="price-original">{Price ? Price.toLocaleString() : 'ราคาปกติไม่ระบุ'} บาท</span>
                         <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท</span>
                       </div>
-                      {/* เพิ่มปุ่ม "อ่านรายละเอียด" */}
                       <Button type="link" className="details-button">อ่านรายละเอียด</Button>
                       <Button type="primary" className="enroll-button">สมัครเรียน</Button>
                     </Card>
@@ -123,7 +133,7 @@ function Course() {
       <div className="category-section">
         {categories.map((category) => {
           const filteredCourses = courses.filter(course =>
-            course.categories.some(cat => cat.Category === category)
+            course.categories?.some(cat => cat.Category === category)  // ตรวจสอบว่า categories มีอยู่หรือไม่
           );
 
           return (
@@ -153,10 +163,9 @@ function Course() {
                           description={Description ?? 'รายละเอียดคอร์สไม่ระบุ'}
                         />
                         <div className="price">
-                          <span className="price-original">{Price ? Price.toLocaleString() : 'ราคาปกติไม่ระบุ'} บาท</span>
-                          <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท</span>
+                          <span className="price-original">{Price ? Price.toLocaleString() : 'ไม่ระบุราคา'} บาท</span>
+                          <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ไม่ระบุราคา'} บาท</span>
                         </div>
-                        {/* เพิ่มปุ่ม "อ่านรายละเอียด" */}
                         <Button type="link" className="details-button">อ่านรายละเอียด</Button>
                         <Button type="primary" className="enroll-button">สมัครเรียน</Button>
                       </Card>
