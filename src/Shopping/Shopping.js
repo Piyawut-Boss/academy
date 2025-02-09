@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Shopping.css';
 import { Link } from 'react-router-dom';
+import { Table, Button } from 'antd';
 
 function Shopping() {
     const [cartCourses, setCartCourses] = useState([]);
@@ -12,6 +13,44 @@ function Shopping() {
         }
     }, []);
 
+    const removeFromCart = (courseId) => {
+        const updatedCartCourses = cartCourses.filter(course => course.id !== courseId);
+        setCartCourses(updatedCartCourses);
+        localStorage.setItem('cartCourses', JSON.stringify(updatedCartCourses));
+    };
+
+    const columns = [
+        {
+            title: 'ชื่อคอร์ส',
+            dataIndex: 'Title',
+            key: 'Title',
+        },
+        {
+            title: 'รายละเอียด',
+            dataIndex: 'Description',
+            key: 'Description',
+        },
+        {
+            title: 'ราคา',
+            dataIndex: 'Price',
+            key: 'Price',
+            render: (text) => `${text.toLocaleString()} บาท`,
+        },
+        {
+            title: 'ราคาหลังลด',
+            dataIndex: 'realprice',
+            key: 'realprice',
+            render: (text) => `${text.toLocaleString()} บาท`,
+        },
+        {
+            title: 'การกระทำ',
+            key: 'action',
+            render: (text, record) => (
+                <Button type="danger" onClick={() => removeFromCart(record.id)}>ลบออกจากตะกร้า</Button>
+            ),
+        },
+    ];
+
     return (
         <div className="shopping-container">
             <h1>หน้าร้านค้า</h1>
@@ -21,11 +60,7 @@ function Shopping() {
             <div className="cart-section">
                 <h2>คอร์สในตะกร้าของคุณ</h2>
                 {cartCourses.length > 0 ? (
-                    <ul>
-                        {cartCourses.map((course, index) => (
-                            <li key={index}>{course.Title}</li>
-                        ))}
-                    </ul>
+                    <Table dataSource={cartCourses} columns={columns} rowKey="id" />
                 ) : (
                     <p>ยังไม่มีคอร์สในตะกร้าของคุณ</p>
                 )}
