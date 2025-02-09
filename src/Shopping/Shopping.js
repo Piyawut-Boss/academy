@@ -21,6 +21,14 @@ function Shopping() {
 
     const columns = [
         {
+            title: 'ภาพตัวอย่าง',
+            dataIndex: 'Promotepic',
+            key: 'Promotepic',
+            render: (Promotepic) => (
+                Promotepic ? <img src={`http://localhost:1337${Promotepic.url}`} alt="Preview" style={{ width: '100px' }} /> : 'ไม่มีภาพ'
+            ),
+        },
+        {
             title: 'ชื่อคอร์ส',
             dataIndex: 'Title',
             key: 'Title',
@@ -43,7 +51,7 @@ function Shopping() {
             render: (text) => `${text.toLocaleString()} บาท`,
         },
         {
-            title: 'การกระทำ',
+            title: '',
             key: 'action',
             render: (text, record) => (
                 <Button type="danger" onClick={() => removeFromCart(record.id)}>ลบออกจากตะกร้า</Button>
