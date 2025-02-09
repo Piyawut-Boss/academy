@@ -23,7 +23,6 @@ function Layout() {
     <>
       {!isLoginPage && <HeaderPromote />}
       {!isLoginPage && <Header />}
-      {!isLoginPage && <Footer />}
     </>
   );
 }
@@ -47,6 +46,7 @@ function App() {
               <Route path="/payment" element={<Payment />} />  {/* เพิ่มเส้นทาง Payment */}
             </Routes>
           </div>
+          <Footer />
         </div>
       </HeaderPromoteProvider>
     </Router>

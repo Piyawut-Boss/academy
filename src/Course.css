@@ -30,6 +30,7 @@ body {
 }
 
 .price-discounted {
+  margin-bottom: 5px;
   color: #e74c3c;
   font-weight: bold;
 }
@@ -82,6 +83,7 @@ body {
   justify-content: space-between;
   height: 100%;
   padding: 15px;
+  align-items: stretch;
 }
 
 /* ทำให้ชื่อคอร์ส, คำอธิบาย, ปุ่ม และราคา อยู่ในตำแหน่งเดียวกัน */
@@ -115,18 +117,19 @@ body {
   gap: 10px; /* ระยะห่างระหว่างปุ่ม */
   margin-top: 10px;
   width: 100%; /* ความกว้างเต็มพื้นที่ */
+  align-items: center;
 }
 
 /* ปรับให้ปุ่มมีขนาดคงที่ */
 .details-button,
 .enroll-button {
-  padding: 10px 20px;
+  flex: 1; /* ปุ่มขยายเต็มพื้นที่ */
+  text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+  padding: 10px;
   border-radius: 5px;
-  cursor: pointer;
   font-size: 1em;
-  text-align: center;
-  width: 140px; /* กำหนดความกว้างที่แน่นอน */
-  height: 40px; /* กำหนดความสูงที่แน่นอน */
+  height: 40px; /* ความสูงคงที่ */
+  min-width: 120px; /* ป้องกันไม่ให้ปุ่มเล็กเกินไป */
 }
 
 /* ปรับสไตล์ของปุ่ม อ่านรายละเอียด */
@@ -135,6 +138,7 @@ body {
   color: #473e91; /* ตัวหนังสือเป็นสีม่วง */
   border: 2px solid #473e91; /* เส้นขอบเป็นสีม่วง */
   transition: background-color 0.3s ease, color 0.3s ease; /* เพิ่มการเปลี่ยนสี */
+ 
 }
 
 /* เมื่อชี้เมาส์ไปที่ปุ่ม อ่านรายละเอียด */

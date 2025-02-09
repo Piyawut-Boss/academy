@@ -69,14 +69,14 @@ function Course() {
   // การตรวจสอบค่าก่อนใช้ flatMap
   const categories = Array.isArray(courses) && courses.length > 0
     ? [
-        ...new Set(
-          courses.flatMap(course =>
-            Array.isArray(course.categories)
-              ? course.categories.map(category => category.Category)
-              : []  // ถ้า categories เป็น null หรือ undefined จะไม่ทำการ map
-          )
+      ...new Set(
+        courses.flatMap(course =>
+          Array.isArray(course.categories)
+            ? course.categories.map(category => category.Category)
+            : []  // ถ้า categories เป็น null หรือ undefined จะไม่ทำการ map
         )
-      ]
+      )
+    ]
     : []; // กรณีที่ courses เป็น null หรือ array ว่าง จะให้ categories เป็น array ว่าง
 
   return (
@@ -166,8 +166,10 @@ function Course() {
                           <span className="price-original">{Price ? Price.toLocaleString() : 'ไม่ระบุราคา'} บาท</span>
                           <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ไม่ระบุราคา'} บาท</span>
                         </div>
-                        <Button type="link" className="details-button">อ่านรายละเอียด</Button>
-                        <Button type="primary" className="enroll-button">สมัครเรียน</Button>
+                        <div className="buttons">
+                          <Button type="link" className="details-button">อ่านรายละเอียด</Button>
+                          <Button type="primary" className="enroll-button">สมัครเรียน</Button>
+                        </div>
                       </Card>
                     </Col>
                   );
