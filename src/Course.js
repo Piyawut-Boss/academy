@@ -11,22 +11,30 @@ function Course() {
   const [showAllCourses, setShowAllCourses] = useState({});
 
   useEffect(() => {
-    const loggedInUser = localStorage.getItem('user');
+    const loggedInUser = localStorage.getItem("user");
+    console.log("Logged in user from localStorage:", loggedInUser);
+
     if (loggedInUser) {
+      const parsedUser = JSON.parse(loggedInUser);
+      console.log('Logged in user:', parsedUser);
+      setUser(parsedUser);
       setIsLoggedIn(true);
-      setUser(JSON.parse(loggedInUser));
     } else {
       setIsLoggedIn(false);
     }
+  }, []);
 
+  // ดึงคอร์สทั้งหมด
+  useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch('http://localhost:1337/api/courses?populate=*');
+        const response = await fetch("http://localhost:1337/api/courses?populate=*");
         const data = await response.json();
-        setCourses(data.data);
-        setLoading(false);
+        console.log("Fetched user courses:", data);
+        setCourses(data.data || []);
       } catch (error) {
-        console.error('Error fetching courses:', error);
+        console.error("Error fetching courses:", error);
+      } finally {
         setLoading(false);
       }
     };
@@ -34,26 +42,26 @@ function Course() {
     fetchCourses();
   }, []);
 
+  // ดึงคอร์สของผู้ใช้
   useEffect(() => {
-    if (isLoggedIn && user) {
+    if (isLoggedIn && user?.username) {
       const fetchUserCourses = async () => {
         try {
-          const response = await fetch(`http://localhost:1337/api/users/${user.id}?populate=courses`);
+          const response = await fetch(
+            `http://localhost:1337/api/courses?filters[users][username][$eq]=${user.username}&populate=*`
+          );
           const data = await response.json();
-          if (data.data && data.data.courses) {
-            setUserCourses(data.data.courses);
-          } else {
-            setUserCourses([]);
-          }
+          console.log("User courses:", data); // ตรวจสอบข้อมูล
+          setUserCourses(data.data || []);
         } catch (error) {
-          console.error('Error fetching user courses:', error);
+          console.error("Error fetching user courses:", error);
           setUserCourses([]);
         }
       };
 
       fetchUserCourses();
     }
-  }, [isLoggedIn, user]);
+  }, [isLoggedIn, user?.username]);
 
   const toggleShowAllCourses = (category) => {
     setShowAllCourses(prev => ({
@@ -78,7 +86,7 @@ function Course() {
       )
     ]
     : []; // กรณีที่ courses เป็น null หรือ array ว่าง จะให้ categories เป็น array ว่าง
-
+  console.log("Categories:", categories);
   return (
     <div className="course-container">
       <h1>คอร์สเรียนทั้งหมด</h1>
@@ -114,8 +122,10 @@ function Course() {
                         <span className="price-original">{Price ? Price.toLocaleString() : 'ราคาปกติไม่ระบุ'} บาท</span>
                         <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท</span>
                       </div>
-                      <Button type="link" className="details-button">อ่านรายละเอียด</Button>
-                      <Button type="primary" className="enroll-button">สมัครเรียน</Button>
+                      <div className="buttons">
+                          <Button type="link" className="details-button">อ่านรายละเอียด</Button>
+                          <Button type="primary" className="enroll-button">สมัครเรียน</Button>
+                        </div>
                     </Card>
                   </Col>
                 );
