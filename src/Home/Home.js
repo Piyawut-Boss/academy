@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Layout, Row, Col, Card, Carousel, Badge, Typography } from "antd";
 import { TrophyOutlined, FileTextOutlined, GiftOutlined, VideoCameraOutlined } from "@ant-design/icons";
 import './Home.css';
@@ -7,17 +7,52 @@ const { Content } = Layout;
 const { Title, Text } = Typography;
 
 const Home = () => {
+  const [banners, setBanners] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:1337/api/banners?populate=*")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.data) {
+          const bannerImages = data.data.map((item) => {
+            const banner = item.Banner;
+            const baseUrl = "http://localhost:1337";
+            let imageUrl = banner.url ? "http://localhost:1337" + banner.url : "https://via.placeholder.com/1200x250";
+
+
+            return {
+              id: item.id,
+              imageUrl: imageUrl,
+            };
+          });
+          setBanners(bannerImages);
+        }
+      })
+      .catch((error) => console.error("Error fetching banners:", error));
+  }, []);
+
   return (
     <Layout className="home-layout">
       <Content>
-
         <Carousel autoplay className="banner-carousel">
-          <div><img src="https://via.placeholder.com/1200x250" alt="Banner 1" /></div>
-          <div><img src="https://via.placeholder.com/1200x250" alt="Banner 2" /></div>
-          <div><img src="https://via.placeholder.com/1200x250" alt="Banner 3" /></div>
+          {banners.length > 0 ? (
+            banners.map((banner) => (
+              <div key={banner.id}>
+                <img src={banner.imageUrl} alt={`Banner ${banner.id}`} style={{ width: "100%" }} />
+              </div>
+            ))
+          ) : (
+            <div><img src="https://via.placeholder.com/1200x250" alt="Placeholder Banner" /></div>
+          )}
         </Carousel>
+
         <div className="section">
-          <Title level={2}><TrophyOutlined /> เหล่าพี่ ๆ ติวเตอร์</Title>
+          <Title level={1}>
+            <TrophyOutlined />
+            <span style={{ color: 'black' }}>Team </span>
+            <span style={{ color: '#473E91' }}>Tutor </span>
+            <span style={{ color: '#FFC107  ' }}>HAPPYLearningAcademy</span>
+          </Title>
           <Row gutter={[16, 16]} justify="center">
             {["พี่ A", "พี่ B", "พี่ C"].map((name, index) => (
               <Col key={index} xs={24} sm={8}>

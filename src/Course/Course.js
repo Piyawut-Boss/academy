@@ -81,18 +81,18 @@ function Course() {
     return <p>กำลังโหลดข้อมูลคอร์ส...</p>;
   }
 
-  // การตรวจสอบค่าก่อนใช้ flatMap
   const categories = Array.isArray(courses) && courses.length > 0
     ? [
       ...new Set(
         courses.flatMap(course =>
           Array.isArray(course.categories)
             ? course.categories.map(category => category.Category)
-            : []  // ถ้า categories เป็น null หรือ undefined จะไม่ทำการ map
+            : []  
         )
       )
     ]
-    : []; // กรณีที่ courses เป็น null หรือ array ว่าง จะให้ categories เป็น array ว่าง
+    : []; 
+
   console.log("Categories:", categories);
   return (
     <div className="course-container">
@@ -150,7 +150,7 @@ function Course() {
       <div className="category-section">
         {categories.map((category) => {
           const filteredCourses = courses.filter(course =>
-            course.categories?.some(cat => cat.Category === category)  // ตรวจสอบว่า categories มีอยู่หรือไม่
+            course.categories?.some(cat => cat.Category === category)  
           );
 
           return (

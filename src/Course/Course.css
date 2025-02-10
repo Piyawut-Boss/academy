@@ -40,7 +40,7 @@ body {
   text-align: right;
   color: #473e91;
   font-weight: bold;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 /* กรอบเปล่าที่แสดงเมื่อไม่มีภาพ */
@@ -67,9 +67,9 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 450px; /* กำหนดความสูงขั้นต่ำให้การ์ด */
-  max-width: 300px; /* กำหนดความกว้างสูงสุด */
-  margin-bottom: 20px; /* ระยะห่างระหว่างการ์ด */
+  min-height: 450px; 
+  max-width: 400px; 
+  margin-bottom: 20px; 
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
