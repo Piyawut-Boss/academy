@@ -31,32 +31,54 @@ const Home = () => {
       })
       .catch((error) => console.error("Error fetching banners:", error));
 
-      fetch("http://localhost:1337/api/tutors?populate=image")
+    fetch("http://localhost:1337/api/tutors?populate=image")
       .then((response) => response.json())
       .then((data) => {
+        console.log("Tutor data:", data);
         if (data.data) {
-          const tutorData = data.data.map((item) => {
+          const tutorImageData = data.data.map((item) => {
             const imageUrl = item.image?.url
               ? "http://localhost:1337" + item.image.url
               : "https://via.placeholder.com/150";
             return {
               id: item.id,
-              name: item.Name, 
-              school: item.Discription, 
+              name: item.Name,  // ตรวจสอบให้แน่ใจว่ามีการดึงชื่อจาก API 
               imageUrl: imageUrl,
             };
           });
-          setTutors(tutorData);
+
+          console.log("Tutor Image Data:", tutorImageData);
+          setTutors(tutorImageData);
         }
       })
-      .catch((error) => console.error("Error fetching tutors:", error));
-    
+      .catch((error) => console.error("Error fetching tutors image:", error));
+
+    // Fetch categories data
+    fetch("http://localhost:1337/api/tutors?populate=categories")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.data) {
+          const tutorCategoryData = data.data.map((item) => {
+            const categories = item.categories.map((category) => category.Category).join(", ");
+            return { id: item.id, categories: categories };
+          });
+
+          setTutors((prevTutors) =>
+            prevTutors.map((tutor) => ({
+              ...tutor,
+              categories: tutorCategoryData.find((item) => item.id === tutor.id)?.categories || tutor.categories,
+            }))
+          );
+        }
+      })
+      .catch((error) => console.error("Error fetching tutors categories:", error));
+
   }, []);
 
   return (
     <Layout className="home-layout">
       <Content>
-        <Carousel autoplay className="banner-carousel">
+        <Carousel autoplay className="banner-carousel background-image">
           {banners.length > 0 ? (
             banners.map((banner) => (
               <div key={banner.id}>
@@ -82,16 +104,12 @@ const Home = () => {
             {tutors.length > 0 ? (
               tutors.map((tutor) => (
                 <Col key={tutor.id} xs={24} sm={8}>
-                  <Badge.Ribbon>
-                    <Card
-                      hoverable
-                      className="leaderboard-card"
-                      title={tutor.name}
-                      cover={<img alt={tutor.name} src={tutor.imageUrl} />} // เพิ่มรูปภาพ
-                    >
-                      <Text>{tutor.school}</Text>
-                    </Card>
-                  </Badge.Ribbon>
+                  <Card hoverable className="custom-card" cover={<img alt={tutor.Name} src={tutor.imageUrl} className="card-image" />}>
+                    <div className="card-content">
+                      <Title level={4}>{tutor.name}</Title>
+                      <p>วิชาที่สอน: {tutor.categories}</p>
+                    </div>
+                  </Card>
                 </Col>
               ))
             ) : (
@@ -115,7 +133,7 @@ const Home = () => {
           </Row>
         </div>
 
-        <div className="highlight-section">
+        <div className="highlight-section background-image">
           <Card className="highlight-card" bordered={false}>
             <Title level={3} style={{ color: "#ff9800" }}>ขอแสดงความยินดี! 🎉</Title>
             <Badge.Ribbon text="100/100" color="red">
