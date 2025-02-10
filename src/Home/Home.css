@@ -36,6 +36,7 @@ body {
   
   .leaderboard-card {
     text-align: center;
+    width: 200px;
   }
   
   .highlight-section {
@@ -95,3 +96,39 @@ body {
   text-align: center;
   padding: 10px 0;
 }
+
+.team-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 120px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.team-text {
+  display: inline;
+  color: black;
+  margin-right: 10px; 
+}
+
+.tutor-text {
+  display: inline;
+  color: #473E91;
+  margin-right: 10px; 
+}
+
+.academy-text {
+  display: inline;
+  color: #FFC107 ;
+}
+
+.team-description {
+  font-size: 20px;
+  color: black; 
+  margin-top: 5px; 
+  text-align: center; 
+  margin-bottom: 100px;
+  
+}
+

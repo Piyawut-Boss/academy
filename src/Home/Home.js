@@ -8,6 +8,7 @@ const { Title, Text } = Typography;
 
 const Home = () => {
   const [banners, setBanners] = useState([]);
+  const [tutors, setTutors] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:1337/api/banners?populate=*")
@@ -29,6 +30,27 @@ const Home = () => {
         }
       })
       .catch((error) => console.error("Error fetching banners:", error));
+
+      fetch("http://localhost:1337/api/tutors?populate=image")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.data) {
+          const tutorData = data.data.map((item) => {
+            const imageUrl = item.image?.url
+              ? "http://localhost:1337" + item.image.url
+              : "https://via.placeholder.com/150";
+            return {
+              id: item.id,
+              name: item.Name, 
+              school: item.Discription, 
+              imageUrl: imageUrl,
+            };
+          });
+          setTutors(tutorData);
+        }
+      })
+      .catch((error) => console.error("Error fetching tutors:", error));
+    
   }, []);
 
   return (
@@ -48,21 +70,33 @@ const Home = () => {
 
         <div className="section">
           <Title level={1}>
-            <TrophyOutlined />
-            <span style={{ color: 'black' }}>Team </span>
-            <span style={{ color: '#473E91' }}>Tutor </span>
-            <span style={{ color: '#FFC107  ' }}>HAPPYLearningAcademy</span>
+            <span className="team-container">
+              <span className="team-text">Team</span>
+              <span className="tutor-text">Tutor</span>
+              <span className="academy-text">HAPPYLearningAcademy</span>
+            </span>
           </Title>
+          <p className="team-description">สอนสนุก อธิบายละเอียดยิบ เทคนิคจัดเต็ม !!</p>
+
           <Row gutter={[16, 16]} justify="center">
-            {["พี่ A", "พี่ B", "พี่ C"].map((name, index) => (
-              <Col key={index} xs={24} sm={8}>
-                <Badge.Ribbon>
-                  <Card hoverable className="leaderboard-card" title={name}>
-                    <Text>โรงเรียน XYZ</Text>
-                  </Card>
-                </Badge.Ribbon>
-              </Col>
-            ))}
+            {tutors.length > 0 ? (
+              tutors.map((tutor) => (
+                <Col key={tutor.id} xs={24} sm={8}>
+                  <Badge.Ribbon>
+                    <Card
+                      hoverable
+                      className="leaderboard-card"
+                      title={tutor.name}
+                      cover={<img alt={tutor.name} src={tutor.imageUrl} />} // เพิ่มรูปภาพ
+                    >
+                      <Text>{tutor.school}</Text>
+                    </Card>
+                  </Badge.Ribbon>
+                </Col>
+              ))
+            ) : (
+              <Text>ไม่มีข้อมูลของติวเตอร์</Text>
+            )}
           </Row>
         </div>
 
