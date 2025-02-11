@@ -12,7 +12,7 @@ import Aboutus from '../Aboutus/Aboutus';
 import Promotion from '../Promotion';
 import Shopping from '../Shopping/Shopping'; 
 import Payment from '../Payment/Payment';
-import HeaderPromote from '../Header/HeaderPromote';
+import Admin from '../Admin/Admin'; // นำเข้าไฟล์ Admin.js
 import './App.css';
 
 function Layout() {
@@ -21,12 +21,11 @@ function Layout() {
 
   return (
     <>
-      {!isLoginPage && <HeaderPromote />}
-      {!isLoginPage && <Header />}
+      {!isLoginPage && <Header />}  {/* แสดง Header ทั่วไป */}
     </>
   );
 }
-//test
+
 function App() {
   return (
     <Router>
@@ -44,6 +43,7 @@ function App() {
               <Route path="/promotion" element={<Promotion />} />
               <Route path="/shopping" element={<Shopping />} />  {/* เพิ่มเส้นทาง Shopping */}
               <Route path="/payment" element={<Payment />} />  {/* เพิ่มเส้นทาง Payment */}
+              <Route path="/admin" element={<Admin />} />  {/* เพิ่มเส้นทาง Admin */}
             </Routes>
           </div>
           <Footer />
