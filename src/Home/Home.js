@@ -17,7 +17,6 @@ const Home = () => {
         if (data.data) {
           const bannerImages = data.data.map((item) => {
             const banner = item.Banner;
-            const baseUrl = "http://localhost:1337";
             let imageUrl = banner.url ? "http://localhost:1337" + banner.url : "https://via.placeholder.com/1200x250";
 
 
@@ -100,28 +99,22 @@ const Home = () => {
           </Title>
           <p className="team-description">สอนสนุก อธิบายละเอียดยิบ เทคนิคจัดเต็ม !!</p>
 
-          <Row gutter={[16, 16]} justify="center">
+          <Carousel autoplay slidesToShow={4} dots={false}>
             {tutors.length > 0 ? (
-              tutors.map((tutor) => (
-                <Col key={tutor.id} xs={24} sm={8}>
-                  <Card hoverable className="custom-card"
-                   style={{ backgroundColor: "#000000 !important", boxShadow: "none", border: "none" }}>
-                    <img
-                  
-                      src={tutor.imageUrl}
-                      className="card-image"
-                      alt={`รูปติวเตอร์ ${tutor.name}`}
-                    />
-                    <div className="card-content">
-                      
-                    </div>
-                  </Card>
-                </Col>
+              tutors.map((tutor, index) => (
+                <div key={tutor.id} className="tutor-carousel-item">
+                  <img
+                    src={tutor.imageUrl}
+                    alt={`รูปติวเตอร์ ${tutor.name}`}
+                    className="tutor-image"
+                  />
+                 
+                </div>
               ))
             ) : (
-              <Text>ไม่มีข้อมูลของติวเตอร์</Text>
+              <div><Text>ไม่มีข้อมูลของติวเตอร์</Text></div>
             )}
-          </Row>
+          </Carousel>
 
 
         </div>
