@@ -104,10 +104,16 @@ const Home = () => {
             {tutors.length > 0 ? (
               tutors.map((tutor) => (
                 <Col key={tutor.id} xs={24} sm={8}>
-                  <Card hoverable className="custom-card" cover={<img alt={tutor.Name} src={tutor.imageUrl} className="card-image" />}>
+                  <Card hoverable className="custom-card"
+                   style={{ backgroundColor: "#000000 !important", boxShadow: "none", border: "none" }}>
+                    <img
+                  
+                      src={tutor.imageUrl}
+                      className="card-image"
+                      alt={`รูปติวเตอร์ ${tutor.name}`}
+                    />
                     <div className="card-content">
-                      <Title level={4}>{tutor.name}</Title>
-                      <p>วิชาที่สอน: {tutor.categories}</p>
+                      
                     </div>
                   </Card>
                 </Col>
@@ -116,6 +122,8 @@ const Home = () => {
               <Text>ไม่มีข้อมูลของติวเตอร์</Text>
             )}
           </Row>
+
+
         </div>
 
         <div className="section">
