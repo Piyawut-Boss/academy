@@ -20,6 +20,12 @@
       "relation": "manyToMany",
       "target": "api::course.course",
       "mappedBy": "categories"
+    },
+    "tutor": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tutor.tutor",
+      "inversedBy": "categories"
     }
   }
 }
