@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './User.css';  // นำเข้าไฟล์ CSS
+import { Link } from 'react-router-dom';  // นำเข้า Link จาก react-router-dom
+import { Button } from 'antd';  // นำเข้า Button จาก antd
 
 function User() {
   const [user, setUser] = useState(null);
@@ -49,6 +51,10 @@ function User() {
         <h3 className="username">Username: {user.username}</h3>
         <p className="email">Email: {user.email}</p>
       </div>
+
+      <Link to="/study">
+        <Button type="primary">Go to Study Page</Button>
+      </Link>
     </div>
   );
 }
