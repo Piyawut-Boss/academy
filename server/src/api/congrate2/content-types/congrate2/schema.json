@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "congracts",
+  "collectionName": "congrate2s",
   "info": {
-    "singularName": "congract",
-    "pluralName": "congracts",
-    "displayName": "Congrate",
+    "singularName": "congrate2",
+    "pluralName": "congrate2s",
+    "displayName": "Congrate2",
     "description": ""
   },
   "options": {
