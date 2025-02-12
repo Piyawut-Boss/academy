@@ -13,16 +13,29 @@ body {
 }
 
 .intro-section {
-  padding: 40px;.home-layout {
+  padding: 40px;
+
+  .home-layout {
     background-color: #f5f7fa;
   }
-  
+
   .banner-carousel img {
     width: 100%;
     height: 250px;
     object-fit: cover;
   }
-  
+
+  .congract-carousel-item {
+    width: 100%;
+    height: 100%;
+  }
+
+  .congract-carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   .section {
     width: 90%;
     max-width: 1200px;
@@ -30,36 +43,36 @@ body {
     padding: 20px;
     margin: 20px auto;
     border-radius: 8px;
-    box-shadow: none; /* Ensure box-shadow is removed */
+    box-shadow: none;
     text-align: center;
   }
-  
+
   .highlight-section {
     display: flex;
     justify-content: center;
     margin: 30px 0;
   }
-  
+
   .highlight-card {
     background-color: #fffae6;
     text-align: center;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: none; /* Ensure box-shadow is removed */
+    box-shadow: none;
   }
-  
+
   .winner-card {
     text-align: center;
   }
-  
+
   .carousel-dots {
     bottom: -10px !important;
   }
-  
+
   .special-features .ant-card {
     text-align: center;
   }
-  
+
   text-align: center;
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -78,7 +91,7 @@ body {
 .feature {
   background-color: #fff;
   padding: 20px;
-  box-shadow: none; /* Ensure box-shadow is removed */
+  box-shadow: none;
   border-radius: 8px;
   flex: 1;
   text-align: center;
@@ -104,27 +117,76 @@ body {
 .team-text {
   display: inline;
   color: black;
-  margin-right: 10px; 
+  margin-right: 10px;
 }
 
 .tutor-text {
   display: inline;
   color: #473E91;
-  margin-right: 10px; 
+  margin-right: 10px;
 }
-
 .academy-text {
   display: inline;
-  color: #FFC107 ;
+  color: #FFC900;
+  margin-right: 10px;
 }
+
+.std-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 200px;
+}
+
+.std2-carousel-item {
+  display: flex;
+  justify-content: center;  /* จัดกลางในแนวนอน */
+  align-items: center;      /* จัดกลางในแนวตั้ง */
+  position: relative;
+  min-height: 300px;  /* ความสูงเต็มพื้นที่ */
+}
+
+.std2-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* ใช้จัดตำแหน่งทั้งแนวนอนและแนวตั้ง */
+  height: 100%;             /* ทำให้เต็มพื้นที่ */
+}
+
+.std2-image {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-left: 35px;
+  margin-top: 50px;
+}
+
+
+.congrate-text {
+  display: block;
+  color: black;
+  margin-bottom: 5px;
+}
+
+.std-text {
+  display: inline;
+  color: #473E91;
+  margin-right: 10px;
+  margin-bottom: 50px;
+}
+
+
 
 .team-description {
   font-size: 20px;
-  color: black; 
-  margin-top: 5px; 
-  text-align: center; 
+  color: black;
+  margin-top: 5px;
+  text-align: center;
   margin-bottom: 100px;
-  
+
 }
 
 .tutor-carousel-item {
@@ -151,4 +213,3 @@ body {
   padding: 5px;
   border-radius: 4px;
 }
-

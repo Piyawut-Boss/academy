@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Row, Col, Card, Carousel, Badge, Typography } from "antd";
-import { TrophyOutlined, FileTextOutlined, GiftOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import { Layout, Row, Col, Card, Carousel, Typography } from "antd";
+import { FileTextOutlined, GiftOutlined, VideoCameraOutlined } from "@ant-design/icons";
 import './Home.css';
 
 const { Content } = Layout;
@@ -9,6 +9,10 @@ const { Title, Text } = Typography;
 const Home = () => {
   const [banners, setBanners] = useState([]);
   const [tutors, setTutors] = useState([]);
+  const [congracts, setCongracts] = useState([]);
+  const [congrate2s, setCongrate2s] = useState([]);
+
+
 
   useEffect(() => {
     fetch("http://localhost:1337/api/banners?populate=*")
@@ -41,7 +45,7 @@ const Home = () => {
               : "https://via.placeholder.com/150";
             return {
               id: item.id,
-              name: item.Name,  // ตรวจสอบให้แน่ใจว่ามีการดึงชื่อจาก API 
+              name: item.Name,
               imageUrl: imageUrl,
             };
           });
@@ -52,7 +56,7 @@ const Home = () => {
       })
       .catch((error) => console.error("Error fetching tutors image:", error));
 
-    // Fetch categories data
+
     fetch("http://localhost:1337/api/tutors?populate=categories")
       .then((response) => response.json())
       .then((data) => {
@@ -72,12 +76,45 @@ const Home = () => {
       })
       .catch((error) => console.error("Error fetching tutors categories:", error));
 
+    fetch("http://localhost:1337/api/congracts?populate=*")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.data) {
+          const congractImages = data.data.map((item) => {
+            const imageUrl = item.image?.url
+              ? "http://localhost:1337" + item.image.url
+              : "https://via.placeholder.com/150";
+            return {
+              id: item.id,
+              name: item.name,
+              imageUrl: imageUrl,
+            };
+          });
+          setCongracts(congractImages);
+        }
+      })
+      .catch((error) => console.error("Error fetching congracts images:", error));
+
+    fetch("http://localhost:1337/api/congrate2s?populate=*")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.data) {
+          const congrate2Data = data.data.map((item) => ({
+            id: item.id,
+            name: item.name,
+            imageUrl: item.image?.url ? "http://localhost:1337" + item.image.url : "https://via.placeholder.com/150",
+          }));
+          setCongrate2s(congrate2Data);
+        }
+      })
+      .catch((error) => console.error("Error fetching congrate2s:", error));
+
   }, []);
 
   return (
     <Layout className="home-layout">
       <Content>
-        <Carousel autoplay className="banner-carousel background-image">
+        <Carousel autoplay className="banner-carousel">
           {banners.length > 0 ? (
             banners.map((banner) => (
               <div key={banner.id}>
@@ -101,49 +138,65 @@ const Home = () => {
 
           <Carousel autoplay slidesToShow={4} dots={false}>
             {tutors.length > 0 ? (
-              tutors.map((tutor, index) => (
+              tutors.map((tutor,) => (
                 <div key={tutor.id} className="tutor-carousel-item">
                   <img
                     src={tutor.imageUrl}
                     alt={`รูปติวเตอร์ ${tutor.name}`}
                     className="tutor-image"
                   />
-                 
+
                 </div>
               ))
             ) : (
               <div><Text>ไม่มีข้อมูลของติวเตอร์</Text></div>
             )}
           </Carousel>
-
-
         </div>
 
         <div className="section">
-          <Title level={2}><TrophyOutlined /> นักเรียนที่ได้คะแนนสูงสุด</Title>
-          <Row gutter={[16, 16]} justify="center">
-            {["น้อง A", "น้อง B", "น้อง C"].map((name, index) => (
-              <Col key={index} xs={24} sm={8}>
-                <Badge.Ribbon text="TPAT 3 98/100" color="gold">
-                  <Card hoverable className="leaderboard-card" title={name}>
-                    <Text>โรงเรียน XYZ</Text>
-                  </Card>
-                </Badge.Ribbon>
-              </Col>
-            ))}
-          </Row>
+          <Title level={1}>
+            <span className="std-container">
+              <span className="congrate-text">ขอแสดงความยินดี</span>
+              <span className="std-text">กับเหล่าลูกศิษย์ ของพี่ติวเตอร์</span>
+            </span>
+          </Title>
+
+          <Carousel autoplay slidesToShow={1} >
+            {congracts.length > 0 ? (
+              congracts.map((congract) => (
+                <div key={congract.id} className="congract-carousel-item">
+                  <img
+                    src={congract.imageUrl}
+                    alt={`รูปแสดงความยินดี ${congract.name}`}
+                    className="congract-image"
+                  />
+                </div>
+              ))
+            ) : (
+              <div><Text>ไม่มีข้อมูลของลูกศิษย์</Text></div>
+            )}
+          </Carousel>
         </div>
 
-        <div className="highlight-section background-image">
-          <Card className="highlight-card" bordered={false}>
-            <Title level={3} style={{ color: "#ff9800" }}>ขอแสดงความยินดี! 🎉</Title>
-            <Badge.Ribbon text="100/100" color="red">
-              <Card hoverable className="winner-card" title="น้องบอส">
-                <Text strong>โรงเรียน มอ.วิทยานุสรณ์</Text>
-              </Card>
-            </Badge.Ribbon>
-          </Card>
+        <div className="section">
+          <Carousel autoplay slidesToShow={4} dots={false}>
+            {congrate2s.length > 0 ? (
+              congrate2s.map((congrate) => (
+                <div key={congrate.id} className="std2-carousel-item">
+                  <span className="std2-container"></span>
+                    <img src={congrate.imageUrl} 
+                    alt={`แสดงความยินดี ${congrate.name}`} 
+                    className="std2-image" />
+
+                </div>
+              ))
+            ) : (
+              <div><Text>ไม่มีข้อมูลของนักเรียน</Text></div>
+            )}
+          </Carousel>
         </div>
+
 
         <div className="section">
           <Title level={2}>คอร์สเรียนแนะนำ</Title>
