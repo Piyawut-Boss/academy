@@ -12,7 +12,8 @@ import Aboutus from '../Aboutus/Aboutus';
 import Promotion from '../Promotion';
 import Shopping from '../Shopping/Shopping'; 
 import Payment from '../Payment/Payment';
-import Admin from '../Admin/Admin'; // นำเข้าไฟล์ Admin.js
+import Admin from '../Admin/Admin';
+import Study from '../Study/Study';  // ✅ นำเข้า Study.js
 import './App.css';
 
 function Layout() {
@@ -21,7 +22,7 @@ function Layout() {
 
   return (
     <>
-      {!isLoginPage && <Header />}  {/* แสดง Header ทั่วไป */}
+      {!isLoginPage && <Header />}
     </>
   );
 }
@@ -41,9 +42,10 @@ function App() {
               <Route path="/howto" element={<Howto />} />
               <Route path="/aboutus" element={<Aboutus />} />
               <Route path="/promotion" element={<Promotion />} />
-              <Route path="/shopping" element={<Shopping />} />  {/* เพิ่มเส้นทาง Shopping */}
-              <Route path="/payment" element={<Payment />} />  {/* เพิ่มเส้นทาง Payment */}
-              <Route path="/admin" element={<Admin />} />  {/* เพิ่มเส้นทาง Admin */}
+              <Route path="/shopping" element={<Shopping />} />
+              <Route path="/payment" element={<Payment />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/study" element={<Study />} />  {/* ✅ เพิ่มเส้นทาง Study */}
             </Routes>
           </div>
           <Footer />

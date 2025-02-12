@@ -16,20 +16,46 @@ const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
   const navigate = useNavigate();
 
+  // ฟังก์ชันสำหรับ Login
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
+
     try {
+      // เรียก API Login
       const response = await axios.post('http://localhost:1337/api/auth/local', {
         identifier: username,
         password: password,
       });
-      setIsLoading(false);
-      localStorage.setItem('jwt', response.data.jwt);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+
+      const { jwt, user } = response.data;
+      console.log('Login Response:', response.data); // ✅ ตรวจสอบ response
+
+      // เรียก API users/me เพื่อตรวจสอบ Role ของผู้ใช้
+      const meResponse = await axios.get('http://localhost:1337/api/users/me', {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+
+      console.log('User Data:', meResponse.data); // ✅ ตรวจสอบข้อมูล
+
+      const role = meResponse.data.role?.name || 'User'; // ดึง Role ให้ถูกต้อง
+
+      // บันทึกข้อมูลลงใน Local Storage
+      localStorage.setItem('jwt', jwt);
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('role', role);
+
       notification.success({ message: 'Login Successful!' });
-      navigate('/course');
+
+      // นำทางไปยังหน้า admin ถ้า role เป็น Admin
+      if (role === 'Admin') {
+        navigate('/admin');
+      } else {
+        navigate('/course');
+      }
     } catch (error) {
       setIsLoading(false);
       setError(error.response?.data?.message || 'Invalid username or password');
@@ -37,24 +63,28 @@ const Login = () => {
     }
   };
 
+  // ฟังก์ชันสำหรับ Register
   const handleRegister = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
+
     if (password !== confirmPassword) {
       setIsLoading(false);
       setError('Passwords do not match!');
       return;
     }
+
     try {
       await axios.post('http://localhost:1337/api/auth/local/register', {
         username,
         email,
         password,
       });
+
       setIsLoading(false);
       notification.success({ message: 'Registration Successful!' });
-      setIsRegister(false);
+      setIsRegister(false); // เปลี่ยนกลับไปหน้า Login
     } catch (error) {
       setIsLoading(false);
       setError(error.response?.data?.message || 'Registration failed');
@@ -68,10 +98,10 @@ const Login = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      {/* ปุ่มย้อนกลับด้านนอก Card */}
+      {/* ปุ่มย้อนกลับ */}
       <Button
         className="back-button absolute top-4 left-4"
-        onClick={() => navigate(-1)} // ทำการย้อนกลับไปหน้าก่อน
+        onClick={() => navigate(-1)}
         style={{ marginBottom: '20px' }}
       >
         Back
