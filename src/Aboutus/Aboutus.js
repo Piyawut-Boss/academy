@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Typography } from "antd";
-
+import logo from './p1.png';
 
 const { Text } = Typography;
 
-// InfoCard คอมโพเนนต์
 const InfoCard = ({ title, desc }) => (
   <div
     style={{
@@ -40,7 +39,6 @@ const InfoCard = ({ title, desc }) => (
   </div>
 );
 
-// InfoSection คอมโพเนนต์
 const InfoSection = () => {
   const infoItems = [
     { title: "เป้าหมายของเรา", desc: "เรามุ่งมั่นพัฒนาการเรียนรู้ที่ทำให้ผู้เรียนมีความสุขและได้รับประสบการณ์ที่ดีที่สุด" },
@@ -58,7 +56,6 @@ const InfoSection = () => {
   );
 };
 
-// คอมโพเนนต์หลัก Aboutus
 const Aboutus = () => {
   const [tutors, setTutors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -94,9 +91,18 @@ const Aboutus = () => {
 
       <div style={{ textAlign: "center", marginBottom: "50px" }}>
         <h2 style={{ color: "#FFC900", fontSize: "2rem", fontWeight: "bold" }}>HAPPY LEARNING ACADEMY</h2>
-        <p style={{ fontSize: "1.2rem", maxWidth: "2000px", margin: "0 auto", lineHeight: "1.6", color: "#666" ,fontSize: "1.5rem"}}>
+        <p style={{ fontSize: "1.2rem", maxWidth: "2000px", margin: "0 auto", lineHeight: "1.6", color: "#666" ,fontSize: "1.5rem" }}>
           สถาบันของเราให้ความสำคัญกับการเรียนรู้ที่มีความสุขผ่านกระบวนการที่สนุกสนาน
         </p>
+      </div>
+
+      <div style={{ textAlign: "center", marginBottom: "50px" }}>
+      <img
+  src={logo}
+  alt="HAPPY LEARNING ACADEMY Logo"
+  style={{width: "1000px", height: "auto",  margin: "0 auto",  display: "block",  marginBottom: "60px",marginTop: "90px"}}
+/>
+
       </div>
 
       <InfoSection />
@@ -144,17 +150,17 @@ const Aboutus = () => {
       </div>
 
       <div style={{ textAlign: "center", marginBottom: "50px" }}>
-        <h3 style={{ marginTop: "150px", marginBottom: "30px", fontSize: "1.5rem" }}>ความคิดเห็นจากนักเรียน</h3>
-        <p style={{ fontSize: "1.2rem", color: "#666" }}>
+        <h3 style={{ marginTop: "150px", marginBottom: "30px", fontSize: "1.7rem" }}>ความคิดเห็นจากนักเรียน</h3>
+        <p style={{ fontSize: "1.3rem", color: "#666" }}>
           "สถาบันนี้ช่วยให้ลูกของเราเรียนรู้ได้อย่างสนุกและมีประสิทธิภาพมากขึ้น!"
         </p>
-        <p style={{ fontSize: "1.2rem", color: "#666" }}>
+        <p style={{ fontSize: "1.3rem", color: "#666" }}>
           "ติวเตอร์เป็นมืออาชีพและมีทักษะในการสอนที่เยี่ยม"
         </p>
       </div>
 
       <div style={{ textAlign: "center" }}>
-        <h4 style={{ marginTop: "100px", marginBottom: "30px", fontSize: "1.5rem" }}>ช่องทางการติดต่อ</h4>
+        <h4 style={{ marginTop: "100px", marginBottom: "30px", fontSize: "1.7rem" }}>ช่องทางการติดต่อ</h4>
         <div style={{ margin: "20px 0" }}>
           {["Facebook", "LINE", "Instagram", "YouTube"].map((platform) => (
             <a
@@ -185,6 +191,5 @@ const Aboutus = () => {
     </div>
   );
 };
-
 
 export default Aboutus;
