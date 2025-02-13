@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Typography } from "antd";
 
+
 const { Text } = Typography;
 
 // InfoCard คอมโพเนนต์
@@ -86,14 +87,14 @@ const Aboutus = () => {
   }, []);
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", color: "#473E91", backgroundColor: "#fff", padding: "40px 20px", maxWidth: "1200px", margin: "0 auto" }}>
+    <div style={{ fontFamily: "Arial, sans-serif", color: "#473E91", backgroundColor: "transparent", padding: "40px 20px", maxWidth: "1200px", margin: "0 auto" }}>
       <div style={{ textAlign: "center", fontSize: "2.5rem", fontWeight: "bold", marginBottom: "30px", color: "#473E91" }}>
         <h1>เกี่ยวกับเรา</h1>
       </div>
 
       <div style={{ textAlign: "center", marginBottom: "50px" }}>
         <h2 style={{ color: "#FFC900", fontSize: "2rem", fontWeight: "bold" }}>HAPPY LEARNING ACADEMY</h2>
-        <p style={{ fontSize: "1.2rem", maxWidth: "700px", margin: "0 auto", lineHeight: "1.6", color: "#666" }}>
+        <p style={{ fontSize: "1.2rem", maxWidth: "2000px", margin: "0 auto", lineHeight: "1.6", color: "#666" ,fontSize: "1.5rem"}}>
           สถาบันของเราให้ความสำคัญกับการเรียนรู้ที่มีความสุขผ่านกระบวนการที่สนุกสนาน
         </p>
       </div>
@@ -101,7 +102,7 @@ const Aboutus = () => {
       <InfoSection />
 
       <div style={{ textAlign: "center", marginBottom: "50px" }}>
-      <h2 style={{ marginTop: "50px", marginBottom: "90px" , fontSize: "2rem" }}>Team Tutor</h2>
+        <h2 style={{ marginTop: "100px", marginBottom: "100px", fontSize: "2rem" }}>Team Tutor</h2>
         <div style={{ display: "flex", justifyContent: "center", gap: "25px", flexWrap: "wrap" }}>
           {loading ? (
             <Text>กำลังโหลดข้อมูลติวเตอร์...</Text>
@@ -129,7 +130,7 @@ const Aboutus = () => {
       </div>
 
       <div style={{ textAlign: "center", marginBottom: "50px" }}>
-      <h3 style={{ marginTop: "50px", marginBottom: "90px", fontSize: "2rem" }}>แผนที่ของเรา</h3>
+        <h3 style={{ marginTop: "50px", marginBottom: "90px", fontSize: "2rem" }}>แผนที่ของเรา</h3>
 
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.618392506893!2d100.492147!3d7.006658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x304da3c462d4b6df%3A0x8c34b7c5d1a9eb0b!2sPrince%20of%20Songkla%20University%20Hat%20Yai%20Campus!5e0!3m2!1sen!2sth!4v1707820200000!5m2!1sen!2sth"
@@ -143,7 +144,7 @@ const Aboutus = () => {
       </div>
 
       <div style={{ textAlign: "center", marginBottom: "50px" }}>
-        <h3 style={{ marginTop: "50px", marginBottom: "50px", fontSize: "1.5rem" }}>ความคิดเห็นจากนักเรียน</h3>
+        <h3 style={{ marginTop: "150px", marginBottom: "30px", fontSize: "1.5rem" }}>ความคิดเห็นจากนักเรียน</h3>
         <p style={{ fontSize: "1.2rem", color: "#666" }}>
           "สถาบันนี้ช่วยให้ลูกของเราเรียนรู้ได้อย่างสนุกและมีประสิทธิภาพมากขึ้น!"
         </p>
@@ -153,36 +154,37 @@ const Aboutus = () => {
       </div>
 
       <div style={{ textAlign: "center" }}>
-  <h4 style={{ marginTop: "50px", marginBottom: "50px", fontSize: "1.5rem" }}>ช่องทางการติดต่อ</h4>
-  <div style={{ margin: "20px 0" }}>
-    {["Facebook", "LINE", "Instagram", "YouTube"].map((platform) => (
-      <a
-        key={platform}
-        href={
-          platform === "LINE"
-            ? "https://www.line.me/th/" 
-            : `https://${platform.toLowerCase()}.com`
-        }
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          margin: "0 20px",
-          color: "#473E91",
-          fontSize: "1.4rem",
-          textDecoration: "none",
-          fontWeight: "bold",
-          transition: "color 0.3s ease",
-        }}
-        onMouseEnter={(e) => (e.target.style.color = "#FFC900")}
-        onMouseLeave={(e) => (e.target.style.color = "#473E91")}
-      >
-        {platform}
-      </a>
-    ))}
-  </div>
-</div>
+        <h4 style={{ marginTop: "100px", marginBottom: "30px", fontSize: "1.5rem" }}>ช่องทางการติดต่อ</h4>
+        <div style={{ margin: "20px 0" }}>
+          {["Facebook", "LINE", "Instagram", "YouTube"].map((platform) => (
+            <a
+              key={platform}
+              href={
+                platform === "LINE"
+                  ? "https://www.line.me/th/" 
+                  : `https://${platform.toLowerCase()}.com`
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                margin: "0 20px",
+                color: "#473E91",
+                fontSize: "1.4rem",
+                textDecoration: "none",
+                fontWeight: "bold",
+                transition: "color 0.3s ease",
+              }}
+              onMouseEnter={(e) => (e.target.style.color = "#FFC900")}
+              onMouseLeave={(e) => (e.target.style.color = "#473E91")}
+            >
+              {platform}
+            </a>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
+
 
 export default Aboutus;
