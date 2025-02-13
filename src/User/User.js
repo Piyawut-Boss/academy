@@ -53,7 +53,7 @@ function User() {
       </div>
 
       <Link to="/study">
-        <Button type="primary">Go to Study Page</Button>
+        <Button type="primary" style={{ backgroundColor: '#473E91', borderColor: '#473E91' }}>Go to Study Page</Button>
       </Link>
     </div>
   );

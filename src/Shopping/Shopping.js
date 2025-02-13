@@ -42,13 +42,13 @@ function Shopping() {
             title: 'ราคา',
             dataIndex: 'Price',
             key: 'Price',
-            render: (text) => `${text.toLocaleString()} บาท`,
+            render: (text) => text ? `${text.toLocaleString()} บาท` : 'N/A',
         },
         {
             title: 'ราคาหลังลด',
             dataIndex: 'realprice',
             key: 'realprice',
-            render: (text) => `${text.toLocaleString()} บาท`,
+            render: (text) => text ? `${text.toLocaleString()} บาท` : 'N/A',
         },
         {
             title: '',

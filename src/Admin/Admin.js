@@ -1,38 +1,63 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Admin.css';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-function Admin() {
-  const navigate = useNavigate();
+function PaymentTable() {
+  const [payments, setPayments] = useState([]);
 
-  // ตรวจสอบสิทธิ์การเข้าถึง Admin
-  const role = localStorage.getItem('role');
   useEffect(() => {
-    if (role !== 'Admin') {
-      navigate('/'); // ถ้าไม่ใช่ admin ให้กลับไปหน้าหลัก
-    }
-  }, [role, navigate]);
-
-  // ฟังก์ชันสำหรับ Logout
-  const handleLogout = () => {
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('role');
-    navigate('/login');
-  };
+    axios.get('http://localhost:1337/api/payments', {
+      params: {
+        populate: {
+          course: { fields: ['name'] }, // ดึงเฉพาะชื่อคอร์ส
+          user: { fields: ['username'] }, // ดึงเฉพาะ username ของผู้ใช้
+          payment_proof: { fields: ['url'] } // ดึง URL ของไฟล์แนบ
+        }
+      }
+    })
+    .then(response => {
+      console.log('API Response:', response.data); // Debug ข้อมูล
+      setPayments(response.data.data);
+    })
+    .catch(error => {
+      console.error('Error fetching payments:', error);
+    });
+  }, []);
 
   return (
-    <div className="admin-container">
-      <h1>Hello, Admin!</h1>
-      <p>Welcome to the Admin Dashboard.</p>
-
-      {/* ที่นี่จะเป็นที่สำหรับจัดการข้อมูลผู้ใช้หรือการดำเนินการอื่น ๆ */}
-      <h2>User Management</h2>
-      {/* คุณสามารถเพิ่มฟังก์ชันจัดการผู้ใช้หรือการแสดงข้อมูลจาก API ในที่นี้ได้ */}
-
-      {/* ปุ่ม Logout */}
-      <button onClick={handleLogout}>Logout</button>
+    <div>
+      <h2>Payment Records</h2>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Payment Status</th>
+            <th>Course</th>
+            <th>User</th>
+            <th>Payment Proof</th>
+          </tr>
+        </thead>
+        <tbody>
+          {payments.map(payment => (
+            <tr key={payment.id}>
+              <td>{payment.attributes?.payment_status || 'N/A'}</td>
+              <td>{payment.attributes?.course?.data?.attributes?.name || 'N/A'}</td>
+              <td>{payment.attributes?.user?.data?.attributes?.username || 'N/A'}</td>
+              <td>
+                {payment.attributes?.payment_proof?.data ? (
+                  <a 
+                    href={`http://localhost:1337${payment.attributes.payment_proof.data.attributes.url}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    View Proof
+                  </a>
+                ) : 'No Proof'}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
 
-export default Admin;
+export default PaymentTable;

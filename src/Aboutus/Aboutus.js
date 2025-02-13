@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Typography } from "antd";
+import { Typography, Carousel } from "antd";
 import logo from './p1.png';
+import fbImage from '../images/facebook.png';
+import lineImage from '../images/line.png';
+import igImage from '../images/instagram.png';
+import ytImage from '../images/youtube.png';
 
 const { Text } = Typography;
 
@@ -12,15 +16,13 @@ const InfoCard = ({ title, desc }) => (
       borderRadius: "10px",
       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
       textAlign: "center",
-      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      transition: "box-shadow 0.3s ease",
     }}
     onMouseEnter={(e) => {
-      e.target.style.transform = "scale(1.05)";
-      e.target.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.2)";
+      e.currentTarget.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.2)";
     }}
     onMouseLeave={(e) => {
-      e.target.style.transform = "scale(1)";
-      e.target.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+      e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
     }}
   >
     <h3 style={{ fontSize: "1.5rem", color: "#473E91" }}>{title}</h3>
@@ -31,8 +33,8 @@ const InfoCard = ({ title, desc }) => (
         marginTop: "10px",
         transition: "color 0.3s ease",
       }}
-      onMouseEnter={(e) => (e.target.style.color = "#473E91")}
-      onMouseLeave={(e) => (e.target.style.color = "#666")}
+      onMouseEnter={(e) => (e.currentTarget.style.color = "#473E91")}
+      onMouseLeave={(e) => (e.currentTarget.style.color = "#666")}
     >
       {desc}
     </p>
@@ -161,32 +163,28 @@ const Aboutus = () => {
 
       <div style={{ textAlign: "center" }}>
         <h4 style={{ marginTop: "100px", marginBottom: "30px", fontSize: "1.7rem" }}>ช่องทางการติดต่อ</h4>
-        <div style={{ margin: "20px 0" }}>
-          {["Facebook", "LINE", "Instagram", "YouTube"].map((platform) => (
-            <a
-              key={platform}
-              href={
-                platform === "LINE"
-                  ? "https://www.line.me/th/" 
-                  : `https://${platform.toLowerCase()}.com`
-              }
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                margin: "0 20px",
-                color: "#473E91",
-                fontSize: "1.4rem",
-                textDecoration: "none",
-                fontWeight: "bold",
-                transition: "color 0.3s ease",
-              }}
-              onMouseEnter={(e) => (e.target.style.color = "#FFC900")}
-              onMouseLeave={(e) => (e.target.style.color = "#473E91")}
-            >
-              {platform}
+        <Carousel className="contact-carousel" slidesToShow={4} draggable={false} infinite={true} dots={false}>
+          <div className="carousel-item">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+              <img src={fbImage} alt="Facebook" className="contact-image" />
             </a>
-          ))}
-        </div>
+          </div>
+          <div className="carousel-item">
+            <a href="https://line.me" target="_blank" rel="noopener noreferrer">
+              <img src={lineImage} alt="LINE" className="contact-image" />
+            </a>
+          </div>
+          <div className="carousel-item">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+              <img src={igImage} alt="Instagram" className="contact-image" />
+            </a>
+          </div>
+          <div className="carousel-item">
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+              <img src={ytImage} alt="YouTube" className="contact-image" />
+            </a>
+          </div>
+        </Carousel>
       </div>
     </div>
   );
