@@ -19,6 +19,7 @@ body {
     border-radius: 12px;
 }
 
+
 .steps {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 คอลัมน์ ขนาดเท่ากัน */
