@@ -7,7 +7,7 @@ import Home from '../Home/Home';
 import Login from '../Login';
 import Course from '../Course/Course';
 import User from '../User/User';
-import Howto from '../Howto';
+import Howto from '../Howto/Howto';
 import Aboutus from '../Aboutus/Aboutus';
 import Promotion from '../Promotion';
 import Shopping from '../Shopping/Shopping'; 

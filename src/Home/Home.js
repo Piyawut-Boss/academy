@@ -146,13 +146,14 @@ const Home = () => {
 
           <Carousel autoplay slidesToShow={4} dots={false}>
             {tutors.length > 0 ? (
-              tutors.map((tutor) => (
+              tutors.map((tutor, index) => (
                 <div key={tutor.id} className="tutor-carousel-item">
                   <img
                     src={tutor.imageUrl}
                     alt={`รูปติวเตอร์ ${tutor.name}`}
                     className="tutor-image"
                   />
+
                 </div>
               ))
             ) : (
