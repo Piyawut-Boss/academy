@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {Carousel, Typography,} from "antd";
+import fbImage from '../images/facebook.png';
+import lineImage from '../images/line.png';
+import igImage from '../images/instagram.png';
+import ytImage from '../images/youtube.png';
 import "./Aboutus.css";
+
+const { Title, } = Typography;
 
 const Aboutus = () => {
   const [teachers, setTeachers] = useState([]);
@@ -56,15 +63,32 @@ const Aboutus = () => {
         </div>
       </div>
 
-      <div className="contact">
-        <h3>ช่องทางการติดต่อ</h3>
-        <div className="contact-links">
-          <a href="https://facebook.com">Facebook</a>
-          <a href="https://line.me">LINE</a>
-          <a href="https://instagram.com">Instagram</a>
-          <a href="https://youtube.com">YouTube</a>
+      <div className="contact-section">
+          <Title level={2} className="contact-title">ช่องทางการติดตาม</Title>
+          <Carousel className="contact-carousel" slidesToShow={4} draggable={false} infinite={true} dots={false}>
+            <div className="carousel-item">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                <img src={fbImage} alt="Facebook" className="contact-image" />
+              </a>
+            </div>
+            <div className="carousel-item">
+              <a href="https://line.me" target="_blank" rel="noopener noreferrer">
+                <img src={lineImage} alt="LINE" className="contact-image" />
+              </a>
+            </div>
+            <div className="carousel-item">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                <img src={igImage} alt="Instagram" className="contact-image" />
+              </a>
+            </div>
+            <div className="carousel-item">
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+                <img src={ytImage} alt="YouTube" className="contact-image" />
+              </a>
+            </div>
+          </Carousel>
         </div>
-      </div>
+
     </div>
   );
 };

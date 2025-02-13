@@ -114,6 +114,11 @@
     color: #FFC900;
   }
 
+  .contact-section {
+    text-align: center;
+    margin-left: -55px ;
+  }
+
   .ant-card {
     border-radius: 15px !important;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
