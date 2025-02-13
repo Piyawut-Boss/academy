@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Row, Col, Card, Carousel, Typography } from "antd";
+import { Layout, Row, Col, Card, Carousel, Typography, Button } from "antd";
 import { FileTextOutlined, GiftOutlined, VideoCameraOutlined } from "@ant-design/icons";
 import './Home.css';
 
@@ -11,10 +11,19 @@ const Home = () => {
   const [tutors, setTutors] = useState([]);
   const [congracts, setCongracts] = useState([]);
   const [congrate2s, setCongrate2s] = useState([]);
+  const [recommendedCourses, setRecommendedCourses] = useState([]); 
 
+
+  const addToCart = (course) => {
+    const storedCartCourses = localStorage.getItem('cartCourses');
+    const cartCourses = storedCartCourses ? JSON.parse(storedCartCourses) : [];
+    cartCourses.push(course);
+    localStorage.setItem('cartCourses', JSON.stringify(cartCourses));
+  };
 
 
   useEffect(() => {
+    // Banners
     fetch("http://localhost:1337/api/banners?populate=*")
       .then((response) => response.json())
       .then((data) => {
@@ -22,60 +31,30 @@ const Home = () => {
           const bannerImages = data.data.map((item) => {
             const banner = item.Banner;
             let imageUrl = banner.url ? "http://localhost:1337" + banner.url : "https://via.placeholder.com/1200x250";
-
-
-            return {
-              id: item.id,
-              imageUrl: imageUrl,
-            };
+            return { id: item.id, imageUrl: imageUrl };
           });
           setBanners(bannerImages);
         }
       })
       .catch((error) => console.error("Error fetching banners:", error));
 
+    // Tutors
     fetch("http://localhost:1337/api/tutors?populate=image")
       .then((response) => response.json())
       .then((data) => {
-        console.log("Tutor data:", data);
         if (data.data) {
           const tutorImageData = data.data.map((item) => {
             const imageUrl = item.image?.url
               ? "http://localhost:1337" + item.image.url
               : "https://via.placeholder.com/150";
-            return {
-              id: item.id,
-              name: item.Name,
-              imageUrl: imageUrl,
-            };
+            return { id: item.id, name: item.Name, imageUrl: imageUrl };
           });
-
-          console.log("Tutor Image Data:", tutorImageData);
           setTutors(tutorImageData);
         }
       })
       .catch((error) => console.error("Error fetching tutors image:", error));
 
-
-    fetch("http://localhost:1337/api/tutors?populate=categories")
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.data) {
-          const tutorCategoryData = data.data.map((item) => {
-            const categories = item.categories.map((category) => category.Category).join(", ");
-            return { id: item.id, categories: categories };
-          });
-
-          setTutors((prevTutors) =>
-            prevTutors.map((tutor) => ({
-              ...tutor,
-              categories: tutorCategoryData.find((item) => item.id === tutor.id)?.categories || tutor.categories,
-            }))
-          );
-        }
-      })
-      .catch((error) => console.error("Error fetching tutors categories:", error));
-
+    // Congracts
     fetch("http://localhost:1337/api/congracts?populate=*")
       .then((response) => response.json())
       .then((data) => {
@@ -84,17 +63,14 @@ const Home = () => {
             const imageUrl = item.image?.url
               ? "http://localhost:1337" + item.image.url
               : "https://via.placeholder.com/150";
-            return {
-              id: item.id,
-              name: item.name,
-              imageUrl: imageUrl,
-            };
+            return { id: item.id, name: item.name, imageUrl: imageUrl };
           });
           setCongracts(congractImages);
         }
       })
       .catch((error) => console.error("Error fetching congracts images:", error));
 
+    // Congrate2
     fetch("http://localhost:1337/api/congrate2s?populate=*")
       .then((res) => res.json())
       .then((data) => {
@@ -108,6 +84,31 @@ const Home = () => {
         }
       })
       .catch((error) => console.error("Error fetching congrate2s:", error));
+
+    // Recommended 
+    fetch("http://localhost:1337/api/courses?populate=*")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.data) {
+          const recommendedCourses = data.data.filter(course =>
+            course.categories?.some(category => category.Category === "Recommend")
+          ).map((item) => {
+            const imageUrl = item.Promotepic?.url
+              ? `http://localhost:1337${item.Promotepic.url}`
+              : "https://via.placeholder.com/150";  
+            return {
+              id: item.id,
+              title: item.Title,
+              description: item.Description,
+              price: item.Price,
+              realprice: item.realprice,
+              imageUrl: imageUrl,  
+            };
+          });
+          setRecommendedCourses(recommendedCourses); 
+        }
+      })
+      .catch((error) => console.error("Error fetching recommended courses:", error));
 
   }, []);
 
@@ -138,14 +139,13 @@ const Home = () => {
 
           <Carousel autoplay slidesToShow={4} dots={false}>
             {tutors.length > 0 ? (
-              tutors.map((tutor,) => (
+              tutors.map((tutor) => (
                 <div key={tutor.id} className="tutor-carousel-item">
                   <img
                     src={tutor.imageUrl}
                     alt={`รูปติวเตอร์ ${tutor.name}`}
                     className="tutor-image"
                   />
-
                 </div>
               ))
             ) : (
@@ -161,8 +161,7 @@ const Home = () => {
               <span className="std-text">กับเหล่าลูกศิษย์ ของพี่ติวเตอร์</span>
             </span>
           </Title>
-
-          <Carousel autoplay slidesToShow={1} >
+          <Carousel autoplay slidesToShow={1}>
             {congracts.length > 0 ? (
               congracts.map((congract) => (
                 <div key={congract.id} className="congract-carousel-item">
@@ -184,11 +183,11 @@ const Home = () => {
             {congrate2s.length > 0 ? (
               congrate2s.map((congrate) => (
                 <div key={congrate.id} className="std2-carousel-item">
-                  <span className="std2-container"></span>
-                    <img src={congrate.imageUrl} 
-                    alt={`แสดงความยินดี ${congrate.name}`} 
-                    className="std2-image" />
-
+                  <img
+                    src={congrate.imageUrl}
+                    alt={`แสดงความยินดี ${congrate.name}`}
+                    className="std2-image"
+                  />
                 </div>
               ))
             ) : (
@@ -197,14 +196,51 @@ const Home = () => {
           </Carousel>
         </div>
 
-
         <div className="section">
-          <Title level={2}>คอร์สเรียนแนะนำ</Title>
-          <Carousel autoplay dots={{ className: "carousel-dots" }}>
-            <div><Card hoverable title="A-Level Course"><Text>รายละเอียดคอร์ส A-Level</Text></Card></div>
-            <div><Card hoverable title="TPAT 3 Pro"><Text>ติวเข้ม TPAT 3</Text></Card></div>
-            <div><Card hoverable title="GAT Master"><Text>เทคนิคทำข้อสอบ GAT</Text></Card></div>
-          </Carousel>
+          <Title level={1}>
+            <span className="team-container">
+              <span className="Course-text">Course </span>
+              <span className="Recommend-text">Recommend</span>
+            </span>
+          </Title>
+          <p className="cc-description">สอบเข้ามหาลัยฯ ไปด้วยกัน !!</p>
+
+          <Row gutter={[16, 16]}>
+            {recommendedCourses.length > 0 ? (
+              recommendedCourses.slice(0, 4).map((course) => {
+                const { title, description, price, realprice, id, imageUrl } = course;
+                return (
+                  <Col xs={24} sm={12} md={8} lg={6} key={id}>
+                    <Card
+                      hoverable
+                      cover={imageUrl ? (
+                        <img alt={title} src={imageUrl} />
+                      ) : (
+                        <div className="no-image">
+                          <span>ไม่มีภาพ</span>
+                        </div>
+                      )}
+                    >
+                      <Card.Meta
+                        title={title ?? 'ชื่อคอร์สไม่ระบุ'}
+                        description={description ?? 'รายละเอียดคอร์สไม่ระบุ'}
+                      />
+                      <div className="price">
+                        <span className="price-original">{price ? price.toLocaleString() : 'ราคาปกติไม่ระบุ'} บาท</span>
+                        <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท</span>
+                      </div>
+                      <div className="buttons">
+                        <Button type="link" className="details-button">อ่านรายละเอียด</Button>
+                        <Button type="primary" className="enroll-button" onClick={() => addToCart(course)}>สมัครเรียน</Button>
+                      </div>
+                    </Card>
+                  </Col>
+                );
+              })
+            ) : (
+              <div><Text>ไม่พบข้อมูลคอร์สที่แนะนำ</Text></div>
+            )}
+          </Row>
         </div>
 
         <div className="section">

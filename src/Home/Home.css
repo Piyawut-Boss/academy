@@ -131,6 +131,28 @@ body {
   margin-right: 10px;
 }
 
+.Course-text {
+  display: inline;
+  color: #000000;
+  margin-right: 10px;
+
+}
+.Recommend-text {
+  display: inline;
+  color: #473E91;
+  margin-right: 10px;
+
+}
+
+.cc-description {
+  font-size: 20px;
+  color: #FFC900;
+  margin-top: 5px;
+  text-align: center;
+  margin-bottom: 50px;
+
+}
+
 .std-container {
   display: flex;
   flex-direction: column;
