@@ -1,0 +1,177 @@
+/* ตั้งค่าพื้นฐาน */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.howto-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 1000px;
+    margin: auto;
+    text-align: center;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 คอลัมน์ ขนาดเท่ากัน */
+    gap: 20px; /* ระยะห่างระหว่างบล็อก */
+    justify-items: stretch;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    text-align: center;
+    background-color: white;
+    position: relative;
+    border-radius: 12px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2),
+                0px 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 300px; /* ขนาดสูงสุดของแต่ละบล็อก */
+}
+
+.step:nth-child(4) {
+    grid-column: span 1;
+    width: 100%;  
+    max-width: 400px;
+    margin-left: 100px;  /* ขยับข้อ 4 ไปทางขวา */
+}
+
+.step:nth-child(5) {
+    grid-column: span 1;
+    width: 100%;  
+    max-width: 400px;
+    margin-left: 190px; /* ขยับข้อ 5 ไปทางขวาเพิ่มขึ้น */
+}
+.step:nth-child(5) .step-image {
+    width: 90%;  /* ขยายขนาดรูปภาพในขั้นตอนที่ 5 */
+    max-width: 500px; /* กำหนดขนาดสูงสุดให้ใหญ่ขึ้น */
+    height: auto;
+}
+
+/* ปรับขนาดรูปภาพในขั้นตอน */
+.step-image {
+    width: 70%;
+    max-width: 400px;
+    height: auto;
+    margin-top: 1rem;
+}
+
+/* วงกลมหมายเลขขั้นตอน */
+.step-number {
+    position: absolute;
+    left: -25px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background-color: #FFC900;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ข้อความในกล่องเหลือง */
+.step-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: #FFC900;
+    color: #333;
+    padding: 10px 20px;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+/* ลบเส้นขอบรอบกล่องสีขาว */
+.step {
+    border: none;
+}
+
+/* ปรับขนาดภาพใน highlight-box */
+.highlight-box {
+    text-align: center;
+}
+
+.tutor-image {
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+}
+
+/* ช่องทางการติดต่อ */
+.contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.contact-links a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 120px;
+    padding: 10px;
+    font-size: 0.9rem;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.2s ease-in-out;
+}
+
+.contact-links a:hover {
+    transform: scale(1.05);
+}
+
+.contact-links img {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 5px;
+}
+
+.red-text {
+    color: red;
+    font-weight: bold;
+}
+
+.blue-text {
+    color: blue;
+    font-weight: bold;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 85%;
+}
+
+.header-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1200px;
+}
