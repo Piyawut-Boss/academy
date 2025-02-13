@@ -3,33 +3,86 @@ import { Typography } from "antd";
 
 const { Text } = Typography;
 
+// InfoCard คอมโพเนนต์
+const InfoCard = ({ title, desc }) => (
+  <div
+    style={{
+      background: "#FFC900",
+      padding: "20px",
+      borderRadius: "10px",
+      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+      textAlign: "center",
+      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+    }}
+    onMouseEnter={(e) => {
+      e.target.style.transform = "scale(1.05)";
+      e.target.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.2)";
+    }}
+    onMouseLeave={(e) => {
+      e.target.style.transform = "scale(1)";
+      e.target.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+    }}
+  >
+    <h3 style={{ fontSize: "1.5rem", color: "#473E91" }}>{title}</h3>
+    <p
+      style={{
+        fontSize: "1rem",
+        color: "#666",
+        marginTop: "10px",
+        transition: "color 0.3s ease",
+      }}
+      onMouseEnter={(e) => (e.target.style.color = "#473E91")}
+      onMouseLeave={(e) => (e.target.style.color = "#666")}
+    >
+      {desc}
+    </p>
+  </div>
+);
+
+// InfoSection คอมโพเนนต์
+const InfoSection = () => {
+  const infoItems = [
+    { title: "เป้าหมายของเรา", desc: "เรามุ่งมั่นพัฒนาการเรียนรู้ที่ทำให้ผู้เรียนมีความสุขและได้รับประสบการณ์ที่ดีที่สุด" },
+    { title: "สิ่งที่เรานำเสนอ", desc: "เรานำเสนอวิธีการเรียนรู้ที่ทันสมัย สนุกสนาน และมีประสิทธิภาพ" },
+    { title: "การวางแผน", desc: "เรามีแผนการพัฒนาหลักสูตรและวิธีการเรียนการสอนให้ทันสมัยอยู่เสมอ" },
+    { title: "ความสำเร็จที่ผ่านมา", desc: "เราได้รับรางวัลและผลตอบรับที่ดีจากผู้เรียนและผู้ปกครอง" },
+    { title: "วิสัยทัศน์ในอนาคต", desc: "เราตั้งเป้าที่จะขยายการเรียนรู้ให้เข้าถึงผู้เรียนทั่วประเทศ" },
+    { title: "พันธกิจของเรา", desc: "เรามุ่งมั่นที่จะสร้างสรรค์สภาพแวดล้อมการเรียนรู้ที่มีคุณภาพ" }
+  ];
+
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px", padding: "20px" }}>
+      {infoItems.map((item, index) => <InfoCard key={index} title={item.title} desc={item.desc} />)}
+    </div>
+  );
+};
+
+// คอมโพเนนต์หลัก Aboutus
 const Aboutus = () => {
   const [tutors, setTutors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch("http://localhost:1337/api/tutors?populate=image")
       .then((response) => response.json())
       .then((data) => {
-        console.log("API Response:", data); // Debug ดูโครงสร้างข้อมูลที่ได้จาก API
-  
         if (data.data) {
-          const tutorImageData = data.data
-            .filter((item) => item.attributes) // ตรวจสอบว่ามี attributes จริง
-            .map((item) => {
-              const imageUrl = item.attributes.image?.data?.attributes?.url
-                ? "http://localhost:1337" + item.attributes.image.data.attributes.url
-                : "https://via.placeholder.com/150"; // ใช้ภาพ placeholder ถ้าไม่มีรูป
-              return { 
-                id: item.id, 
-                name: item.attributes.Name || "ไม่ระบุชื่อ", 
-                imageUrl 
-              };
-            });
-  
+          const tutorImageData = data.data.map((item) => {
+            const imageUrl = item.image?.url
+              ? "http://localhost:1337" + item.image.url
+              : "https://via.placeholder.com/150";
+            return { id: item.id, name: item.Name, imageUrl: imageUrl };
+          });
           setTutors(tutorImageData);
         }
+        setLoading(false);
       })
-      .catch((error) => console.error("Error fetching tutors image:", error));
+      .catch((error) => {
+        console.error("Error fetching tutors image:", error);
+        setError(error);
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -45,94 +98,44 @@ const Aboutus = () => {
         </p>
       </div>
 
-      <div
-  style={{
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-    gap: "20px",
-    padding: "20px",
-  }}
->
-  {[
-    {
-      title: "เป้าหมายของเรา",
-      desc: "เรามุ่งมั่นพัฒนาการเรียนรู้ที่ทำให้ผู้เรียนมีความสุขและได้รับประสบการณ์ที่ดีที่สุด",
-    },
-    {
-      title: "สิ่งที่เรานำเสนอ",
-      desc: "เรานำเสนอวิธีการเรียนรู้ที่ทันสมัย สนุกสนาน และมีประสิทธิภาพ",
-    },
-    {
-      title: "การวางแผน",
-      desc: "เรามีแผนการพัฒนาหลักสูตรและวิธีการเรียนการสอนให้ทันสมัยอยู่เสมอ",
-    },
-    {
-      title: "ความสำเร็จที่ผ่านมา",
-      desc: "เราได้รับรางวัลและผลตอบรับที่ดีจากผู้เรียนและผู้ปกครอง",
-    },
-    {
-      title: "วิสัยทัศน์ในอนาคต",
-      desc: "เราตั้งเป้าที่จะขยายการเรียนรู้ให้เข้าถึงผู้เรียนทั่วประเทศ",
-    },
-    {
-      title: "พันธกิจของเรา",
-      desc: "เรามุ่งมั่นที่จะสร้างสรรค์สภาพแวดล้อมการเรียนรู้ที่มีคุณภาพ",
-    },
-  ].map((item, index) => (
-    <div
-      key={index}
-      style={{
-        background: "#FFC900",
-        padding: "20px",
-        borderRadius: "10px",
-        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-        textAlign: "center",
-        transition: "transform 0.3s ease, box-shadow 0.3s ease",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "scale(1.05)";
-        e.currentTarget.style.boxShadow = "0 6px 10px rgba(0, 0, 0, 0.2)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "scale(1)";
-        e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
-      }}
-    >
-      <h3 style={{ fontSize: "1.5rem", color: "#473E91" }}>{item.title}</h3>
-      <p style={{ fontSize: "1rem", color: "#666", marginTop: "10px" }}>
-        {item.desc}
-      </p>
-    </div>
-  ))}
-</div>
-
+      <InfoSection />
 
       <div style={{ textAlign: "center", marginBottom: "50px" }}>
-        <h2>Team Tutor</h2>
+      <h2 style={{ marginTop: "50px", marginBottom: "90px" , fontSize: "2rem" }}>Team Tutor</h2>
         <div style={{ display: "flex", justifyContent: "center", gap: "25px", flexWrap: "wrap" }}>
-          {tutors.length > 0 ? (
+          {loading ? (
+            <Text>กำลังโหลดข้อมูลติวเตอร์...</Text>
+          ) : error ? (
+            <Text>เกิดข้อผิดพลาดในการโหลดข้อมูลติวเตอร์</Text>
+          ) : tutors.length > 0 ? (
             tutors.map((tutor) => (
-              <div key={tutor.id} style={{ padding: "20px", borderRadius: "15px", maxWidth: "200px", textAlign: "center", boxShadow: "0 6px 12px rgba(0, 0, 0, 0.15)" }}>
+              <div key={tutor.id} style={{ textAlign: "center", marginBottom: "20px" }}>
                 <img
                   src={tutor.imageUrl}
                   alt={`รูปติวเตอร์ ${tutor.name}`}
-                  style={{ width: "100%", height: "auto" }}
+                  style={{
+                    width: "250px",
+                    height: "auto",
+                    margin: "10px",
+                  }}
+                  aria-label={`ภาพของติวเตอร์ ${tutor.name}`}
                 />
               </div>
             ))
           ) : (
-            <div><Text>ไม่มีข้อมูลของติวเตอร์</Text></div>
+            <Text>ไม่มีข้อมูลของติวเตอร์</Text>
           )}
         </div>
       </div>
 
       <div style={{ textAlign: "center", marginBottom: "50px" }}>
-        <h3>แผนที่ของเรา</h3>
+      <h3 style={{ marginTop: "50px", marginBottom: "90px", fontSize: "2rem" }}>แผนที่ของเรา</h3>
+
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.618392506893!2d100.492147!3d7.006658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x304da3c462d4b6df%3A0x8c34b7c5d1a9eb0b!2sPrince%20of%20Songkla%20University%20Hat%20Yai%20Campus!5e0!3m2!1sen!2sth!4v1707820200000!5m2!1sen!2sth"
           width="600"
           height="450"
-          style={{ border: "0" }}
+          style={{ border: "0", maxWidth: "100%", height: "450px", width: "100%" }}
           allowFullScreen=""
           loading="lazy"
           title="Prince of Songkla University, Hat Yai Campus"
@@ -140,7 +143,7 @@ const Aboutus = () => {
       </div>
 
       <div style={{ textAlign: "center", marginBottom: "50px" }}>
-        <h3>ความคิดเห็นจากนักเรียน</h3>
+        <h3 style={{ marginTop: "50px", marginBottom: "50px", fontSize: "1.5rem" }}>ความคิดเห็นจากนักเรียน</h3>
         <p style={{ fontSize: "1.2rem", color: "#666" }}>
           "สถาบันนี้ช่วยให้ลูกของเราเรียนรู้ได้อย่างสนุกและมีประสิทธิภาพมากขึ้น!"
         </p>
@@ -150,27 +153,34 @@ const Aboutus = () => {
       </div>
 
       <div style={{ textAlign: "center" }}>
-  <h3>ช่องทางการติดต่อ</h3>
-  {["Facebook", "LINE", "Instagram", "YouTube"].map((platform) => (
-    <a
-      key={platform}
-      href={`https://${platform.toLowerCase()}.com`}
-      style={{
-        margin: "0 20px",
-        color: "#473E91",
-        fontSize: "1.4rem",
-        textDecoration: "none",
-        fontWeight: "bold",
-        transition: "color 0.3s ease",
-      }}
-      onMouseEnter={(e) => (e.target.style.color = "#FFC900")} 
-      onMouseLeave={(e) => (e.target.style.color = "#473E91")} 
-    >
-      {platform}
-    </a>
-  ))}
+  <h4 style={{ marginTop: "50px", marginBottom: "50px", fontSize: "1.5rem" }}>ช่องทางการติดต่อ</h4>
+  <div style={{ margin: "20px 0" }}>
+    {["Facebook", "LINE", "Instagram", "YouTube"].map((platform) => (
+      <a
+        key={platform}
+        href={
+          platform === "LINE"
+            ? "https://www.line.me/th/" 
+            : `https://${platform.toLowerCase()}.com`
+        }
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          margin: "0 20px",
+          color: "#473E91",
+          fontSize: "1.4rem",
+          textDecoration: "none",
+          fontWeight: "bold",
+          transition: "color 0.3s ease",
+        }}
+        onMouseEnter={(e) => (e.target.style.color = "#FFC900")}
+        onMouseLeave={(e) => (e.target.style.color = "#473E91")}
+      >
+        {platform}
+      </a>
+    ))}
+  </div>
 </div>
-
     </div>
   );
 };
