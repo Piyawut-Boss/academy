@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Layout, Row, Col, Card, Carousel, Typography, Button } from "antd";
-import { FileTextOutlined, GiftOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import myImage from '../images/in.png';
+import fbImage from '../images/facebook.png';
+import lineImage from '../images/line.png';
+import igImage from '../images/instagram.png';
+import ytImage from '../images/youtube.png';
+
 import './Home.css';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
+
+
 
 const Home = () => {
   const [banners, setBanners] = useState([]);
   const [tutors, setTutors] = useState([]);
   const [congracts, setCongracts] = useState([]);
   const [congrate2s, setCongrate2s] = useState([]);
-  const [recommendedCourses, setRecommendedCourses] = useState([]); 
+  const [recommendedCourses, setRecommendedCourses] = useState([]);
 
 
   const addToCart = (course) => {
@@ -95,17 +102,17 @@ const Home = () => {
           ).map((item) => {
             const imageUrl = item.Promotepic?.url
               ? `http://localhost:1337${item.Promotepic.url}`
-              : "https://via.placeholder.com/150";  
+              : "https://via.placeholder.com/150";
             return {
               id: item.id,
               title: item.Title,
               description: item.Description,
               price: item.Price,
               realprice: item.realprice,
-              imageUrl: imageUrl,  
+              imageUrl: imageUrl,
             };
           });
-          setRecommendedCourses(recommendedCourses); 
+          setRecommendedCourses(recommendedCourses);
         }
       })
       .catch((error) => console.error("Error fetching recommended courses:", error));
@@ -196,6 +203,12 @@ const Home = () => {
           </Carousel>
         </div>
 
+
+        <div className="image-container">
+          <img src={myImage} alt="" />
+        </div>
+
+
         <div className="section">
           <Title level={1}>
             <span className="team-container">
@@ -243,20 +256,35 @@ const Home = () => {
           </Row>
         </div>
 
-        <div className="section">
-          <Title level={2}>รวมสิทธิพิเศษ</Title>
-          <Row gutter={[16, 16]} justify="center">
-            <Col xs={24} sm={6}>
-              <Card hoverable title="แจกไฟล์ PDF" cover={<FileTextOutlined style={{ fontSize: 40 }} />} />
-            </Col>
-            <Col xs={24} sm={6}>
-              <Card hoverable title="เงินคืน 2 เท่า" cover={<GiftOutlined style={{ fontSize: 40 }} />} />
-            </Col>
-            <Col xs={24} sm={6}>
-              <Card hoverable title="ติวสดทุกสัปดาห์" cover={<VideoCameraOutlined style={{ fontSize: 40 }} />} />
-            </Col>
-          </Row>
+
+        <div className="contact-section">
+          <Title level={2} className="contact-title">ช่องทางการติดตาม</Title>
+          <Carousel className="contact-carousel" slidesToShow={4} draggable={false} infinite={true} dots={false}>
+            <div className="carousel-item">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                <img src={fbImage} alt="Facebook" className="contact-image" />
+              </a>
+            </div>
+            <div className="carousel-item">
+              <a href="https://line.me" target="_blank" rel="noopener noreferrer">
+                <img src={lineImage} alt="LINE" className="contact-image" />
+              </a>
+            </div>
+            <div className="carousel-item">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                <img src={igImage} alt="Instagram" className="contact-image" />
+              </a>
+            </div>
+            <div className="carousel-item">
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+                <img src={ytImage} alt="YouTube" className="contact-image" />
+              </a>
+            </div>
+          </Carousel>
         </div>
+
+
+
       </Content>
     </Layout>
   );
