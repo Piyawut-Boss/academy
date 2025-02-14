@@ -33,7 +33,7 @@ const Login = () => {
       console.log('Login Response:', response.data); // ✅ ตรวจสอบ response
 
       // เรียก API users/me เพื่อตรวจสอบ Role ของผู้ใช้
-      const meResponse = await axios.get('http://localhost:1337/api/users/me', {
+      const meResponse = await axios.get('http://localhost:1337/api/users/me?populate=*', {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
