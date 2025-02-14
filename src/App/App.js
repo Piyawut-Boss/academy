@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { HeaderPromoteProvider } from '../Header/HeaderPromote';
+import { HeaderPromoteProvider } from '../Header/HeaderPromote'; 
+import HeaderPromote from '../Header/HeaderPromote'; 
 import Header from '../Header/Header';
 import Footer from '../Footer';
 import Home from '../Home/Home'; 
@@ -24,7 +25,7 @@ function Layout() {
     <>
       {!isLoginPage && (
         <>
-          <HeaderPromoteProvider /> {/* ✅ เพิ่ม HeaderPromote ที่นี่ */}
+          <HeaderPromote /> 
           <Header />
         </>
       )}
@@ -35,7 +36,7 @@ function Layout() {
 function App() {
   return (
     <Router>
-      <HeaderPromoteProvider>
+      <HeaderPromoteProvider> {/* ✅ ใช้ Provider ครอบทุกส่วนที่ต้องใช้ Context */}
         <div className="app-container">
           <Layout />
           <div className="main-content">
@@ -50,7 +51,7 @@ function App() {
               <Route path="/shopping" element={<Shopping />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/admin" element={<Admin />} />
-              <Route path="/study" element={<Study />} />  {/* ✅ เพิ่มเส้นทาง Study */}
+              <Route path="/study" element={<Study />} />
             </Routes>
           </div>
           <Footer />

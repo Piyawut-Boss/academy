@@ -25,17 +25,23 @@ export function HeaderPromoteProvider({ children }) {
 
 // Component HeaderPromote
 function HeaderPromote() {
-  const { isPromoteVisible, closePromote } = useHeaderPromote(); // ดึงข้อมูลจาก Context
+  const { isPromoteVisible, closePromote } = useHeaderPromote(); 
 
-  if (!isPromoteVisible) return null; // ถ้าไม่ให้แสดง HeaderPromote ให้ return null
+  if (!isPromoteVisible) return null; 
 
   const promoteStyle = {
-    backgroundColor: '#DD0C0C', // สีพื้นหลัง
-    color: '#333', // สีข้อความ
+    backgroundColor: '#DD0C0C', 
+    color: '#333', 
     textAlign: 'center',
     padding: '10px 20px',
-    position: 'relative',
-    marginBottom: '10px', // เพิ่มระยะห่างจากด้านล่าง
+    position: 'fixed', 
+    top: 0, 
+    left: 0, 
+    width: '100%', 
+    zIndex: 1001, 
+    height: '50px',
+    lineHeight: '50px', 
+    boxSizing: 'border-box',
   };
 
   const closeButtonStyle = {
@@ -47,6 +53,7 @@ function HeaderPromote() {
     border: 'none',
     fontSize: '16px',
     cursor: 'pointer',
+    zIndex: 1002, 
   };
 
   return (
