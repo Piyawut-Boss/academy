@@ -28,11 +28,10 @@ function Header() {
                     <li><Link to="/course">คอร์สเรียนทั้งหมด</Link></li>
                     <li><Link to="/promotion">โปรโมชั่น</Link></li>
                     <li><Link to="/aboutus">เกี่ยวกับเรา</Link></li>
+                    <li><Link to="/admin">Payment</Link></li>
+                    <li><Link to="/admin/EditUser">User</Link></li>
 
-                    {/* ✅ แสดงลิงก์ Admin สำหรับผู้ที่ล็อกอินแล้ว */}
-                    {isLoggedIn && (
-                        <li><Link to="/Payment">Payment</Link></li>
-                    )}
+
 
                     {/* ✅ แสดงปุ่ม Login ถ้ายังไม่ได้ล็อกอิน */}
                     {!isLoggedIn && <li><Link to="/login">Login</Link></li>}
