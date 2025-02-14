@@ -26,6 +26,12 @@
       "relation": "manyToOne",
       "target": "api::tutor.tutor",
       "inversedBy": "categories"
+    },
+    "promotions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::promotion.promotion",
+      "inversedBy": "categories"
     }
   }
 }

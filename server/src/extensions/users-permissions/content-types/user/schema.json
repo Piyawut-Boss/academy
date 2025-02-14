@@ -76,6 +76,12 @@
       "relation": "manyToMany",
       "target": "api::course.course",
       "mappedBy": "users"
+    },
+    "Admin": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::admin.admin",
+      "mappedBy": "admin"
     }
   }
 }
