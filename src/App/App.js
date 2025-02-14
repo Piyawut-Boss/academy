@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { HeaderPromoteProvider } from '../Header/HeaderPromote';
 import HeaderPromote from '../Header/HeaderPromote';
-import Header from '../Header/Header'; // Header ทั่วไป
-import HeaderAdmin from '../Header/AdminHeader'; // Header สำหรับ Admin
+import Header from '../Header/Header';
+import HeaderAdmin from '../Header/AdminHeader';
 import Footer from '../Footer';
 import Home from '../Home/Home';
 import Login from '../Login/Login';
@@ -13,29 +13,28 @@ import Howto from '../Howto/Howto';
 import Aboutus from '../Aboutus/Aboutus';
 import Promotion from '../Promotion';
 import Shopping from '../Shopping/Shopping';
-import EditPayment from '../Admin/EditPayment';
 import Study from '../Study/Study';
+
+
+// Import Admin Pages
+import EditPayment from '../Admin/EditPayment';
 import EditUser from '../Admin/EditUser';
-import EditCourse from '../Admin/EditCourse';  // เพิ่ม EditCourse
+import EditCourse from '../Admin/EditCourse';
+import EditPromotion from '../Admin/EditPromotion';
+
 import './App.css';
 
 function Layout() {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
-
-  // ตรวจสอบ role ใน localStorage
   const role = localStorage.getItem('role');
-
-  // เลือกแสดง HeaderAdmin หรือ Header ปกติ ขึ้นอยู่กับ role
-  const headerToDisplay = role === 'Admin' ? <HeaderAdmin /> : <Header />;
 
   return (
     <>
-      {/* ตรวจสอบว่าไม่ใช่หน้า Login และตรวจสอบ role */}
       {!isLoginPage && (
         <>
           <HeaderPromote />
-          {headerToDisplay} {/* แสดง Header ตาม role */}
+          {role === 'Admin' ? <HeaderAdmin /> : <Header />}
         </>
       )}
     </>
@@ -44,19 +43,13 @@ function Layout() {
 
 function ProtectedRoute({ children }) {
   const role = localStorage.getItem('role');
-
-  // ถ้า role ไม่มีหรือไม่ใช่ Admin ให้พาไปหน้าหลักหรือหน้าอื่น
-  if (role !== 'Admin') {
-    return <Navigate to="/" />;
-  }
-
-  return children; // ถ้า role เป็น Admin ให้แสดงเนื้อหาใน route
+  return role === 'Admin' ? children : <Navigate to="/" />;
 }
 
 function App() {
   return (
     <Router>
-      <HeaderPromoteProvider> {/* ใช้ Provider ครอบทุกส่วนที่ต้องใช้ Context */}
+      <HeaderPromoteProvider>
         <div className="app-container">
           <Layout />
           <div className="main-content">
@@ -71,26 +64,11 @@ function App() {
               <Route path="/shopping" element={<Shopping />} />
               <Route path="/study" element={<Study />} />
 
-              {/* หน้าสำหรับ Admin เท่านั้น */}
-              <Route path="/admin" element={
-                <ProtectedRoute>
-                  <EditPayment />
-                </ProtectedRoute>
-              } />
-
-              {/* เพิ่ม Route สำหรับ EditUser */}
-              <Route path="/admin/edituser" element={
-                <ProtectedRoute>
-                  <EditUser />
-                </ProtectedRoute>
-              } />
-
-              <Route path="/admin/editcourse" element={
-                <ProtectedRoute>
-                  <EditCourse />
-                </ProtectedRoute>
-              } />
-
+              {/* Protected Routes for Admin */}
+              <Route path="/admin/editpayment" element={<ProtectedRoute><EditPayment /></ProtectedRoute>} />
+              <Route path="/admin/edituser" element={<ProtectedRoute><EditUser /></ProtectedRoute>} />
+              <Route path="/admin/editcourse" element={<ProtectedRoute><EditCourse /></ProtectedRoute>} />
+              <Route path="/admin/editpromotion" element={<ProtectedRoute><EditPromotion /></ProtectedRoute>} />
             </Routes>
           </div>
           <Footer />

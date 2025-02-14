@@ -31,10 +31,6 @@ function Header() {
                     <li><Link to="/promotion">โปรโมชั่น</Link></li>
                     <li><Link to="/aboutus">เกี่ยวกับเรา</Link></li>
 
-                    {/* ✅ แสดงลิงก์ Admin สำหรับผู้ที่ล็อกอินแล้ว */}
-                    {isLoggedIn && (
-                        <li><Link to="/admin">Admin</Link></li>
-                    )}
 
                     {/* 🔹 ไอคอนตะกร้าสินค้า */}
                     <li><Link to="/shopping"><ShoppingCartOutlined style={{ fontSize: '28px' }} /></Link></li>
