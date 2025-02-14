@@ -31,7 +31,7 @@ function Header() {
 
                     {/* ✅ แสดงลิงก์ Admin สำหรับผู้ที่ล็อกอินแล้ว */}
                     {isLoggedIn && (
-                        <li><Link to="/admin">Admin</Link></li>
+                        <li><Link to="/Payment">Payment</Link></li>
                     )}
 
                     {/* ✅ แสดงปุ่ม Login ถ้ายังไม่ได้ล็อกอิน */}

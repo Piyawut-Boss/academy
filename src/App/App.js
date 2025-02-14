@@ -13,8 +13,7 @@ import Howto from '../Howto/Howto';
 import Aboutus from '../Aboutus/Aboutus';
 import Promotion from '../Promotion';
 import Shopping from '../Shopping/Shopping';
-import Payment from '../Payment/Payment';
-import Admin from '../Admin/Admin';
+import Payment from '../Admin/Payment';
 import Study from '../Study/Study';
 import './App.css';
 
@@ -75,7 +74,7 @@ function App() {
               {/* หน้าสำหรับ Admin เท่านั้น */}
               <Route path="/admin" element={
                 <ProtectedRoute>
-                  <Admin />
+                  <Payment/>
                 </ProtectedRoute>
               } />
             </Routes>
