@@ -13,7 +13,7 @@ import Promotion from '../Promotion';
 import Shopping from '../Shopping/Shopping'; 
 import Payment from '../Payment/Payment';
 import Admin from '../Admin/Admin';
-import Study from '../Study/Study';  // ✅ นำเข้า Study.js
+import Study from '../Study/Study';
 import './App.css';
 
 function Layout() {
