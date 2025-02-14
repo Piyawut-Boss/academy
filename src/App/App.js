@@ -15,6 +15,7 @@ import Promotion from '../Promotion';
 import Shopping from '../Shopping/Shopping';
 import Payment from '../Admin/Payment';
 import Study from '../Study/Study';
+import EditUser from '../Admin/EditUser';  // เพิ่ม EditUser
 import './App.css';
 
 function Layout() {
@@ -74,7 +75,14 @@ function App() {
               {/* หน้าสำหรับ Admin เท่านั้น */}
               <Route path="/admin" element={
                 <ProtectedRoute>
-                  <Payment/>
+                  <Payment />
+                </ProtectedRoute>
+              } />
+
+              {/* เพิ่ม Route สำหรับ EditUser */}
+              <Route path="/admin/edituser" element={
+                <ProtectedRoute>
+                  <EditUser />
                 </ProtectedRoute>
               } />
             </Routes>
