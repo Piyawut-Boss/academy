@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './Payment.css';
+import './EditPayment.css';
 
-function PaymentTable() {
+function EditPayment() {
   const [payments, setPayments] = useState([]);
-  const [courses, setCourses] = useState([]);
-  const [users, setUsers] = useState([]);
   const [editingPayment, setEditingPayment] = useState(null);
   const [paymentProofFile, setPaymentProofFile] = useState(null);
   const navigate = useNavigate();
@@ -22,14 +20,6 @@ function PaymentTable() {
     axios.get('http://localhost:1337/api/payments?populate=*')
       .then(response => setPayments(response.data.data))
       .catch(error => console.error('Error fetching payments:', error));
-
-    axios.get('http://localhost:1337/api/courses')
-      .then(response => setCourses(response.data.data || []))
-      .catch(error => console.error('Error fetching courses:', error));
-
-    axios.get('http://localhost:1337/api/users')
-      .then(response => setUsers(response.data.data || []))
-      .catch(error => console.error('Error fetching users:', error));
   }, [navigate]);
 
   const handleEdit = (payment) => {
@@ -120,4 +110,4 @@ function PaymentTable() {
   );
 }
 
-export default PaymentTable;
+export default EditPayment;

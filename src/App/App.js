@@ -13,9 +13,10 @@ import Howto from '../Howto/Howto';
 import Aboutus from '../Aboutus/Aboutus';
 import Promotion from '../Promotion';
 import Shopping from '../Shopping/Shopping';
-import Payment from '../Admin/Payment';
+import EditPayment from '../Admin/EditPayment';
 import Study from '../Study/Study';
-import EditUser from '../Admin/EditUser';  // เพิ่ม EditUser
+import EditUser from '../Admin/EditUser';
+import EditCourse from '../Admin/EditCourse';  // เพิ่ม EditCourse
 import './App.css';
 
 function Layout() {
@@ -24,7 +25,6 @@ function Layout() {
 
   // ตรวจสอบ role ใน localStorage
   const role = localStorage.getItem('role');
-  const isLoggedIn = role !== null;
 
   // เลือกแสดง HeaderAdmin หรือ Header ปกติ ขึ้นอยู่กับ role
   const headerToDisplay = role === 'Admin' ? <HeaderAdmin /> : <Header />;
@@ -69,13 +69,12 @@ function App() {
               <Route path="/aboutus" element={<Aboutus />} />
               <Route path="/promotion" element={<Promotion />} />
               <Route path="/shopping" element={<Shopping />} />
-              <Route path="/payment" element={<Payment />} />
               <Route path="/study" element={<Study />} />
 
               {/* หน้าสำหรับ Admin เท่านั้น */}
               <Route path="/admin" element={
                 <ProtectedRoute>
-                  <Payment />
+                  <EditPayment />
                 </ProtectedRoute>
               } />
 
@@ -85,6 +84,13 @@ function App() {
                   <EditUser />
                 </ProtectedRoute>
               } />
+
+              <Route path="/admin/editcourse" element={
+                <ProtectedRoute>
+                  <EditCourse />
+                </ProtectedRoute>
+              } />
+
             </Routes>
           </div>
           <Footer />
