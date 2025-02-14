@@ -22,7 +22,12 @@ function Layout() {
 
   return (
     <>
-      {!isLoginPage && <Header />}
+      {!isLoginPage && (
+        <>
+          <HeaderPromoteProvider /> {/* ✅ เพิ่ม HeaderPromote ที่นี่ */}
+          <Header />
+        </>
+      )}
     </>
   );
 }

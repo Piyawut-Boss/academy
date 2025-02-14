@@ -37,7 +37,7 @@ function Header() {
                     )}
 
                     {/* 🔹 ไอคอนตะกร้าสินค้า */}
-                    <li><Link to="/shopping"><ShoppingCartOutlined style={{ fontSize: '24px' }} /></Link></li>
+                    <li><Link to="/shopping"><ShoppingCartOutlined style={{ fontSize: '28px' }} /></Link></li>
 
                     {/* ✅ แสดงปุ่ม Login ถ้ายังไม่ได้ล็อกอิน */}
                     {!isLoggedIn && <li><Link to="/login">Login</Link></li>}
@@ -48,7 +48,7 @@ function Header() {
                     )}
 
                     {/* ✅ แสดงปุ่ม Logout หากล็อกอินแล้ว */}
-                    {isLoggedIn && <li><button onClick={handleLogout}>Logout</button></li>}
+                    {isLoggedIn && <li><button onClick={handleLogout}>Logout </button></li>}
                 </ul>
             </nav>
         </header>

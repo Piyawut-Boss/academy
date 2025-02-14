@@ -5,10 +5,10 @@
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    height: 60px; 
+    height: 75px; 
     position: fixed;
     z-index: 1000;
-    width: 100%;
+    width: 98%;
   }
   
   .header-container .logo {
@@ -17,7 +17,7 @@
   }
   
   .header-container .logo-image {
-    width: 120px; /* ปรับขนาดความกว้างของภาพ */
+    width: 150px; /* ปรับขนาดความกว้างของภาพ */
     height: auto; /* ปรับความสูงอัตโนมัติเพื่อไม่ให้เบี้ยว */
     margin-right: 10px; /* ช่องว่างระหว่างภาพและข้อความ */
   }
@@ -29,6 +29,8 @@
     display: flex;
     justify-content: flex-start; /* จัดตำแหน่งเมนูไปทางซ้าย */
     gap: 20px;
+    font-size: 1.05rem;
+    margin-top: 15px;
   }
   
   .nav-list a {
