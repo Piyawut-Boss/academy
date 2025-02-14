@@ -1,0 +1,237 @@
+/* Home.css */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+  }
+  
+  .home-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .intro-section {
+    padding: 40px;
+  
+    .home-layout {
+      background-color: #f5f7fa;
+    }
+  
+    .banner-carousel img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+  
+    .congract-carousel-item {
+      width: 100%;
+      height: 100%;
+    }
+  
+    .congract-carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  
+    .section {
+      width: 90%;
+      max-width: 1200px;
+      background: white;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 8px;
+      box-shadow: none;
+      text-align: center;
+    }
+  
+    .highlight-section {
+      display: flex;
+      justify-content: center;
+      margin: 30px 0;
+    }
+  
+    .highlight-card {
+      background-color: #fffae6;
+      text-align: center;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: none;
+    }
+  
+    .winner-card {
+      text-align: center;
+    }
+  
+    .carousel-dots {
+      bottom: -10px !important;
+    }
+  
+    .special-features .ant-card {
+      text-align: center;
+    }
+  
+    text-align: center;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
+    border-radius: 8px;
+  }
+  
+  .features-section {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    gap: 20px;
+  }
+  
+  .feature {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: none;
+    border-radius: 8px;
+    flex: 1;
+    text-align: center;
+  }
+  
+  .home-footer {
+    margin-top: auto;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+  }
+  
+  .team-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 120px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .team-text {
+    display: inline;
+    color: black;
+    margin-right: 10px;
+  }
+  
+  .tutor-text {
+    display: inline;
+    color: #473E91;
+    margin-right: 10px;
+  }
+  .academy-text {
+    display: inline;
+    color: #FFC900;
+    margin-right: 10px;
+  }
+  
+  .Course-text {
+    display: inline;
+    color: #000000;
+    margin-right: 10px;
+  
+  }
+  .Recommend-text {
+    display: inline;
+    color: #473E91;
+    margin-right: 10px;
+  
+  }
+  
+  .cc-description {
+    font-size: 20px;
+    color: #FFC900;
+    margin-top: 5px;
+    text-align: center;
+    margin-bottom: 50px;
+  
+  }
+  
+  .std-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 200px;
+  }
+  
+  .std2-carousel-item {
+    display: flex;
+    justify-content: center;  /* จัดกลางในแนวนอน */
+    align-items: center;      /* จัดกลางในแนวตั้ง */
+    position: relative;
+    min-height: 300px;  /* ความสูงเต็มพื้นที่ */
+  }
+  
+  .std2-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* ใช้จัดตำแหน่งทั้งแนวนอนและแนวตั้ง */
+    height: 100%;             /* ทำให้เต็มพื้นที่ */
+  }
+  
+  .std2-image {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-left: 35px;
+    margin-top: 50px;
+  }
+  
+  
+  .congrate-text {
+    display: block;
+    color: black;
+    margin-bottom: 5px;
+  }
+  
+  .std-text {
+    display: inline;
+    color: #473E91;
+    margin-right: 10px;
+    margin-bottom: 50px;
+  }
+  
+  
+  
+  .team-description {
+    font-size: 20px;
+    color: black;
+    margin-top: 5px;
+    text-align: center;
+    margin-bottom: 100px;
+  
+  }
+  
+  .tutor-carousel-item {
+    text-align: center;
+    position: relative;
+  }
+  
+  .tutor-image {
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+  
+  .tutor-info {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 5px;
+    border-radius: 4px;
+  }
