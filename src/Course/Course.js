@@ -218,26 +218,36 @@ function Course() {
         })}
       </div>
 
-      {/* Popup Modal สำหรับรายละเอียดคอร์ส */}
-      {currentCourse && (
-        <Modal
-          title={currentCourse.Title}
-          visible={isModalVisible}
-          onCancel={handleCancel}
-          footer={[
-            <Button key="back" onClick={handleCancel}>ปิด</Button>,
-            <Button key="submit" type="primary" onClick={() => addToCart(currentCourse)}>
-              สมัครเรียน
-            </Button>
-          ]}
-        >
-          <p>{currentCourse.Detail}</p>
-          <div className="price">
-            <span className="price-original">{currentCourse.Price.toLocaleString()} บาท</span>
-            <span className="price-discounted">{currentCourse.realprice.toLocaleString()} บาท</span>
-          </div>
-        </Modal>
-      )}
+ {/* Popup Modal สำหรับรายละเอียดคอร์ส */}
+{currentCourse && (
+  <Modal
+    title={currentCourse.Title}
+    visible={isModalVisible}
+    onCancel={handleCancel}
+    footer={[
+      <Button key="back" onClick={handleCancel}>ปิด</Button>,
+      <Button key="submit" type="primary" onClick={() => addToCart(currentCourse)}>
+        สมัครเรียน
+      </Button>
+    ]}
+  >
+    <p>{currentCourse.Detail}</p>
+
+    {/* แสดงชื่อ unit */}
+    <div className="unit-names">
+      <h4>Units:</h4>
+      {currentCourse.units && currentCourse.units.map(unit => (
+        <p key={unit.id}>{unit.unitname}</p>
+      ))}
+    </div>
+
+    <div className="price">
+      <span className="price-original">{currentCourse.Price.toLocaleString()} บาท</span>
+      <span className="price-discounted">{currentCourse.realprice.toLocaleString()} บาท</span>
+    </div>
+  </Modal>
+)}
+
     </div>
   );
 }

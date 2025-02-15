@@ -9,11 +9,13 @@ function EditCourse() {
   const [coursePrice, setCoursePrice] = useState('');
   const [realPrice, setRealPrice] = useState('');
   const [promotionImage, setPromotionImage] = useState('');
+  const [courseDetail, setCourseDetail] = useState('');
+  const [courseUnits, setCourseUnits] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingCourseId, setEditingCourseId] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:1337/api/courses?populate=Promotepic')
+    axios.get('http://localhost:1337/api/courses?populate=*')
       .then(response => {
         const allCourses = response.data.data;
         setCourses(allCourses);
@@ -29,6 +31,8 @@ function EditCourse() {
       setCoursePrice(selectedCourse.Price);
       setRealPrice(selectedCourse.realprice);
       setPromotionImage(selectedCourse.Promotepic?.url || '');
+      setCourseDetail(selectedCourse.Detail || '');
+      setCourseUnits(selectedCourse.units || []);
       setIsEditing(true);
       setEditingCourseId(courseId);
     }
@@ -41,6 +45,8 @@ function EditCourse() {
       Price: coursePrice,
       realprice: realPrice,
       Promotepic: promotionImage,
+      Detail: courseDetail,
+      units: courseUnits
     };
 
     axios.put(`http://localhost:1337/api/courses/${editingCourseId}`, { data: updatedCourse })
@@ -60,6 +66,8 @@ function EditCourse() {
     setCoursePrice('');
     setRealPrice('');
     setPromotionImage('');
+    setCourseDetail('');
+    setCourseUnits([]);
   };
 
   if (!courses.length) {
@@ -74,6 +82,8 @@ function EditCourse() {
           <div className="edit-course-table-row">
             <div className="edit-course-table-cell">Course Title</div>
             <div className="edit-course-table-cell">Description</div>
+            <div className="edit-course-table-cell">Detail</div>
+            <div className="edit-course-table-cell">Units</div>
             <div className="edit-course-table-cell">Price</div>
             <div className="edit-course-table-cell">Real Price</div>
             <div className="edit-course-table-cell">Promotion Image</div>
@@ -95,6 +105,7 @@ function EditCourse() {
                   course.Title
                 )}
               </div>
+
               <div className="edit-course-table-cell">
                 {isEditing && editingCourseId === course.id ? (
                   <textarea
@@ -106,6 +117,31 @@ function EditCourse() {
                   course.Description
                 )}
               </div>
+
+              <div className="edit-course-table-cell">
+                {isEditing && editingCourseId === course.id ? (
+                  <textarea
+                    value={courseDetail}
+                    onChange={(e) => setCourseDetail(e.target.value)}
+                    className="select-input"
+                  />
+                ) : (
+                  course.Detail
+                )}
+              </div>
+
+              <div className="edit-course-table-cell">
+                {isEditing && editingCourseId === course.id ? (
+                  <textarea
+                    value={courseUnits.map(unit => unit.unitname).join(', ')}
+                    readOnly
+                    className="select-input"
+                  />
+                ) : (
+                  course.units.map(unit => unit.unitname).join('\n')
+                )}
+              </div>
+
               <div className="edit-course-table-cell">
                 {isEditing && editingCourseId === course.id ? (
                   <input
@@ -118,6 +154,7 @@ function EditCourse() {
                   course.Price
                 )}
               </div>
+
               <div className="edit-course-table-cell">
                 {isEditing && editingCourseId === course.id ? (
                   <input
@@ -130,6 +167,7 @@ function EditCourse() {
                   course.realprice
                 )}
               </div>
+
               <div className="edit-course-table-cell">
                 {isEditing && editingCourseId === course.id ? (
                   <input
@@ -148,6 +186,7 @@ function EditCourse() {
                   />
                 )}
               </div>
+
               <div className="edit-course-table-cell">
                 {isEditing && editingCourseId === course.id ? (
                   <div className="button-group">
