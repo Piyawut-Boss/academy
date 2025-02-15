@@ -27,7 +27,6 @@ function Header() {
                     <li><Link to="/">หน้าหลัก</Link></li>
                     <li><Link to="/course">คอร์สเรียนทั้งหมด</Link></li>
                     <li><Link to="/promotion">โปรโมชั่น</Link></li>
-                    <li><Link to="/aboutus">เกี่ยวกับเรา</Link></li>
                     <li><Link to="/admin/EditPayment">Payment</Link></li>
                     <li><Link to="/admin/EditUser">User</Link></li>
                     <li><Link to="/admin/EditCourse">Course</Link></li>

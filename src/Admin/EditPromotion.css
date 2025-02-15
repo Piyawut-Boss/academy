@@ -1,0 +1,123 @@
+/* edit-promotion.css */
+.edit-promotion-container {
+    width: 80%;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #473E91;
+    font-size: 2rem;
+  }
+  
+  .edit-promotion-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .edit-promotion-table-header {
+    background-color: #473E91;
+    color: white;
+  }
+  
+  .edit-promotion-table-row {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .edit-promotion-table-cell {
+    flex: 1;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .edit-promotion-table-cell input,
+  .edit-promotion-table-cell textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .edit-promotion-table-cell input:focus,
+  .edit-promotion-table-cell textarea:focus {
+    border-color: #473E91;
+    outline: none;
+  }
+  
+  .promotion-image {
+    max-width: 100px;
+    height: auto;
+    border-radius: 5px;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .edit-promotion-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .edit-promotion-button:hover {
+    background-color: #473E91;
+    color: white;
+  }
+  
+  .edit-promotion-button.cancel {
+    background-color: #ccc;
+  }
+  
+  .edit-promotion-button.cancel:hover {
+    background-color: #999;
+  }
+  
+  .edit-promotion-button.delete {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .edit-promotion-button.delete:hover {
+    background-color: #c0392b;
+  }
+  
+  .select-input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .select-input:focus {
+    border-color: #473E91;
+    outline: none;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .edit-promotion-table-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .edit-promotion-table-cell {
+      width: 100%;
+      padding: 8px;
+    }
+  
+    .button-group {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  
