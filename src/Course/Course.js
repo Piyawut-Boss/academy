@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Row, Col } from 'antd';
 import './Course.css';
+import { useNavigate } from 'react-router-dom';  // นำเข้า useNavigate
 
 function Course() {
+  const navigate = useNavigate();  // กำหนด navigate
   const [courses, setCourses] = useState([]);
   const [userCourses, setUserCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,13 +73,15 @@ function Course() {
   };
 
   const addToCart = (course) => {
-    
+    if (!isLoggedIn) {
+      navigate("/login"); // หากผู้ใช้ไม่ได้ล็อกอิน จะนำผู้ใช้ไปที่หน้าล็อกอิน
+      return;
+    }
     const storedCartCourses = localStorage.getItem('cartCourses');
     const cartCourses = storedCartCourses ? JSON.parse(storedCartCourses) : [];
-    cartCourses.push(course);
-    localStorage.setItem('cartCourses', JSON.stringify(cartCourses));
+    cartCourses.push(course);  // เพิ่มคอร์สที่เลือกลงในตะกร้า
+    localStorage.setItem('cartCourses', JSON.stringify(cartCourses));  // เก็บข้อมูลตะกร้าใน localStorage
   };
-  
 
   if (loading) {
     return <p>กำลังโหลดข้อมูลคอร์ส...</p>;
@@ -89,11 +93,11 @@ function Course() {
         courses.flatMap(course =>
           Array.isArray(course.categories)
             ? course.categories.map(category => category.Category)
-            : []  
+            : []
         )
       )
     ]
-    : []; 
+    : [];
 
   console.log("Categories:", categories);
   return (
@@ -132,9 +136,9 @@ function Course() {
                         <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท</span>
                       </div>
                       <div className="buttons">
-                          <Button type="link" className="details-button">อ่านรายละเอียด</Button>
-                          <Button type="primary" className="enroll-button" onClick={() => addToCart(course)}>สมัครเรียน</Button>
-                        </div>
+                        <Button type="link" className="details-button">อ่านรายละเอียด</Button>
+                        <Button type="primary" className="enroll-button" onClick={() => addToCart(course)}>สมัครเรียน</Button>
+                      </div>
                     </Card>
                   </Col>
                 );
@@ -152,7 +156,7 @@ function Course() {
       <div className="category-section">
         {categories.map((category) => {
           const filteredCourses = courses.filter(course =>
-            course.categories?.some(cat => cat.Category === category)  
+            course.categories?.some(cat => cat.Category === category)
           );
 
           return (
