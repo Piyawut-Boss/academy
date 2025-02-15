@@ -145,8 +145,8 @@ function Course() {
                         <Button type="link" className="details-button" onClick={() => handleViewDetails(course)}>
                           อ่านรายละเอียด
                         </Button>
-                        <Button type="primary" className="enroll-button" onClick={() => addToCart(course)}>
-                          สมัครเรียน
+                        <Button type="primary" onClick={() => navigate("/study")}>
+                          ไปที่คอร์สของฉัน
                         </Button>
                       </div>
                     </Card>

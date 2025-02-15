@@ -213,3 +213,11 @@ body {
 .ant-modal-footer .ant-btn-primary:hover {
   background-color: #5b4fad;
 }
+
+/* สไตล์ปุ่ม ไปที่คอร์สของฉัน */
+.ant-btn-primary {
+  background-color: #473e91;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
