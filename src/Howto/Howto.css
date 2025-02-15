@@ -6,26 +6,12 @@ body {
     padding: 0;
 }
 
-.howto-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-    max-width: 1000px;
-    margin: auto;
-    text-align: center;
-    background-color: #fff;
-    padding: 1rem;
-    border-radius: 12px;
-    overflow-x: hidden;
-}
-
-
 .steps {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 คอลัมน์ ขนาดเท่ากัน */
     gap: 20px; /* ระยะห่างระหว่างบล็อก */
-    justify-items: stretch;
+    justify-items: center;
+    margin-bottom: 50px; /* เพิ่มช่องว่างด้านล่าง */
 }
 
 .step {
@@ -43,23 +29,19 @@ body {
     max-width: 300px; /* ขนาดสูงสุดของแต่ละบล็อก */
 }
 
-.step:nth-child(4) {
-    grid-column: span 1;
-    width: 100%;  
-    max-width: 400px;
-    margin-left: 100px;  /* ขยับข้อ 4 ไปทางขวา */
+/* กำหนดแถวบน (ขั้นตอน 1 ถึง 3) */
+.steps-top-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 คอลัมน์ */
+    gap: 20px; /* ระยะห่างระหว่างขั้นตอน */
 }
 
-.step:nth-child(5) {
-    grid-column: span 1;
-    width: 100%;  
-    max-width: 400px;
-    margin-left: 190px; /* ขยับข้อ 5 ไปทางขวาเพิ่มขึ้น */
-}
-.step:nth-child(5) .step-image {
-    width: 90%;  /* ขยายขนาดรูปภาพในขั้นตอนที่ 5 */
-    max-width: 500px; /* กำหนดขนาดสูงสุดให้ใหญ่ขึ้น */
-    height: auto;
+/* กำหนดแถวล่าง (ขั้นตอน 4 ถึง 5) */
+.steps-bottom-row {
+    display: flex;
+    justify-content: center; /* จัดกึ่งกลาง */
+    gap: 20px;
+    margin-top: 30px; /* เพิ่มช่องว่างระหว่างแถว */
 }
 
 /* ปรับขนาดรูปภาพในขั้นตอน */
@@ -125,9 +107,10 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 120px;
+    width: 200px; /* ขนาดใหญ่ขึ้น */
+    height: 200px; /* ขนาดใหญ่ขึ้น */
     padding: 10px;
-    font-size: 0.9rem;
+    font-size: 1.2rem; /* ปรับขนาดตัวอักษร */
     background: transparent;
     border: none;
     box-shadow: none;
@@ -141,10 +124,11 @@ body {
 }
 
 .contact-links img {
-    width: 180px;
-    height: 180px;
-    margin-bottom: 5px;
+    width: 100%; /* ให้ภาพเต็มพื้นที่ */
+    height: 100%; /* ให้ภาพเต็มพื้นที่ */
+    object-fit: cover; /* ให้ภาพครอบคลุมพื้นที่อย่างเต็มที่ */
 }
+
 
 .red-text {
     color: red;
@@ -159,14 +143,33 @@ body {
 .header {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* จัดให้อยู่กึ่งกลางแนวนอน */
     text-align: center;
-    width: 85%;
+    width: 100%; /* ใช้เต็มความกว้างของหน้าจอ */
 }
 
 .header-image {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
     max-width: 1200px;
+    position: relative;
+    left: 200px; /* ขยับไปทางขวา 200px */
 }
+
+.contact-title {
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
+}
+.highlight-box {
+    text-align: center;
+    width: 100%;
+    overflow: hidden;  /* ป้องกันไม่ให้มีส่วนเกิน */
+}
+
+.tutor-image {
+    width: 80%; /* ปรับความกว้างให้ลดลงจาก 100% เช่น 80% ของหน้าจอ */
+    height: auto; /* รักษาอัตราส่วนของภาพ */
+    object-fit: cover; /* ให้ภาพครอบคลุมพื้นที่ทั้งหมด */
+    margin: 0 auto; /* จัดกึ่งกลาง */
+}
+
