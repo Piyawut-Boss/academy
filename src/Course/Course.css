@@ -67,9 +67,9 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 450px; 
-  max-width: 400px; 
-  margin-bottom: 20px; 
+  min-height: 450px;
+  max-width: 400px;
+  margin-bottom: 20px;
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -138,7 +138,7 @@ body {
   color: #473e91; /* ตัวหนังสือเป็นสีม่วง */
   border: 2px solid #473e91; /* เส้นขอบเป็นสีม่วง */
   transition: background-color 0.3s ease, color 0.3s ease; /* เพิ่มการเปลี่ยนสี */
- 
+
 }
 
 /* เมื่อชี้เมาส์ไปที่ปุ่ม อ่านรายละเอียด */
@@ -157,5 +157,59 @@ body {
 }
 
 .enroll-button:hover {
+  background-color: #5b4fad;
+}
+
+/* ปรับแต่ง Modal */
+.ant-modal {
+  max-width: 800px;  /* กำหนดขนาดสูงสุดของ Modal */
+  width: 100%;  /* ให้ Modal ใช้พื้นที่เต็มที่ */
+  border-radius: 8px;  /* มุมโค้งมน */
+  padding: 20px;  /* กำหนด Padding ให้กับเนื้อหาใน Modal */
+}
+
+/* เปลี่ยนแปลง Title ของ Modal */
+.ant-modal-title {
+  font-size: 1.5em;  /* ขนาดตัวอักษรของหัวข้อ */
+  color: #473e91;  /* สีของหัวข้อ */
+  font-weight: bold;
+  margin-bottom: 15px;  /* ระยะห่างด้านล่างของหัวข้อ */
+}
+
+/* ปรับแต่งเนื้อหาภายใน Modal */
+.ant-modal-body {
+  font-size: 1.1em;  /* ขนาดตัวอักษร */
+  color: #555;  /* สีของข้อความ */
+  line-height: 1.5;  /* ระยะห่างระหว่างบรรทัด */
+}
+
+/* แก้ไขปุ่มใน Modal */
+.ant-modal-footer {
+  display: flex;
+  justify-content: space-between;  /* จัดปุ่มให้พอดีกัน */
+  gap: 10px;  /* ระยะห่างระหว่างปุ่ม */
+}
+
+/* ปรับสไตล์ของปุ่ม ปิด */
+.ant-modal-footer .ant-btn-secondary {
+  background-color: #e74c3c;  /* สีพื้นหลัง */
+  color: white;  /* สีตัวอักษร */
+  border: none;  /* ไม่มีเส้นขอบ */
+}
+
+/* เปลี่ยนสีของปุ่ม ปิด เมื่อชี้เมาส์ */
+.ant-modal-footer .ant-btn-secondary:hover {
+  background-color: #c0392b;
+}
+
+/* ปรับสไตล์ของปุ่ม สมัครเรียน */
+.ant-modal-footer .ant-btn-primary {
+  background-color: #473e91;  /* สีพื้นหลัง */
+  color: white;  /* สีตัวอักษร */
+  border: none;  /* ไม่มีเส้นขอบ */
+}
+
+/* เปลี่ยนสีของปุ่ม สมัครเรียน เมื่อชี้เมาส์ */
+.ant-modal-footer .ant-btn-primary:hover {
   background-color: #5b4fad;
 }
