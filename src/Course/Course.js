@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Row, Col } from 'antd';
+import { Card, Button, Row, Col, Modal } from 'antd';
 import './Course.css';
 import { useNavigate } from 'react-router-dom';  // นำเข้า useNavigate
 
@@ -11,14 +11,13 @@ function Course() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [showAllCourses, setShowAllCourses] = useState({});
+  const [isModalVisible, setIsModalVisible] = useState(false);  // สถานะการแสดง modal
+  const [currentCourse, setCurrentCourse] = useState(null);  // คอร์สที่เลือกให้แสดงรายละเอียด
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
-    console.log("Logged in user from localStorage:", loggedInUser);
-
     if (loggedInUser) {
       const parsedUser = JSON.parse(loggedInUser);
-      console.log('Logged in user:', parsedUser);
       setUser(parsedUser);
       setIsLoggedIn(true);
     } else {
@@ -32,7 +31,6 @@ function Course() {
       try {
         const response = await fetch("http://localhost:1337/api/courses?populate=*");
         const data = await response.json();
-        console.log("Fetched user courses:", data);
         setCourses(data.data || []);
       } catch (error) {
         console.error("Error fetching courses:", error);
@@ -53,7 +51,6 @@ function Course() {
             `http://localhost:1337/api/courses?filters[users][username][$eq]=${user.username}&populate=*`
           );
           const data = await response.json();
-          console.log("User courses:", data); // ตรวจสอบข้อมูล
           setUserCourses(data.data || []);
         } catch (error) {
           console.error("Error fetching user courses:", error);
@@ -83,6 +80,16 @@ function Course() {
     localStorage.setItem('cartCourses', JSON.stringify(cartCourses));  // เก็บข้อมูลตะกร้าใน localStorage
   };
 
+  const handleViewDetails = (course) => {
+    setCurrentCourse(course);
+    setIsModalVisible(true);  // เปิด modal เมื่อคลิกปุ่ม "อ่านรายละเอียด"
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);  // ปิด modal
+    setCurrentCourse(null);
+  };
+
   if (loading) {
     return <p>กำลังโหลดข้อมูลคอร์ส...</p>;
   }
@@ -99,7 +106,6 @@ function Course() {
     ]
     : [];
 
-  console.log("Categories:", categories);
   return (
     <div className="course-container">
       <h1>คอร์สเรียนทั้งหมด</h1>
@@ -136,8 +142,12 @@ function Course() {
                         <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท</span>
                       </div>
                       <div className="buttons">
-                        <Button type="link" className="details-button">อ่านรายละเอียด</Button>
-                        <Button type="primary" className="enroll-button" onClick={() => addToCart(course)}>สมัครเรียน</Button>
+                        <Button type="link" className="details-button" onClick={() => handleViewDetails(course)}>
+                          อ่านรายละเอียด
+                        </Button>
+                        <Button type="primary" className="enroll-button" onClick={() => addToCart(course)}>
+                          สมัครเรียน
+                        </Button>
                       </div>
                     </Card>
                   </Col>
@@ -190,7 +200,7 @@ function Course() {
                           <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ไม่ระบุราคา'} บาท</span>
                         </div>
                         <div className="buttons">
-                          <Button type="link" className="details-button">อ่านรายละเอียด</Button>
+                          <Button type="link" className="details-button" onClick={() => handleViewDetails(course)}>อ่านรายละเอียด</Button>
                           <Button type="primary" className="enroll-button" onClick={() => addToCart(course)}>เพิ่มลงตะกร้า</Button>
                         </div>
                       </Card>
@@ -207,6 +217,27 @@ function Course() {
           );
         })}
       </div>
+
+      {/* Popup Modal สำหรับรายละเอียดคอร์ส */}
+      {currentCourse && (
+        <Modal
+          title={currentCourse.Title}
+          visible={isModalVisible}
+          onCancel={handleCancel}
+          footer={[
+            <Button key="back" onClick={handleCancel}>ปิด</Button>,
+            <Button key="submit" type="primary" onClick={() => addToCart(currentCourse)}>
+              สมัครเรียน
+            </Button>
+          ]}
+        >
+          <p>{currentCourse.Detail}</p>
+          <div className="price">
+            <span className="price-original">{currentCourse.Price.toLocaleString()} บาท</span>
+            <span className="price-discounted">{currentCourse.realprice.toLocaleString()} บาท</span>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
