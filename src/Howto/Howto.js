@@ -4,31 +4,48 @@ import fbImage from '../images/facebook.png';
 import lineImage from '../images/line.png';
 import igImage from '../images/instagram.png';
 import ytImage from '../images/youtube.png';
-//import mainImage from '../images/main.png';
-//import logImage from '../images/log.png';
-//import coursePageImage from '../images/course page 1.png';
-//import payment1Image from '../images/payment 1.png';
-//import payment2Image from '../images/payment 2.png';
-import group146Image from '../images/Group 146.png';
-import tutorImage from '../images/tutor.png';
+import homepicHowto from '../Howto/img/homepicHowto.png';
+import loginpicHowto from '../Howto/img/loginpicHowto.png';
+import coursepicHowto from '../Howto/img/coursepicHowto.png';
+import paymentpicHowto from '../Howto/img/paymentpicHowto.png';
+import inspectionpicHowto from '../Howto/img/inspectionpicHowto.png';
+import imgstepHowto from '../Howto/img/imgstepHowto.png';
+import tutorImage from '../Howto/img/tutor.png';
+import studentpicHowto from '../Howto/img/studentpicHowto.png'; // เพิ่มรูป studentpicHowto
 
 function Howto() {
     const steps = [
-        { id: 1, title: 'ขั้นตอนที่ 1 : เข้าสู่ระบบ', desc: 'เข้าเว็บ HAPPY LEARNING ACADEMY เพื่อเข้าสู่คอร์สเรียนของเรา' },
-        { id: 2, title: 'ขั้นตอนที่ 2 : Login', desc: 'เข้าสู่ระบบ (ถ้าเคย Login แล้ว ข้ามได้)' },
-        { id: 3, title: 'ขั้นตอนที่ 3 : เลือกคอร์สเรียน', desc: 'เลือกคอร์สเรียนที่ต้องการใส่ตะกร้า' },
+        { 
+            id: 1, 
+            title: 'ขั้นตอนที่ 1 : เข้าสู่ระบบ', 
+            desc: 'เข้าเว็บ HAPPY LEARNING ACADEMY เพื่อเข้าสู่คอร์สเรียนของเรา', 
+            img: homepicHowto
+        },
+        { 
+            id: 2, 
+            title: 'ขั้นตอนที่ 2 : Login', 
+            desc: 'เข้าสู่ระบบ (ถ้าเคย Login แล้ว ข้ามได้)', 
+            img: loginpicHowto
+        },
+        { 
+            id: 3, 
+            title: 'ขั้นตอนที่ 3 : เลือกคอร์สเรียน', 
+            desc: 'เลือกคอร์สเรียนที่ต้องการใส่ตะกร้า', 
+            img: coursepicHowto
+        },
         { 
             id: 4, 
             title: 'ขั้นตอนที่ 4 : ชำระเงิน', 
             desc: (
                 <>
-                    ระบบแสดงรายการที่เลือก คลิกปุ่ม <b>“ชำระเงิน”</b> 
+                    ระบบแสดงรายการที่เลือก คลิก <b>“ชำระเงิน”</b> 
                     <br />
                     <span className="red-text">* กดใช้โปรโมชั่นในหน้านี้ได้เลย</span>
                     <br />
                     <span className="blue-text">* มีหลายช่องทางให้ชำระเงิน</span>
                 </>
-            )
+            ),
+            img: paymentpicHowto
         },
         { 
             id: 5, 
@@ -37,12 +54,12 @@ function Howto() {
                 <>
                     รอระบบตรวจสอบการชำระเงิน
                     <br />
-                    <span className="blue-text">* สามารถเช็คคอร์สเรียนได้ที่หน้าคอร์สเรียน</span>
+                    <span className="blue-text">* สามารถเช็คคอร์สได้ที่หน้าคอร์สเรียน</span>
                 </>
-            )
+            ),
+            img: inspectionpicHowto
         }
     ];
-    
 
     return (
         <div className="howto-container">
@@ -50,7 +67,7 @@ function Howto() {
             <header className="header">
                 <h1 className="title">วิธีการสั่งซื้อ</h1>
                 <h2 style={{ color: "#FFC900", fontSize: "2rem", fontWeight: "bold" }}>HAPPY LEARNING ACADEMY</h2>
-                <img src={group146Image} alt="วิธีการสั่งซื้อ" className="header-image" />
+                <img src={imgstepHowto} alt="วิธีการสั่งซื้อ" className="header-image" />
             </header>
 
             {/* ส่วนขั้นตอน */}
@@ -61,9 +78,9 @@ function Howto() {
                 ))}
             </div>
 
-            {/* ส่วนท้าย */}
-            <div className="highlight-box">
-                <img src={tutorImage} alt="Happy Tutor" className="tutor-image" />
+            {/* เพิ่มรูป studentpicHowto ใต้ขั้นตอนที่ 5 */}
+            <div className="student-image-container">
+                <img src={studentpicHowto} alt="Student" className="student-image" />
             </div>
 
             {/* ช่องทางการติดตาม */}
