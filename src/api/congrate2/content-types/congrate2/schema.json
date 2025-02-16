@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "congrate2s",
+  "info": {
+    "singularName": "congrate2",
+    "pluralName": "congrate2s",
+    "displayName": "Congrate2",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "Name": {
+      "type": "string"
+    }
+  }
+}
