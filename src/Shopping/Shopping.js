@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { ShoppingCart, CreditCard, Trash2 } from 'lucide-react';
 import './Shopping.css';
 
+
 function Shopping() {
     const [cartCourses, setCartCourses] = useState([]);
 

@@ -14,7 +14,7 @@ import Aboutus from '../Aboutus/Aboutus';
 import Promotion from '../Promotion';
 import Shopping from '../Shopping/Shopping';
 import Study from '../Study/Study';
-
+import Payment from '../Payment/Payment';  // ✅ นำเข้าไฟล์ Payment.js
 
 // Import Admin Pages
 import EditPayment from '../Admin/EditPayment';
@@ -63,6 +63,7 @@ function App() {
               <Route path="/promotion" element={<Promotion />} />
               <Route path="/shopping" element={<Shopping />} />
               <Route path="/study" element={<Study />} />
+              <Route path="/payment" element={<Payment />} /> {/* ✅ เพิ่ม Route สำหรับ Payment */}
 
               {/* Protected Routes for Admin */}
               <Route path="/admin/editpayment" element={<ProtectedRoute><EditPayment /></ProtectedRoute>} />
