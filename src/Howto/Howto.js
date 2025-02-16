@@ -61,6 +61,12 @@ function Howto() {
         },
         {
             id: 6,
+            title: '5 Step ง่ายๆ ใครก็ทำได้',  // เพิ่มหัวข้อที่นี่
+            desc: (
+                <>
+                    <span className="blue-text">แล้วมาเป็นส่วนหนึ่งของสถาบันเรากันนะ</span>
+                </>
+            ),
             img: studentpicHowto
         }
     ];
@@ -88,7 +94,6 @@ function Howto() {
             <div className="tutor-image-container">
                 <img src={tutorpicHowto} alt="Tutor" className="tutor-image" />
             </div>
-
 
             {/* ช่องทางการติดตาม */}
             <div style={{ textAlign: "center" }}>
@@ -123,14 +128,16 @@ function Step({ step }) {
             <div className="step-content">
                 {/* หุ้มเฉพาะชื่อขั้นตอนในบล็อกสีเหลือง */}
                 <h3 className="step-title" style={{
-                    backgroundColor: step.id <= 5 ? '#FFC900' : 'white', // ตั้งสีเหลืองให้แค่ชื่อขั้นตอนที่ 1-5
+                    backgroundColor: step.id <= 5 ? '#FFC900' : '#FFD700', // สีเหลืองทองสำหรับขั้นตอนที่ 6
                     padding: '10px', // ใส่ padding ให้นิดหน่อย
                     borderRadius: '12px', // ทำมุมโค้ง
                     marginBottom: '15px' // ให้มีระยะห่างระหว่างชื่อขั้นตอนและเนื้อหา
                 }}>
                     {step.title}
                 </h3>
-                <p className="step-desc">{step.desc}</p>
+                <p className="step-desc" style={{ color: step.id === 6 ? 'Blue' : 'black' }}>
+                    {step.desc}
+                </p>
             </div>
 
             {/* สำหรับขั้นตอนที่ 6 ก็ยังคงให้แสดงภาพ */}
