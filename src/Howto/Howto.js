@@ -10,35 +10,35 @@ import coursepicHowto from '../Howto/img/coursepicHowto.png';
 import paymentpicHowto from '../Howto/img/paymentpicHowto.png';
 import inspectionpicHowto from '../Howto/img/inspectionpicHowto.png';
 import imgstepHowto from '../Howto/img/imgstepHowto.png';
-import tutorImage from '../Howto/img/tutor.png';
-import studentpicHowto from '../Howto/img/studentpicHowto.png'; // เพิ่มรูป studentpicHowto
+import tutorpicHowto from '../Howto/img/tutorpicHowto.png';
+import studentpicHowto from '../Howto/img/studentpicHowto.png';
 
 function Howto() {
     const steps = [
-        { 
-            id: 1, 
-            title: 'ขั้นตอนที่ 1 : เข้าสู่ระบบ', 
-            desc: 'เข้าเว็บ HAPPY LEARNING ACADEMY เพื่อเข้าสู่คอร์สเรียนของเรา', 
+        {
+            id: 1,
+            title: 'ขั้นตอนที่ 1 : เข้าสู่ระบบ',
+            desc: 'เข้าเว็บ HAPPY LEARNING ACADEMY เพื่อเข้าสู่คอร์สเรียนของเรา',
             img: homepicHowto
         },
-        { 
-            id: 2, 
-            title: 'ขั้นตอนที่ 2 : Login', 
-            desc: 'เข้าสู่ระบบ (ถ้าเคย Login แล้ว ข้ามได้)', 
+        {
+            id: 2,
+            title: 'ขั้นตอนที่ 2 : Login',
+            desc: 'เข้าสู่ระบบ (ถ้าเคย Login แล้ว ข้ามได้)',
             img: loginpicHowto
         },
-        { 
-            id: 3, 
-            title: 'ขั้นตอนที่ 3 : เลือกคอร์สเรียน', 
-            desc: 'เลือกคอร์สเรียนที่ต้องการใส่ตะกร้า', 
+        {
+            id: 3,
+            title: 'ขั้นตอนที่ 3 : เลือกคอร์สเรียน',
+            desc: 'เลือกคอร์สเรียนที่ต้องการใส่ตะกร้า',
             img: coursepicHowto
         },
-        { 
-            id: 4, 
-            title: 'ขั้นตอนที่ 4 : ชำระเงิน', 
+        {
+            id: 4,
+            title: 'ขั้นตอนที่ 4 : ชำระเงิน',
             desc: (
                 <>
-                    ระบบแสดงรายการที่เลือก คลิก <b>“ชำระเงิน”</b> 
+                    ระบบแสดงรายการที่เลือก คลิก <b>“ชำระเงิน”</b>
                     <br />
                     <span className="red-text">* กดใช้โปรโมชั่นในหน้านี้ได้เลย</span>
                     <br />
@@ -47,9 +47,9 @@ function Howto() {
             ),
             img: paymentpicHowto
         },
-        { 
-            id: 5, 
-            title: 'ขั้นตอนที่ 5 : รอการตรวจสอบ', 
+        {
+            id: 5,
+            title: 'ขั้นตอนที่ 5 : รอการตรวจสอบ',
             desc: (
                 <>
                     รอระบบตรวจสอบการชำระเงิน
@@ -58,6 +58,10 @@ function Howto() {
                 </>
             ),
             img: inspectionpicHowto
+        },
+        {
+            id: 6,
+            img: studentpicHowto
         }
     ];
 
@@ -66,7 +70,9 @@ function Howto() {
             {/* ส่วนหัว */}
             <header className="header">
                 <h1 className="title">วิธีการสั่งซื้อ</h1>
-                <h2 style={{ color: "#FFC900", fontSize: "2rem", fontWeight: "bold" }}>HAPPY LEARNING ACADEMY</h2>
+                <h2 style={{ color: "#FFC900", fontSize: "2rem", fontWeight: "bold" }}>
+                    HAPPY LEARNING ACADEMY
+                </h2>
                 <img src={imgstepHowto} alt="วิธีการสั่งซื้อ" className="header-image" />
             </header>
 
@@ -77,27 +83,29 @@ function Howto() {
                     <Step key={step.id} step={step} />
                 ))}
             </div>
-
-            {/* เพิ่มรูป studentpicHowto ใต้ขั้นตอนที่ 5 */}
-            <div className="student-image-container">
-                <img src={studentpicHowto} alt="Student" className="student-image" />
+            
+            {/* เพิ่มรูป tutorImage ใต้ขั้นตอนที่ 5 */}
+            <div className="tutor-image-container">
+                <img src={tutorpicHowto} alt="Tutor" className="tutor-image" />
             </div>
 
+
             {/* ช่องทางการติดตาม */}
-            <div className="contact">
-                <h3 className="contact-title">ช่องทางการติดตาม</h3>
-                <div className="contact-links">
-                    <a href="https://facebook.com" className="contact-link">
-                        <img src={fbImage} alt="Facebook" />
+            <div style={{ textAlign: "center" }}>
+                <h4 className="contact-title">ช่องทางการติดต่อ</h4>
+
+                <div className="contact-container">
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                        <img src={fbImage} alt="Facebook" className="contact-image" />
                     </a>
-                    <a href="https://line.me" className="contact-link">
-                        <img src={lineImage} alt="Line" />
+                    <a href="https://line.me" target="_blank" rel="noopener noreferrer">
+                        <img src={lineImage} alt="LINE" className="contact-image" />
                     </a>
-                    <a href="https://instagram.com" className="contact-link">
-                        <img src={igImage} alt="Instagram" />
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                        <img src={igImage} alt="Instagram" className="contact-image" />
                     </a>
-                    <a href="https://youtube.com" className="contact-link">
-                        <img src={ytImage} alt="YouTube" />
+                    <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+                        <img src={ytImage} alt="YouTube" className="contact-image" />
                     </a>
                 </div>
             </div>
@@ -109,12 +117,24 @@ function Howto() {
 function Step({ step }) {
     return (
         <div className="step">
-            <div className="step-number">{step.id}</div>
+            {/* เอาหมายเลขออกเฉพาะในขั้นตอนที่ 6 */}
+            {step.id !== 6 && <div className="step-number">{step.id}</div>}
+            
             <div className="step-content">
-                <h3 className="step-title">{step.title}</h3>
+                {/* หุ้มเฉพาะชื่อขั้นตอนในบล็อกสีเหลือง */}
+                <h3 className="step-title" style={{
+                    backgroundColor: step.id <= 5 ? '#FFC900' : 'white', // ตั้งสีเหลืองให้แค่ชื่อขั้นตอนที่ 1-5
+                    padding: '10px', // ใส่ padding ให้นิดหน่อย
+                    borderRadius: '12px', // ทำมุมโค้ง
+                    marginBottom: '15px' // ให้มีระยะห่างระหว่างชื่อขั้นตอนและเนื้อหา
+                }}>
+                    {step.title}
+                </h3>
                 <p className="step-desc">{step.desc}</p>
             </div>
-            <img src={step.img} alt={step.title} className="step-image" />
+
+            {/* สำหรับขั้นตอนที่ 6 ก็ยังคงให้แสดงภาพ */}
+            {step.img && <img src={step.img} alt={step.title} className="step-image" />}
         </div>
     );
 }
