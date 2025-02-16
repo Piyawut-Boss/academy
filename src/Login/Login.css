@@ -1,103 +1,151 @@
 /* การตั้งค่า Style สำหรับ Card */
 .login-container {
-    max-width: 800px!important;
-    max-height: 600px;
-    margin: 50px auto;
-    padding: 30px;
-    border-radius: 12px;
-    background-color: #fff;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    font-family: Arial, sans-serif;
-    transition: transform 0.6s ease-in-out;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  /* การตั้งค่า Style สำหรับ Heading */
-  .login-container h2 {
-    color: #473e91;
-    margin-bottom: 20px; /* เพิ่มระยะห่างระหว่างหัวข้อและฟอร์ม */
-    font-size: 1.8rem;
-    font-weight: 600;
-  }
-  
-  /* การตั้งค่า Style สำหรับ Input */
-  .input-group {
-    display: flex;
-    justify-content: center; /* จัดกลางในแนวนอน */
-    align-items: center; /* จัดกลางในแนวตั้ง */
-    margin-bottom: 20px; /* ลดระยะห่างจากปุ่ม */
-  }
-  
-  .input-group input,
-  .input-group .ant-input-password {
-    width: 100%;
-    max-width: 400px; /* กำหนดความกว้างสูงสุด */
-    height: 45px; /* เพิ่มความสูงของ input */
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-    box-sizing: border-box; /* ให้ padding และ border รวมในความกว้าง */
-  }
-  
-  .input-group input:focus,
-  .input-group .ant-input-password:focus {
-    border-color: #473e91;
-    outline: none;
-  }
-  
-  /* การตั้งค่า Style สำหรับ Error Message */
-  .error-message {
-    color: #f44336;
-    font-size: 14px;
-    margin-bottom: 20px;
-    margin-top: 10px;
-    text-align: center;
-  }
-  
-  /* การตั้งค่า Style สำหรับ Login Button */
-  .login-button {
-    width: 60%;
-    padding: 12px;
-    background-color: #473e91;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-bottom: 15px; /* เพิ่ม margin-bottom ให้กับปุ่ม */
-  }
-  
-  .login-button:hover {
-    background-color: #3b347b;
-  }
-  
-  .login-button:disabled {
-    background-color: #a3a3a3;
-    cursor: not-allowed;
-  }
-  
-  /* การตั้งค่า Style สำหรับ Toggle Button */
-  .toggle-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #3b347b;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-  }
-  
-  .toggle-button:hover {
-    background-color: #645b9c;
-  }
-  
+  max-width: 450px !important;
+  margin: 0 auto;
+  padding: 2.5rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: Arial, sans-serif;
+  transition: transform 0.6s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* การตั้งค่า Style สำหรับ Heading */
+.login-container h2 {
+  color: black;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+/* การตั้งค่า Style สำหรับ Input */
+.input-group {
+  display: flex;
+  justify-content: center; /* จัดกลางในแนวนอน */
+  align-items: center; /* จัดกลางในแนวตั้ง */
+  margin-bottom: 1rem; /* ลดระยะห่างจากปุ่ม */
+}
+
+.input-group input,
+.input-group .ant-input-password {
+  width: 100%;
+  max-width: 400px; /* กำหนดความกว้างสูงสุด */
+  height: 45px; /* เพิ่มความสูงของ input */
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box; /* ให้ padding และ border รวมในความกว้าง */
+}
+
+.input-group input:focus,
+.input-group .ant-input-password:focus {
+  border-color: #473e91;
+  outline: none;
+}
+
+.modern-input,
+.modern-input .ant-input,
+.modern-input .ant-input-password {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 12px !important;
+  color: black !important;
+  height: 50px;
+  transition: all 0.3s ease;
+}
+
+.modern-input::placeholder,
+.modern-input .ant-input::placeholder {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.modern-input:hover,
+.modern-input:focus,
+.modern-input .ant-input:hover,
+.modern-input .ant-input:focus {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* การตั้งค่า Style สำหรับ Error Message */
+.error-message {
+  color: #fecaca;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+/* การตั้งค่า Style สำหรับ Login Button */
+.login-button {
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.login-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* การตั้งค่า Style สำหรับ Toggle Button */
+.toggle-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #3b347b;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.toggle-button:hover {
+  background-color: #645b9c;
+}
+
+.toggle-text {
+  color: #000000;
+  transition: all 0.3s ease;
+}
+
+.toggle-text:hover {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+/* Add animation for input focus */
+.modern-input:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Antd specific overrides */
+.ant-input-password-icon {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.ant-card-body {
+  padding: 0 !important;
+}

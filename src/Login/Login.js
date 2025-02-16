@@ -94,86 +94,97 @@ const Login = () => {
 
   return (
     <motion.div
-      className="flex min-h-screen items-center justify-center bg-gray-100 p-4 relative"
+      className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4 relative"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      {/* ปุ่มย้อนกลับ */}
       <Button
-        className="back-button absolute top-4 left-4"
+        className="back-button absolute top-4 left-4 bg-white/20 backdrop-blur-sm hover:bg-white/30"
         onClick={() => navigate(-1)}
-        style={{ marginBottom: '20px' }}
+        style={{ border: 'none', color: 'black' }}
       >
         Back
       </Button>
 
-      <Card className="login-container">
-        <h2>{isRegister ? 'Create an Account' : 'Sign in to Your Account'}</h2>
-        <form onSubmit={isRegister ? handleRegister : handleLogin}>
-          <div className="input-group">
-            <Input
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              size="large"
-              className="rounded-lg"
-              required
-            />
-          </div>
-          {isRegister && (
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        <Card className="login-container backdrop-blur-md bg-white/10">
+          <h2 className="text-white text-3xl font-bold mb-8">
+            {isRegister ? 'Create Account' : 'Welcome Back'}
+          </h2>
+          <form onSubmit={isRegister ? handleRegister : handleLogin} className="space-y-6">
             <div className="input-group">
               <Input
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 size="large"
-                className="rounded-lg"
+                className="modern-input"
                 required
               />
             </div>
-          )}
-          <div className="input-group">
-            <Input.Password
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              size="large"
-              className="rounded-lg"
-              required
-            />
-          </div>
-          {isRegister && (
+            {isRegister && (
+              <div className="input-group">
+                <Input
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  size="large"
+                  className="modern-input"
+                  required
+                />
+              </div>
+            )}
             <div className="input-group">
               <Input.Password
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 size="large"
-                className="rounded-lg"
+                className="modern-input"
                 required
               />
             </div>
-          )}
-          {error && <p className="error-message">{error}</p>}
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="login-button"
-            disabled={isLoading}
-          >
-            {isLoading ? <Loader2 className="animate-spin" /> : isRegister ? 'Sign Up' : 'Login'}
-          </Button>
-        </form>
-        <p className="text-center text-gray-600 mt-4">
-          {isRegister ? 'Already have an account?' : "Don't have an account?"}{' '}
-          <span
-            onClick={() => setIsRegister(!isRegister)}
-            className="toggle-button text-indigo-600 font-semibold cursor-pointer hover:underline"
-          >
-            {isRegister ? 'Login' : 'Register'}
-          </span>
-        </p>
-      </Card>
+            {isRegister && (
+              <div className="input-group">
+                <Input.Password
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  size="large"
+                  className="modern-input"
+                  required
+                />
+              </div>
+            )}
+            {error && <p className="error-message">{error}</p>}
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-button"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <Loader2 className="animate-spin mx-auto" />
+              ) : (
+                isRegister ? 'Sign Up' : 'Login'
+              )}
+            </Button>
+          </form>
+          <p className="text-white mt-6">
+            {isRegister ? 'Already have an account?' : "Don't have an account?"}{' '}
+            <span
+              onClick={() => setIsRegister(!isRegister)}
+              className="toggle-text font-semibold cursor-pointer hover:text-purple-200"
+            >
+              {isRegister ? 'Login' : 'Register'}
+            </span>
+          </p>
+        </Card>
+      </motion.div>
     </motion.div>
   );
 };
