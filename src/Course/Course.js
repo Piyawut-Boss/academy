@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Row, Col, Modal } from 'antd';
+import { Card, Button, Row, Col, Select, message, Statistic, Modal } from 'antd';
 import './Course.css';
-import { useNavigate } from 'react-router-dom';  // นำเข้า useNavigate
+import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 function Course() {
-  const navigate = useNavigate();  // กำหนด navigate
+  const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [userCourses, setUserCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [showAllCourses, setShowAllCourses] = useState({});
+  const [countDownData, setCountDownData] = useState([]);  // สำหรับข้อมูลวันสอบ
+  const [selectedExam, setSelectedExam] = useState(null);  // วันสอบที่เลือก
   const [isModalVisible, setIsModalVisible] = useState(false);  // สถานะการแสดง modal
   const [currentCourse, setCurrentCourse] = useState(null);  // คอร์สที่เลือกให้แสดงรายละเอียด
 
@@ -62,6 +65,27 @@ function Course() {
     }
   }, [isLoggedIn, user?.username]);
 
+  // ดึงข้อมูล Countdown วันสอบ
+  useEffect(() => {
+    const fetchCountDownData = async () => {
+      try {
+        const response = await fetch("http://localhost:1337/api/count-downs");
+        const data = await response.json();
+        setCountDownData(data.data || []);
+      } catch (error) {
+        console.error("Error fetching countdown data:", error);
+        message.error("ไม่สามารถดึงข้อมูลวันสอบได้");
+      }
+    };
+
+    fetchCountDownData();
+  }, []);
+
+  // การเลือกวันสอบ
+  const handleExamChange = (value) => {
+    setSelectedExam(value);
+  };
+
   const toggleShowAllCourses = (category) => {
     setShowAllCourses(prev => ({
       ...prev,
@@ -108,6 +132,33 @@ function Course() {
 
   return (
     <div className="course-container">
+      {/* แสดง Countdown ด้านบนสุด */}
+      {countDownData.length > 0 && (
+        <div className="countdown-section">
+          <h4>เลือกวันสอบ:</h4>
+          <Select
+            value={selectedExam}
+            onChange={handleExamChange}
+            style={{ width: '100%', marginBottom: '20px' }}
+            placeholder="เลือกวันสอบ"
+          >
+            {countDownData.map((exam) => (
+              <Select.Option key={exam.id} value={exam.id}>
+                {exam.ExamName}
+              </Select.Option>
+            ))}
+          </Select>
+
+          {selectedExam && (
+            <Statistic.Countdown
+              title="เวลาถึงวันสอบ"
+              value={moment(countDownData.find(exam => exam.id === selectedExam)?.EndTime).toDate()}
+              format="D [วัน] HH [ชั่วโมง] mm [นาที] ss [วินาที]"
+            />
+          )}
+        </div>
+      )}
+
       <h1>คอร์สเรียนทั้งหมด</h1>
 
       {isLoggedIn ? (
@@ -123,15 +174,13 @@ function Course() {
                   <Col xs={24} sm={12} md={8} lg={6} key={id}>
                     <Card
                       hoverable
-                      cover={
-                        imageUrl ? (
-                          <img alt={Title} src={imageUrl} />
-                        ) : (
-                          <div className="no-image">
-                            <span>ไม่มีภาพ</span>
-                          </div>
-                        )
-                      }
+                      cover={imageUrl ? (
+                        <img alt={Title} src={imageUrl} />
+                      ) : (
+                        <div className="no-image">
+                          <span>ไม่มีภาพ</span>
+                        </div>
+                      )}
                     >
                       <Card.Meta
                         title={Title ?? 'ชื่อคอร์สไม่ระบุ'}
@@ -181,15 +230,13 @@ function Course() {
                     <Col xs={24} sm={12} md={8} lg={6} key={id}>
                       <Card
                         hoverable
-                        cover={
-                          imageUrl ? (
-                            <img alt={Title} src={imageUrl} />
-                          ) : (
-                            <div className="no-image">
-                              <span>ไม่มีภาพ</span>
-                            </div>
-                          )
-                        }
+                        cover={imageUrl ? (
+                          <img alt={Title} src={imageUrl} />
+                        ) : (
+                          <div className="no-image">
+                            <span>ไม่มีภาพ</span>
+                          </div>
+                        )}
                       >
                         <Card.Meta
                           title={Title ?? 'ชื่อคอร์สไม่ระบุ'}
@@ -218,36 +265,35 @@ function Course() {
         })}
       </div>
 
- {/* Popup Modal สำหรับรายละเอียดคอร์ส */}
-{currentCourse && (
-  <Modal
-    title={currentCourse.Title}
-    visible={isModalVisible}
-    onCancel={handleCancel}
-    footer={[
-      <Button key="back" onClick={handleCancel}>ปิด</Button>,
-      <Button key="submit" type="primary" onClick={() => addToCart(currentCourse)}>
-        สมัครเรียน
-      </Button>
-    ]}
-  >
-    <p>{currentCourse.Detail}</p>
+      {/* Popup Modal สำหรับรายละเอียดคอร์ส */}
+      {currentCourse && (
+        <Modal
+          title={currentCourse.Title}
+          visible={isModalVisible}
+          onCancel={handleCancel}
+          footer={[
+            <Button key="back" onClick={handleCancel}>ปิด</Button>,
+            <Button key="submit" type="primary" onClick={() => addToCart(currentCourse)}>
+              สมัครเรียน
+            </Button>
+          ]}
+        >
+          <p>{currentCourse.Detail}</p>
 
-    {/* แสดงชื่อ unit */}
-    <div className="unit-names">
-      <h4>Units:</h4>
-      {currentCourse.units && currentCourse.units.map(unit => (
-        <p key={unit.id}>{unit.unitname}</p>
-      ))}
-    </div>
+          {/* แสดงชื่อ unit */}
+          <div className="unit-names">
+            <h4>Units:</h4>
+            {currentCourse.units && currentCourse.units.map(unit => (
+              <p key={unit.id}>{unit.unitname}</p>
+            ))}
+          </div>
 
-    <div className="price">
-      <span className="price-original">{currentCourse.Price.toLocaleString()} บาท</span>
-      <span className="price-discounted">{currentCourse.realprice.toLocaleString()} บาท</span>
-    </div>
-  </Modal>
-)}
-
+          <div className="price">
+            <span className="price-original">{currentCourse.Price.toLocaleString()} บาท</span>
+            <span className="price-discounted">{currentCourse.realprice.toLocaleString()} บาท</span>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
