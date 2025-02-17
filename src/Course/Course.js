@@ -12,10 +12,10 @@ function Course() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [showAllCourses, setShowAllCourses] = useState({});
-  const [countDownData, setCountDownData] = useState([]);  // สำหรับข้อมูลวันสอบ
-  const [selectedExam, setSelectedExam] = useState(null);  // วันสอบที่เลือก
-  const [isModalVisible, setIsModalVisible] = useState(false);  // สถานะการแสดง modal
-  const [currentCourse, setCurrentCourse] = useState(null);  // คอร์สที่เลือกให้แสดงรายละเอียด
+  const [countDownData, setCountDownData] = useState([]);
+  const [selectedExam, setSelectedExam] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [currentCourse, setCurrentCourse] = useState(null);
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
@@ -28,7 +28,6 @@ function Course() {
     }
   }, []);
 
-  // ดึงคอร์สทั้งหมด
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -45,19 +44,15 @@ function Course() {
     fetchCourses();
   }, []);
 
-  // ดึงคอร์สของผู้ใช้
   useEffect(() => {
     if (isLoggedIn && user?.username) {
       const fetchUserCourses = async () => {
         try {
-          const response = await fetch(
-            `http://localhost:1337/api/courses?filters[users][username][$eq]=${user.username}&populate=*`
-          );
+          const response = await fetch(`http://localhost:1337/api/courses?filters[users][username][$eq]=${user.username}&populate=*`);
           const data = await response.json();
           setUserCourses(data.data || []);
         } catch (error) {
           console.error("Error fetching user courses:", error);
-          setUserCourses([]);
         }
       };
 
@@ -65,7 +60,6 @@ function Course() {
     }
   }, [isLoggedIn, user?.username]);
 
-  // ดึงข้อมูล Countdown วันสอบ
   useEffect(() => {
     const fetchCountDownData = async () => {
       try {
@@ -81,7 +75,6 @@ function Course() {
     fetchCountDownData();
   }, []);
 
-  // การเลือกวันสอบ
   const handleExamChange = (value) => {
     setSelectedExam(value);
   };
@@ -95,22 +88,22 @@ function Course() {
 
   const addToCart = (course) => {
     if (!isLoggedIn) {
-      navigate("/login"); // หากผู้ใช้ไม่ได้ล็อกอิน จะนำผู้ใช้ไปที่หน้าล็อกอิน
+      navigate("/login");
       return;
     }
     const storedCartCourses = localStorage.getItem('cartCourses');
     const cartCourses = storedCartCourses ? JSON.parse(storedCartCourses) : [];
-    cartCourses.push(course);  // เพิ่มคอร์สที่เลือกลงในตะกร้า
-    localStorage.setItem('cartCourses', JSON.stringify(cartCourses));  // เก็บข้อมูลตะกร้าใน localStorage
+    cartCourses.push(course);
+    localStorage.setItem('cartCourses', JSON.stringify(cartCourses));
   };
 
   const handleViewDetails = (course) => {
     setCurrentCourse(course);
-    setIsModalVisible(true);  // เปิด modal เมื่อคลิกปุ่ม "อ่านรายละเอียด"
+    setIsModalVisible(true);
   };
 
   const handleCancel = () => {
-    setIsModalVisible(false);  // ปิด modal
+    setIsModalVisible(false);
     setCurrentCourse(null);
   };
 
@@ -132,7 +125,6 @@ function Course() {
 
   return (
     <div className="course-container">
-      {/* แสดง Countdown ด้านบนสุด */}
       {countDownData.length > 0 && (
         <div className="countdown-section">
           <h4>เลือกวันสอบ:</h4>
@@ -150,11 +142,18 @@ function Course() {
           </Select>
 
           {selectedExam && (
-            <Statistic.Countdown
-              title="เวลาถึงวันสอบ"
-              value={moment(countDownData.find(exam => exam.id === selectedExam)?.EndTime).toDate()}
-              format="D [วัน] HH [ชั่วโมง] mm [นาที] ss [วินาที]"
-            />
+            <>
+              <Statistic.Countdown
+                title="Time Remaining"
+                value={moment(countDownData.find(exam => exam.id === selectedExam)?.EndTime).toDate()}
+                format="D [days] "
+              />
+
+              <div style={{ marginTop: '20px' }}>
+                <h5>Exam Date:</h5>
+                <p>{moment(countDownData.find(exam => exam.id === selectedExam)?.EndTime).locale('en').format('dddd, D MMMM YYYY')}</p>
+              </div>
+            </>
           )}
         </div>
       )}
@@ -247,8 +246,12 @@ function Course() {
                           <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ไม่ระบุราคา'} บาท</span>
                         </div>
                         <div className="buttons">
-                          <Button type="link" className="details-button" onClick={() => handleViewDetails(course)}>อ่านรายละเอียด</Button>
-                          <Button type="primary" className="enroll-button" onClick={() => addToCart(course)}>เพิ่มลงตะกร้า</Button>
+                          <Button type="link" className="details-button" onClick={() => handleViewDetails(course)}>
+                            อ่านรายละเอียด
+                          </Button>
+                          <Button type="primary" className="enroll-button" onClick={() => addToCart(course)}>
+                            เพิ่มลงตะกร้า
+                          </Button>
                         </div>
                       </Card>
                     </Col>
@@ -265,7 +268,6 @@ function Course() {
         })}
       </div>
 
-      {/* Popup Modal สำหรับรายละเอียดคอร์ส */}
       {currentCourse && (
         <Modal
           title={currentCourse.Title}
@@ -279,8 +281,6 @@ function Course() {
           ]}
         >
           <p>{currentCourse.Detail}</p>
-
-          {/* แสดงชื่อ unit */}
           <div className="unit-names">
             <h4>Units:</h4>
             {currentCourse.units && currentCourse.units.map(unit => (
