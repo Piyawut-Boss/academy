@@ -32,6 +32,12 @@
       "relation": "manyToMany",
       "target": "api::promotion.promotion",
       "inversedBy": "categories"
+    },
+    "count_downs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::count-down.count-down",
+      "mappedBy": "category"
     }
   }
 }

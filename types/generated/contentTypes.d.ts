@@ -438,6 +438,10 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
   attributes: {
     Category: Schema.Attribute.String;
+    count_downs: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::count-down.count-down'
+    >;
     courses: Schema.Attribute.Relation<'manyToMany', 'api::course.course'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -523,6 +527,7 @@ export interface ApiCongrate2Congrate2 extends Struct.CollectionTypeSchema {
 export interface ApiCountDownCountDown extends Struct.CollectionTypeSchema {
   collectionName: 'count_downs';
   info: {
+    description: '';
     displayName: 'CountDown';
     pluralName: 'count-downs';
     singularName: 'count-down';
@@ -531,6 +536,7 @@ export interface ApiCountDownCountDown extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    category: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
