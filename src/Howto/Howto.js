@@ -66,7 +66,7 @@ function Howto() {
             {/* ส่วนหัว */}
             <header className="header">
                 <h1 className="title">วิธีการสั่งซื้อ</h1>
-                <h2 style={{ color: "#FFC900", fontSize: "2rem", fontWeight: "bold" }}>HAPPY LEARNING ACADEMY</h2>
+                <h2 style={{ color: "#FFC900", fontSize: "2rem", fontWeight: "bold",textAlign: "center" }}>HAPPY LEARNING ACADEMY</h2>
                 <img src={imgstepHowto} alt="วิธีการสั่งซื้อ" className="header-image" />
             </header>
 

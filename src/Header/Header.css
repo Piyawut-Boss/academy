@@ -8,12 +8,14 @@
     height: 75px; 
     position: fixed;
     z-index: 1000;
-    width: 98%;
+    width: 100%;
+    max-width: 1480px;
   }
   
   .header-container .logo {
     display: flex; /* ใช้ flexbox สำหรับจัดตำแหน่งโลโก้ */
     align-items: center; /* จัดตำแหน่งแนวตั้งให้กลาง */
+    
   }
   
   .header-container .logo-image {
@@ -31,12 +33,15 @@
     gap: 20px;
     font-size: 1.05rem;
     margin-top: 15px;
+    margin-right: 20px; 
+ 
   }
   
   .nav-list a {
     color: white;
     text-decoration: none;
     font-weight: bold;
+    
   }
   
   .nav-list a:hover {

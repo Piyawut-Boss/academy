@@ -182,10 +182,10 @@ function Course() {
                         </div>
                       )}
                     >
-                      <Card.Meta
-                        title={Title ?? 'ชื่อคอร์สไม่ระบุ'}
-                        description={Description ?? 'รายละเอียดคอร์สไม่ระบุ'}
-                      />
+                      <Card.Meta 
+                        title={<span className="course-card h3">{Title ?? 'ชื่อคอร์สไม่ระบุ'}</span>}
+                        description={<span className="course-card p">{Description ?? 'รายละเอียดคอร์สไม่ระบุ'}</span>}
+                        />
                       <div className="price">
                         <span className="price-original">{Price ? Price.toLocaleString() : 'ราคาปกติไม่ระบุ'} บาท</span>
                         <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท</span>

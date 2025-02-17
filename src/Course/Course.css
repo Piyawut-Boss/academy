@@ -46,7 +46,7 @@ body {
 /* กรอบเปล่าที่แสดงเมื่อไม่มีภาพ */
 .no-image {
   width: 100%;
-  height: 300px; /* กำหนดความสูงที่ต้องการ */
+  height: 350px; /* กำหนดความสูงที่ต้องการ */
   background-color: #ddd;
   display: flex;
   justify-content: center;
@@ -74,6 +74,7 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
+  
 }
 
 /* ให้การ์ดมีการจัดวางที่เหมือนกัน */
@@ -84,21 +85,23 @@ body {
   height: 100%;
   padding: 15px;
   align-items: stretch;
+  margin-left: 10px;
 }
 
 /* ทำให้ชื่อคอร์ส, คำอธิบาย, ปุ่ม และราคา อยู่ในตำแหน่งเดียวกัน */
 .course-card h3 {
   font-size: 1.25em;
   color: #333;
-  margin: 0;
   padding-bottom: 10px; /* ให้ระยะห่างระหว่างชื่อคอร์สกับคำอธิบาย */
+  margin-right: 10px;
+  
 }
 
 .course-card p {
   font-size: 0.95em;
-  color: #777;
+  color: #fff;
   padding-bottom: 10px; /* ระยะห่างระหว่างคำอธิบายกับราคา */
-  margin: 0;
+  margin-left: 10px;
 }
 
 /* จัดให้ราคาวางอยู่ในตำแหน่งสุดท้ายของการ์ด */
@@ -108,6 +111,7 @@ body {
   gap: 5px;
   font-size: 1.1em;
   margin-top: auto; /* ทำให้ราคาอยู่ท้ายสุดของการ์ด */
+  
 }
 
 /* ปรับให้ปุ่มอยู่ในแนวนอนและตำแหน่งที่ต้องการ */
@@ -125,11 +129,14 @@ body {
 .enroll-button {
   flex: 1; /* ปุ่มขยายเต็มพื้นที่ */
   text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
-  padding: 10px;
+  padding: 20px;
   border-radius: 5px;
   font-size: 1em;
   height: 40px; /* ความสูงคงที่ */
   min-width: 120px; /* ป้องกันไม่ให้ปุ่มเล็กเกินไป */
+  margin-bottom: 10px;
+
+  margin-right: 10px;
 }
 
 /* ปรับสไตล์ของปุ่ม อ่านรายละเอียด */
@@ -166,6 +173,13 @@ body {
   width: 100%;  /* ให้ Modal ใช้พื้นที่เต็มที่ */
   border-radius: 8px;  /* มุมโค้งมน */
   padding: 20px;  /* กำหนด Padding ให้กับเนื้อหาใน Modal */
+}
+
+.ant-card-cover img {
+  width: 100%;      /* ให้รูปขยายเต็มความกว้างของ Card */
+  height: 350px;    /* กำหนดความสูงตามที่ต้องการ */
+  object-fit: cover; /* ปรับรูปให้ครอบพื้นที่โดยไม่ผิดเพี้ยน */
+  margin-bottom: 10px; /* ระยะห่างด้านล่างของรูป */
 }
 
 /* เปลี่ยนแปลง Title ของ Modal */
