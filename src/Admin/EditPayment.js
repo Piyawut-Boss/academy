@@ -6,8 +6,9 @@ import './EditPayment.css';
 function EditPayment() {
   const [payments, setPayments] = useState([]);
   const [editingPayment, setEditingPayment] = useState(null);
-  const [paymentProofFile, setPaymentProofFile] = useState(null);
   const navigate = useNavigate();
+
+  const token = '026d08263b3ead716ea4e5b42c788650b0ab4a29f5a51f53d20cd1fb7262636f9a326a1cf4e236e1d5f474ae74b2a54fb57eef2413430ec925fc5cb550114572975324b04adfc8bf0f4adf8c5584b3148ea8d7c1729a996e6a56be2a2c7fe3d909a435bca999ca8ac8e6b3ac8ec222b8d840310e8352e5a47e297ad1893ed245';
 
   useEffect(() => {
     const role = localStorage.getItem('role');
@@ -18,32 +19,58 @@ function EditPayment() {
     }
 
     axios.get('http://localhost:1337/api/payments?populate=*')
-      .then(response => setPayments(response.data.data))
-      .catch(error => console.error('Error fetching payments:', error));
+      .then(response => {
+        console.log('API Response:', response.data);
+        setPayments(response.data.data);
+      })
+      .catch(error => {
+        console.error('Error fetching payments:', error);
+        setPayments([]);
+      });
   }, [navigate]);
 
   const handleEdit = (payment) => {
-    setEditingPayment(payment);
-    setPaymentProofFile(null);
+    setEditingPayment(JSON.parse(JSON.stringify(payment)));
   };
 
   const handleSave = () => {
-    let formData = new FormData();
-    formData.append('data[payment_status]', editingPayment.payment_status);
-    formData.append('data[course]', editingPayment.course.id);
-    formData.append('data[user]', editingPayment.user.id);
-    if (paymentProofFile) {
-      formData.append('files[payment_proof]', paymentProofFile);
+    if (!editingPayment || !editingPayment.documentId) {
+      alert('Missing payment information');
+      return;
     }
 
-    axios.put(`http://localhost:1337/api/payments/${editingPayment.id}`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    }).then(response => {
-      setPayments(payments.map(payment =>
-        payment.id === editingPayment.id ? { ...editingPayment, payment_proof: response.data.data.payment_proof } : payment
-      ));
-      setEditingPayment(null);
-    }).catch(error => console.error('Error updating payment:', error));
+    console.log("Editing Payment:", editingPayment);
+    console.log("Document ID:", editingPayment.documentId);
+    console.log("Course:", editingPayment.course);
+    console.log("User:", editingPayment.user);
+
+    const updateData = {
+      data: {
+        payment_status: editingPayment.payment_status
+      }
+    };
+
+    console.log("Update Data:", updateData);
+
+
+    axios.put(`http://localhost:1337/api/payments/${editingPayment.documentId}`, updateData, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(() => {
+        // Refresh the data after successful update
+        return axios.get('http://localhost:1337/api/payments?populate=*');
+      })
+      .then(response => {
+        setPayments(response.data.data);
+        setEditingPayment(null);
+      })
+      .catch(error => {
+        console.error('Error updating payment:', error);
+        alert('Failed to update payment. Please try again.');
+      });
   };
 
   return (
@@ -61,19 +88,21 @@ function EditPayment() {
         </div>
         <div className="table-body">
           {payments.map(payment => (
-            <div className="table-row" key={payment.id}>
+            <div className="table-row" key={payment.documentId}>
               <div className="table-cell">
-                {editingPayment?.id === payment.id ? (
+                {editingPayment && editingPayment.documentId === payment.documentId ? (
                   <select
                     value={editingPayment.payment_status}
-                    onChange={(e) => setEditingPayment({
-                      ...editingPayment,
-                      payment_status: e.target.value
-                    })}
+                    onChange={(e) =>
+                      setEditingPayment({
+                        ...editingPayment,
+                        payment_status: e.target.value,
+                      })
+                    }
                   >
                     <option value="Pending">Pending</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Failed">Failed</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
                   </select>
                 ) : (
                   payment.payment_status || 'N/A'
@@ -87,16 +116,24 @@ function EditPayment() {
               </div>
               <div className="table-cell">
                 {payment.payment_proof ? (
-                  <a href={`http://localhost:1337${payment.payment_proof.url}`} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={`http://localhost:1337${payment.payment_proof.url}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     View Proof
                   </a>
-                ) : 'No Proof'}
+                ) : (
+                  'No Proof'
+                )}
               </div>
               <div className="table-cell">
-                {editingPayment?.id === payment.id ? (
+                {editingPayment && editingPayment.documentId === payment.documentId ? (
                   <div className="button-group">
                     <button onClick={handleSave}>Save</button>
-                    <button className="cancel" onClick={() => setEditingPayment(null)}>Cancel</button>
+                    <button className="cancel" onClick={() => setEditingPayment(null)}>
+                      Cancel
+                    </button>
                   </div>
                 ) : (
                   <button onClick={() => handleEdit(payment)}>Edit</button>

@@ -193,7 +193,7 @@ function Course() {
                         <Button type="link" className="details-button" onClick={() => handleViewDetails(course)}>
                           อ่านรายละเอียด
                         </Button>
-                        <Button type="primary" onClick={() => navigate("/study")}>
+                        <Button type="primary" className="enroll-button" onClick={() => navigate("/study")}>
                           ไปที่คอร์สของฉัน
                         </Button>
                       </div>

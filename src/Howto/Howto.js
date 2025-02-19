@@ -91,8 +91,8 @@ function Howto() {
             </div>
             
             {/* เพิ่มรูป tutorImage ใต้ขั้นตอนที่ 5 */}
-            <div className="tutor-image-container">
-                <img src={tutorpicHowto} alt="Tutor" className="tutor-image" />
+            <div className="tutorf-imagef-container">
+                <img src={tutorpicHowto} alt="Tutor" className="tutorf-imagef" />
             </div>
 
             {/* ช่องทางการติดตาม */}

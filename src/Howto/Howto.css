@@ -188,7 +188,7 @@ body {
     overflow: hidden;  /* ป้องกันไม่ให้มีส่วนเกิน */
 }
 
-.tutor-image {
+.tutorf-imagef {
     width: 80%; /* ปรับความกว้างให้ลดลงจาก 100% เช่น 80% ของหน้าจอ */
     height: auto; /* รักษาอัตราส่วนของภาพ */
     object-fit: cover; /* ให้ภาพครอบคลุมพื้นที่ทั้งหมด */
@@ -196,7 +196,7 @@ body {
 }
 
 /* เพิ่มรูป tutorImage ใต้ขั้นตอนที่ 5 */
-.tutor-image-container {
+.tutorf-imagef-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -208,7 +208,7 @@ body {
     height: auto;
 }
 
-.tutor-image {
+.tutorf-imagef {
     width: 100%; /* ให้ภาพเต็มพื้นที่ */
     height: auto;
     object-fit: cover; /* ให้ภาพครอบคลุมพื้นที่ทั้งหมด */
