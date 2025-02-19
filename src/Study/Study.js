@@ -1,76 +1,136 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import './Study.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Document, Page } from 'react-pdf';
 
 const Study = () => {
-  const units = [
-    { id: 1, title: 'การอ่านจับใจความ T-GAT' },
-    { id: 2, title: 'การเขียนคิดวิเคราะห์' },
-    { id: 3, title: 'การใช้ภาษาเพื่อการสื่อสาร' },
-    { id: 4, title: 'การสรุปความ' },
-    { id: 5, title: 'การใช้เหตุผลเชิงภาษา' },
-    { id: 6, title: 'การเรียงลำดับข้อมูล' },
-    { id: 7, title: 'การใช้เหตุผลเชิงตรรกะ' },
-    { id: 8, title: 'วิธีการทำข้อสอบให้ทัน' },
-    { id: 9, title: 'การฝึกทำข้อสอบ' },
-    { id: 10, title: 'การเตรียมตัวสอบให้พร้อม' }
-  ];
+  const { documentId } = useParams(); // ดึง documentId จาก URL
+  const [course, setCourse] = useState(null);
+  const [units, setUnits] = useState([]);
+  const [currentUnit, setCurrentUnit] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [pdfLoading, setPdfLoading] = useState(true);
+
+  console.log('Document ID:', documentId);
+
+  useEffect(() => {
+    axios.get(`http://localhost:1337/api/courses?filters[documentId][$eq]=${documentId}&populate=*`)
+      .then(response => {
+        console.log('Full Response:', response);
+        console.log('Response Data:', response.data);
+        const data = response.data.data?.[0];
+        console.log('Course Data:', data);
+        if (data) {
+          console.log('Course Data:', data);
+
+          setCourse(data);
+          setUnits(data.units || []);
+          console.log('Units:', data.units);
+          setCurrentUnit(data.units?.[0] || null);
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching course:', error);
+        setError('ไม่สามารถโหลดข้อมูลคอร์สได้');
+        setLoading(false);
+      });
+  }, [documentId]); // เปลี่ยนให้ใช้ documentId เป็น dependency
+
+  if (loading) return <div>กำลังโหลดข้อมูล...</div>;
+  if (error) return <div>{error}</div>;
+
+  const handleUnitChange = (direction) => {
+    if (!currentUnit) return;
+    const index = units.findIndex(u => u.documentId === currentUnit.documentId);
+    const newIndex = direction === 'next' ? index + 1 : index - 1;
+    if (newIndex >= 0 && newIndex < units.length) {
+      setCurrentUnit(units[newIndex]);
+    }
+  };
+
+  const handlePdfLoad = () => {
+    setPdfLoading(false);
+  };
 
   return (
     <div className="study-container">
-      {/* Navigation Bar */}
       <div className="study-nav-bar">
-        <button className="study-nav-button">
+        <button
+          className="study-nav-button"
+          onClick={() => handleUnitChange('prev')}
+          disabled={units[0]?.documentId === currentUnit?.documentId}
+        >
           <ChevronLeft className="study-icon" />
           <span>Previous</span>
         </button>
-        <span className="study-current-unit">บทที่ 2 : การเขียนคิดวิเคราะห์</span>
-        <button className="study-nav-button">
+        <span className="study-current-unit">{currentUnit?.unitname}</span>
+        <button
+          className="study-nav-button"
+          onClick={() => handleUnitChange('next')}
+          disabled={units[units.length - 1]?.documentId === currentUnit?.documentId}
+        >
           <span>Next</span>
           <ChevronRight className="study-icon" />
         </button>
       </div>
 
       <div className="study-main-content">
-        {/* Main Content */}
         <div className="study-content-area">
           <div className="study-video-container">
-            {/* Video Player Placeholder */}
             <div className="study-video-placeholder">
-              <img
-                src="/api/placeholder/800/450"
-                alt="Study workspace with books and desk"
-                className="study-video-image"
-              />
+              {currentUnit?.video?.url ? (
+                <video controls>
+                  <source src={currentUnit.video.url} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              ) : (
+                <span>No Video Available</span>
+              )}
             </div>
 
-            {/* Content Below Video */}
             <div className="study-content-description">
-              <h2>บทที่ 2 : การเขียนคิดวิเคราะห์</h2>
-              <p>
-                บทนี้จะพาน้องๆ ไปเรียนรู้เกี่ยวกับการเขียนคิดวิเคราะห์ที่จะเป็นส่วนสำคัญในการทำข้อสอบและใช้ในชีวิตประจำวัน โดยจะครอบคลุมทั้งหลักการและวิธีการที่จะช่วยให้น้องๆ ทำข้อสอบ PAT ได้คะแนนดี
-              </p>
+              <h2>{currentUnit?.unitname}</h2>
+              <p>{currentUnit?.Discription}</p>
               <div className="study-pdf-link">
-                <a href="#">unit2_การเขียนคิดวิเคราะห์.pdf</a>
+                {currentUnit?.pdfUrl ? (
+                  <div>
+                    {pdfLoading && <div>Loading PDF...</div>}
+                    <Document file={currentUnit.pdfUrl} onLoadSuccess={handlePdfLoad}>
+                      <Page pageNumber={1} />
+                    </Document>
+                  </div>
+                ) : (
+                  <span>No PDF Available</span>
+                )}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Sidebar */}
         <div className="study-sidebar">
           <div className="study-sidebar-content">
-            <h3>T-GAT ProMax</h3>
+            <h3>{course?.Title}</h3>
             <ul className="study-unit-list">
-              {units.map((unit) => (
-                <li
-                  key={unit.id}
-                  className={unit.id === 2 ? 'active' : ''}
-                >
-                  <span className="study-unit-number">{unit.id}.</span>
-                  <span className="study-unit-title">{unit.title}</span>
-                </li>
-              ))}
+              {units.map((unit) => {
+               
+                const unitTitle = unit.unitname.includes('.')
+                  ? unit.unitname.split('.').slice(1).join(' ').trim()
+                  : unit.unitname; 
+
+                return (
+                  <li
+                    key={unit.documentId}
+                    className={unit.documentId === currentUnit?.documentId ? 'active' : ''}
+                    onClick={() => setCurrentUnit(unit)}
+                  >
+                    <span className="study-unit-title">{unitTitle}</span>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

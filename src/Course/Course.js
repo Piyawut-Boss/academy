@@ -153,6 +153,7 @@ function Course() {
                 <h5>Exam Date:</h5>
                 <p>{moment(countDownData.find(exam => exam.id === selectedExam)?.EndTime).locale('en').format('dddd, D MMMM YYYY')}</p>
               </div>
+
             </>
           )}
         </div>
@@ -181,10 +182,10 @@ function Course() {
                         </div>
                       )}
                     >
-                      <Card.Meta 
-                        title={<span className="course-card h3">{Title ?? 'ชื่อคอร์สไม่ระบุ'}</span>}
-                        description={<span className="course-card p">{Description ?? 'รายละเอียดคอร์สไม่ระบุ'}</span>}
-                        />
+                      <Card.Meta
+                        title={Title ?? 'ชื่อคอร์สไม่ระบุ'}
+                        description={Description ?? 'รายละเอียดคอร์สไม่ระบุ'}
+                      />
                       <div className="price">
                         <span className="price-original">{Price ? Price.toLocaleString() : 'ราคาปกติไม่ระบุ'} บาท</span>
                         <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท</span>
@@ -193,7 +194,7 @@ function Course() {
                         <Button type="link" className="details-button" onClick={() => handleViewDetails(course)}>
                           อ่านรายละเอียด
                         </Button>
-                        <Button type="primary" className="enroll-button" onClick={() => navigate("/study")}>
+                        <Button type="primary" className="enroll-button" onClick={() => navigate(`/study/${course.documentId}`)}>
                           ไปที่คอร์สของฉัน
                         </Button>
                       </div>

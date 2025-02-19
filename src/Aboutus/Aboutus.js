@@ -93,7 +93,7 @@ const Aboutus = () => {
 
       <div style={{ textAlign: "center", marginBottom: "50px" }}>
         <h2 style={{ color: "#FFC900", fontSize: "2rem", fontWeight: "bold" }}>HAPPY LEARNING ACADEMY</h2>
-        <p style={{ fontSize: "1.2rem", maxWidth: "2000px", margin: "0 auto", lineHeight: "1.6", color: "#666" ,fontSize: "1.5rem" }}>
+        <p style={{  maxWidth: "2000px", margin: "0 auto", lineHeight: "1.6", color: "#666" ,fontSize: "1.5rem" }}>
           สถาบันของเราให้ความสำคัญกับการเรียนรู้ที่มีความสุขผ่านกระบวนการที่สนุกสนาน
         </p>
       </div>

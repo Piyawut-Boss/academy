@@ -62,8 +62,8 @@ function App() {
               <Route path="/aboutus" element={<Aboutus />} />
               <Route path="/promotion" element={<Promotion />} />
               <Route path="/shopping" element={<Shopping />} />
-              <Route path="/study" element={<Study />} />
-              <Route path="/payment" element={<Payment />} /> {/* ✅ เพิ่ม Route สำหรับ Payment */}
+              <Route path="/study/:documentId" element={<Study />} />
+              <Route path="/payment" element={<Payment />} />
 
               {/* Protected Routes for Admin */}
               <Route path="/admin/editpayment" element={<ProtectedRoute><EditPayment /></ProtectedRoute>} />
