@@ -438,6 +438,10 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
   attributes: {
     Category: Schema.Attribute.String;
+    count_downs: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::count-down.count-down'
+    >;
     courses: Schema.Attribute.Relation<'manyToMany', 'api::course.course'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -520,6 +524,37 @@ export interface ApiCongrate2Congrate2 extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCountDownCountDown extends Struct.CollectionTypeSchema {
+  collectionName: 'count_downs';
+  info: {
+    description: '';
+    displayName: 'CountDown';
+    pluralName: 'count-downs';
+    singularName: 'count-down';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    category: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    EndTime: Schema.Attribute.Date;
+    ExamName: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::count-down.count-down'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
   collectionName: 'courses';
   info: {
@@ -536,6 +571,7 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
       'manyToMany',
       'api::category.category'
     >;
+    CourseDuration: Schema.Attribute.Integer;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -543,6 +579,7 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 150;
       }>;
+    Detail: Schema.Attribute.Text;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -697,6 +734,7 @@ export interface ApiUnitUnit extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    Discription: Schema.Attribute.Text;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::unit.unit'> &
       Schema.Attribute.Private;
@@ -1225,6 +1263,7 @@ declare module '@strapi/strapi' {
       'api::category.category': ApiCategoryCategory;
       'api::congract.congract': ApiCongractCongract;
       'api::congrate2.congrate2': ApiCongrate2Congrate2;
+      'api::count-down.count-down': ApiCountDownCountDown;
       'api::course.course': ApiCourseCourse;
       'api::payment.payment': ApiPaymentPayment;
       'api::promotion.promotion': ApiPromotionPromotion;

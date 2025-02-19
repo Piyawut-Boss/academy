@@ -59,6 +59,12 @@
       "relation": "oneToMany",
       "target": "api::unit.unit",
       "mappedBy": "course"
+    },
+    "Detail": {
+      "type": "text"
+    },
+    "CourseDuration": {
+      "type": "integer"
     }
   }
 }
