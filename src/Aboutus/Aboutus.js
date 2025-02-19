@@ -162,7 +162,7 @@ const Aboutus = () => {
       </div>
 
       <div style={{ textAlign: "center" }}>
-        <h4 style={{ marginTop: "100px", marginBottom: "30px", fontSize: "1.7rem" }}>ช่องทางการติดต่อ</h4>
+        <h4 style={{ marginTop: "100px", marginBottom: "30px", fontSize: "1.7rem",marginRight: '10px'}}>ช่องทางการติดต่อ</h4>
         <Carousel className="contact-carousel" slidesToShow={4} draggable={false} infinite={true} dots={false}>
           <div className="carousel-item">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">

@@ -45,28 +45,38 @@
   flex: 1;
 }
 
-/* Video Container */
-.study-video-container {
+/* Video Section */
+.study-video-section {
   background-color: white;
   border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
   overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.study-video-container {
+  position: relative;
+  width: 100%;
+  /* ใช้ aspect ratio 16:9 */
+  padding-top: 56.25%; /* (9/16)*100 */
 }
 
 .study-video-placeholder {
-  position: relative;
-  padding-top: 56.25%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-color: #111827;
 }
 
-.study-video-image {
-  position: absolute;
-  inset: 0;
+.study-video-placeholder video {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
+/* Content Description */
 .study-content-description {
   padding: 1.5rem;
 }
@@ -104,7 +114,7 @@
 .study-sidebar-content {
   background-color: white;
   border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
   padding: 1rem;
 }
 
@@ -138,10 +148,6 @@
   color: #5b21b6;
 }
 
-.study-unit-number {
-  width: 1.5rem;
-}
-
 .study-unit-title {
   flex: 1;
 }
@@ -151,7 +157,6 @@
   .study-main-content {
     flex-direction: column;
   }
-
   .study-sidebar {
     width: 100%;
   }

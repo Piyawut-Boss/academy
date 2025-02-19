@@ -17,18 +17,17 @@ const Study = () => {
   console.log('Document ID:', documentId);
 
   useEffect(() => {
-    axios.get(`http://localhost:1337/api/courses?filters[documentId][$eq]=${documentId}&populate=*`)
+    axios
+      .get(`http://localhost:1337/api/courses?filters[documentId][$eq]=${documentId}&populate[units][populate]=video`)
       .then(response => {
         console.log('Full Response:', response);
         console.log('Response Data:', response.data);
         const data = response.data.data?.[0];
         console.log('Course Data:', data);
+        console.log('Units:', data.units);
         if (data) {
-          console.log('Course Data:', data);
-
           setCourse(data);
           setUnits(data.units || []);
-          console.log('Units:', data.units);
           setCurrentUnit(data.units?.[0] || null);
         }
         setLoading(false);
@@ -38,7 +37,11 @@ const Study = () => {
         setError('ไม่สามารถโหลดข้อมูลคอร์สได้');
         setLoading(false);
       });
-  }, [documentId]); // เปลี่ยนให้ใช้ documentId เป็น dependency
+  }, [documentId]);
+
+  useEffect(() => {
+    console.log('Current Unit Video:', currentUnit?.video);
+  }, [currentUnit]);
 
   if (loading) return <div>กำลังโหลดข้อมูล...</div>;
   if (error) return <div>{error}</div>;
@@ -80,18 +83,19 @@ const Study = () => {
 
       <div className="study-main-content">
         <div className="study-content-area">
-          <div className="study-video-container">
-            <div className="study-video-placeholder">
-              {currentUnit?.video?.url ? (
-                <video controls>
-                  <source src={currentUnit.video.url} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              ) : (
-                <span>No Video Available</span>
-              )}
+          <div className="study-video-section">
+            <div className="study-video-container">
+              <div className="study-video-placeholder">
+                {currentUnit?.video?.url ? (
+                  <video key={currentUnit.documentId} controls>
+                    <source src={`http://localhost:1337${currentUnit.video.url}`} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                ) : (
+                  <span>No Video Available</span>
+                )}
+              </div>
             </div>
-
             <div className="study-content-description">
               <h2>{currentUnit?.unitname}</h2>
               <p>{currentUnit?.Discription}</p>
@@ -116,11 +120,9 @@ const Study = () => {
             <h3>{course?.Title}</h3>
             <ul className="study-unit-list">
               {units.map((unit) => {
-               
                 const unitTitle = unit.unitname.includes('.')
                   ? unit.unitname.split('.').slice(1).join(' ').trim()
-                  : unit.unitname; 
-
+                  : unit.unitname;
                 return (
                   <li
                     key={unit.documentId}
