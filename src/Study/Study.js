@@ -3,28 +3,24 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './Study.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Document, Page } from 'react-pdf';
 
 const Study = () => {
-  const { documentId } = useParams(); // ดึง documentId จาก URL
+  const { documentId } = useParams();
   const [course, setCourse] = useState(null);
   const [units, setUnits] = useState([]);
   const [currentUnit, setCurrentUnit] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [pdfLoading, setPdfLoading] = useState(true);
 
   console.log('Document ID:', documentId);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:1337/api/courses?filters[documentId][$eq]=${documentId}&populate[units][populate]=video`)
+      .get(`http://localhost:1337/api/courses?filters[documentId][$eq]=${documentId}&populate[units][populate][]=video&populate[units][populate][]=File`)
       .then(response => {
         console.log('Full Response:', response);
         console.log('Response Data:', response.data);
         const data = response.data.data?.[0];
-        console.log('Course Data:', data);
-        console.log('Units:', data.units);
         if (data) {
           setCourse(data);
           setUnits(data.units || []);
@@ -39,10 +35,6 @@ const Study = () => {
       });
   }, [documentId]);
 
-  useEffect(() => {
-    console.log('Current Unit Video:', currentUnit?.video);
-  }, [currentUnit]);
-
   if (loading) return <div>กำลังโหลดข้อมูล...</div>;
   if (error) return <div>{error}</div>;
 
@@ -55,8 +47,24 @@ const Study = () => {
     }
   };
 
-  const handlePdfLoad = () => {
-    setPdfLoading(false);
+  const handleDownloadPDF = async (fileUrl, fileName) => {
+    try {
+      const response = await fetch(fileUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName || "document.pdf"; // ตั้งชื่อไฟล์ที่ดาวน์โหลด
+      document.body.appendChild(a);
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      alert("ไม่สามารถดาวน์โหลดไฟล์ได้");
+    }
   };
 
   return (
@@ -99,18 +107,23 @@ const Study = () => {
             <div className="study-content-description">
               <h2>{currentUnit?.unitname}</h2>
               <p>{currentUnit?.Discription}</p>
+
               <div className="study-pdf-link">
-                {currentUnit?.pdfUrl ? (
-                  <div>
-                    {pdfLoading && <div>Loading PDF...</div>}
-                    <Document file={currentUnit.pdfUrl} onLoadSuccess={handlePdfLoad}>
-                      <Page pageNumber={1} />
-                    </Document>
-                  </div>
+                {currentUnit?.File?.url ? (
+                  <button
+                    onClick={() =>
+                      handleDownloadPDF(`http://localhost:1337${currentUnit.File.url}`, currentUnit.File.name)
+                    }
+                    className="study-download-button"
+                  >
+                    ดาวน์โหลดเอกสาร PDF
+                  </button>
                 ) : (
                   <span>No PDF Available</span>
                 )}
               </div>
+
+
             </div>
           </div>
         </div>

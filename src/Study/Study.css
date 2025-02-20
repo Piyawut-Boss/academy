@@ -16,10 +16,16 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #1f2937;
+  color: #473e91;
   background: none;
   border: none;
   cursor: pointer;
+  font-weight: 1000;
+
+}
+
+.study-nav-button:hover {
+  color: #FFC900;
 }
 
 .study-icon {
@@ -28,8 +34,9 @@
 }
 
 .study-current-unit {
-  color: #1f2937;
-  font-weight: 500;
+  color: #473e91;
+  font-size: 18px;
+  font-weight: 1000;
 }
 
 /* Main Content Layout */
@@ -151,6 +158,19 @@
 .study-unit-title {
   flex: 1;
 }
+
+.study-download-button {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 10px;
+  color: white;
+}
+
+.study-download-button:hover {
+  color: #FFC900;
+}
+
 
 /* Responsive Design */
 @media (max-width: 1024px) {

@@ -9,7 +9,6 @@
     position: fixed;
     z-index: 1000;
     width: 100%;
-    max-width: 1480px;
   }
   
   .header-container .logo {
@@ -33,7 +32,7 @@
     gap: 20px;
     font-size: 1.05rem;
     margin-top: 15px;
-    margin-right: 20px; 
+    margin-left: 20px; 
  
   }
   
@@ -41,6 +40,7 @@
     color: white;
     text-decoration: none;
     font-weight: bold;
+    
     
   }
   
