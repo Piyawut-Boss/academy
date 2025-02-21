@@ -117,3 +117,36 @@
   background: #4338ca;
   transform: translateY(-1px);
 }
+
+.promo-section {
+  margin-bottom: 100px;
+  margin-top:30px;
+}
+.promo-section {
+
+  display: flex;
+  align-items: center;
+
+}
+.promo-input {
+  flex: 1;
+  margin-right: 10px;
+}
+.cart-summary .total {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.cart-summary .finalprice {
+    font-weight: bold;
+    font-size: 23px ;
+    font-weight: bold ;
+    color: #DD0C0C ;
+    margin-top: 15px;
+}
+
+
+
+
+

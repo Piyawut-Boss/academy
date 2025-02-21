@@ -10,12 +10,17 @@ function Shopping() {
     const [cartCourses, setCartCourses] = useState([]);
     const [promoCode, setPromoCode] = useState('');
     const [validPromo, setValidPromo] = useState(null);
-    const [discount, setDiscount] = useState(0);
+    const [discountedAmount, setDiscountedAmount] = useState(0); // สถานะใหม่สำหรับราคาหลังหักส่วนลด
 
     useEffect(() => {
         const storedCartCourses = localStorage.getItem('cartCourses');
         if (storedCartCourses) {
             setCartCourses(JSON.parse(storedCartCourses));
+        }
+
+        const storedDiscountedAmount = localStorage.getItem('discountedAmount');
+        if (storedDiscountedAmount) {
+            setDiscountedAmount(parseFloat(storedDiscountedAmount));
         }
     }, []);
 
@@ -34,7 +39,7 @@ function Shopping() {
             if (!foundPromo) {
                 message.error('โค้ดไม่ถูกต้อง');
                 setValidPromo(null);
-                setDiscount(0);
+                setDiscountedAmount(0); // รีเซ็ต discountedAmount เมื่อไม่พบโปรโมชัน
                 return;
             }
 
@@ -45,12 +50,19 @@ function Shopping() {
             if (applicableCourses.length === 0) {
                 message.error('โค้ดนี้ไม่สามารถใช้กับคอร์สที่คุณเลือกได้');
                 setValidPromo(null);
-                setDiscount(0);
+                setDiscountedAmount(0); // รีเซ็ต discountedAmount เมื่อโปรโมชันไม่ตรง
                 return;
             }
 
             setValidPromo(foundPromo);
-            setDiscount(foundPromo.Discount);
+            const realtotal = cartCourses.reduce((sum, course) => sum + (course.realprice || 0), 0);
+            const newDiscountedAmount = realtotal * (1 - foundPromo.Discount / 100);
+            setDiscountedAmount(newDiscountedAmount);
+
+            // เก็บค่า displayedAmount ลงใน localStorage
+            const displayedAmount = Math.round(foundPromo ? newDiscountedAmount : realtotal);
+            localStorage.setItem('displayedAmount', displayedAmount.toString());
+
             message.success(`ใช้โค้ด ${promoCode} ได้สำเร็จ! ลด ${foundPromo.Discount}%`);
         } catch (error) {
             console.error('Error fetching promotions:', error);
@@ -81,7 +93,7 @@ function Shopping() {
             key: 'Title',
         },
         {
-            title: 'ราคา',
+            title: 'ราคาเต็ม',
             dataIndex: 'Price',
             key: 'Price',
             render: (text) => text ? `${text.toLocaleString()} บาท` : 'N/A',
@@ -109,8 +121,9 @@ function Shopping() {
         },
     ];
 
-    const totalAmount = cartCourses.reduce((sum, course) => sum + (course.realprice || 0), 0);
-    const discountedAmount = validPromo ? totalAmount * (1 - discount / 100) : totalAmount;
+    const realtotal = cartCourses.reduce((sum, course) => sum + (course.realprice || 0), 0);
+    const totalAmount = cartCourses.reduce((sum, course) => sum + (course.Price || 0), 0);
+    const displayedAmount = Math.round(validPromo ? discountedAmount : realtotal);
 
     return (
         <motion.div
@@ -139,19 +152,19 @@ function Shopping() {
                                 onChange={(e) => setPromoCode(e.target.value)}
                                 className="promo-input"
                             />
-                            <Button type="primary" onClick={applyPromoCode}>
+                            <div className = "promo-button">
+                                <Button type="primary" onClick={applyPromoCode}>
                                 ใช้โค้ด
                             </Button>
+                            </div>
                         </div>
                         <div className="cart-summary">
-                            <div className="total-amount">
+                            <div className="total">
                                 ยอดรวมทั้งหมด: {totalAmount.toLocaleString()} บาท
                             </div>
-                            {validPromo && (
-                                <div className="discounted-amount">
-                                    ราคาหลังหักส่วนลด: {discountedAmount.toLocaleString()} บาท
-                                </div>
-                            )}
+                            <div className="finalprice">
+                                ราคาหลังหักส่วนลด: {displayedAmount.toLocaleString()} บาท
+                            </div>
                         </div>
                     </>
                 ) : (
