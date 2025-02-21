@@ -84,22 +84,60 @@
   gap: 0.5rem;
 }
 
-.cart-summary {
+.promo-section {
   margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid #e5e7eb;
+  margin-bottom: 6rem;
+}
+
+.promo-input {
+  width: 89%;
+}
+
+.apply-button {
+  margin-left: 1rem;
+}
+
+.total {
+  margin-top: 2rem;
   text-align: right;
 }
 
-.total-amount {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #1a1a1a;
+.total h3 {
+  font-size: 20px;
+  font-weight: 400;
+  color: #504f4f;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 400px;
+  margin-left: auto;
+}
+
+.final-price h4 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #dd0c0c;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 400px;
+  margin-left: auto;
 }
 
 .empty-cart {
   text-align: center;
   padding: 3rem 0;
+}
+
+.order-history-section {
+  margin-top: 2rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .browse-courses-button {
@@ -118,35 +156,48 @@
   transform: translateY(-1px);
 }
 
-.promo-section {
-  margin-bottom: 100px;
-  margin-top:30px;
-}
-.promo-section {
-
-  display: flex;
-  align-items: center;
-
-}
-.promo-input {
-  flex: 1;
-  margin-right: 10px;
-}
-.cart-summary .total {
-    font-size: 15px;
-    color: #333;
-    margin-bottom: 10px;
+.select-status {
+  margin-bottom: 20px;
 }
 
-.cart-summary .finalprice {
-    font-weight: bold;
-    font-size: 23px ;
-    font-weight: bold ;
-    color: #DD0C0C ;
-    margin-top: 15px;
+@media (max-width: 768px) {
+  .shopping-container {
+    padding: 1rem;
+  }
+
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .header-content h1 {
+    font-size: 1.5rem;
+    justify-content: center;
+  }
+
+  .course-image {
+    width: 100px;
+    height: 60px;
+  }
+
+  .promo-section {
+    margin-bottom: 3rem;
+  }
+
+  .promo-input {
+    width: 100%;
+  }
+
+  .apply-button {
+    margin-left: 0;
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  .total h3,
+  .final-price h4 {
+    align-items: center;
+    margin: 0 auto;
+  }
 }
-
-
-
-
-
