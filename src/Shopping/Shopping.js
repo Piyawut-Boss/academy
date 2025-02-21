@@ -38,7 +38,7 @@ function Shopping() {
                 return;
             }
 
-            const applicableCourses = cartCourses.filter(course => 
+            const applicableCourses = cartCourses.filter(course =>
                 course.categories.some(cat => foundPromo.categories.some(promoCat => promoCat.id === cat.id))
             );
 
@@ -96,9 +96,9 @@ function Shopping() {
             title: '',
             key: 'action',
             render: (text, record) => (
-                <Button 
-                    type="text" 
-                    danger 
+                <Button
+                    type="text"
+                    danger
                     icon={<Trash2 size={18} />}
                     onClick={() => removeFromCart(record.id)}
                     className="delete-button"
@@ -113,7 +113,7 @@ function Shopping() {
     const discountedAmount = validPromo ? totalAmount * (1 - discount / 100) : totalAmount;
 
     return (
-        <motion.div 
+        <motion.div
             className="shopping-container"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -133,11 +133,11 @@ function Shopping() {
                     <>
                         <Table dataSource={cartCourses} columns={columns} rowKey="id" className="modern-table" pagination={false} />
                         <div className="promo-section">
-                            <Input 
-                                placeholder="กรอกรหัสโปรโมชัน" 
-                                value={promoCode} 
-                                onChange={(e) => setPromoCode(e.target.value)} 
-                                className="promo-input" 
+                            <Input
+                                placeholder="กรอกรหัสโปรโมชัน"
+                                value={promoCode}
+                                onChange={(e) => setPromoCode(e.target.value)}
+                                className="promo-input"
                             />
                             <Button type="primary" onClick={applyPromoCode}>
                                 ใช้โค้ด

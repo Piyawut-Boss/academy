@@ -1,0 +1,23 @@
+.contact-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 100px;
+    margin-top: 100px;
+  }
+  
+  .contact-carousel {
+    width: auto;
+    margin-left: 100px;
+    margin: 0 auto;
+  }
+  
+  .contact-carousel .carousel-item {
+    width: calc(25% - 10px);
+    margin-right: 10px;
+  }
+  
+  .carousel-item {
+    display: flex;
+    justify-content: center;
+  }
+  

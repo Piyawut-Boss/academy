@@ -261,6 +261,11 @@ body {
 
 }
 
+.contact-carousel .carousel-item {
+  width: calc(25% - 10px);
+  margin-right: 10px;
+}
+
 .carousel-item {
   display: flex;
   justify-content: center;
@@ -279,7 +284,3 @@ body {
   transform: translateY(-10px);
 }
 
-.contact-carousel .carousel-item {
-  width: calc(25% - 10px);
-  margin-right: 10px;
-}

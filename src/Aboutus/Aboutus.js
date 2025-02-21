@@ -6,6 +6,7 @@ import lineImage from '../images/line.png';
 import igImage from '../images/instagram.png';
 import ytImage from '../images/youtube.png';
 
+
 const { Text } = Typography;
 
 const InfoCard = ({ title, desc }) => (

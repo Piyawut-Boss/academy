@@ -41,7 +41,7 @@ function Header() {
                     )}
 
                     {/* ✅ แสดงปุ่ม Logout หากล็อกอินแล้ว */}
-                    {isLoggedIn && <li><button onClick={handleLogout}>Logout </button></li>}
+                    {isLoggedIn && <li><button style={{marginRight: '20px' }} onClick={handleLogout}>Logout </button></li>}
                 </ul>
             </nav>
         </header>

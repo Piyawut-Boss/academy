@@ -99,9 +99,8 @@ const Login = () => {
       animate={{ opacity: 1 }}
     >
       <Button
-        className="back-button absolute top-4 left-4 bg-white/20 backdrop-blur-sm hover:bg-white/30"
         onClick={() => navigate(-1)}
-        style={{ border: 'none', color: 'black' }}
+        style={{ border: 'none', color: 'black', top: '-20px' }}
       >
         Back
       </Button>

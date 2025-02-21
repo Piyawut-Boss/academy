@@ -11,10 +11,10 @@ import Course from '../Course/Course';
 import User from '../User/User';
 import Howto from '../Howto/Howto';
 import Aboutus from '../Aboutus/Aboutus';
-import Promotion from '../Promotion';
+import Promotion from '../Promotion/Promotion.js';
 import Shopping from '../Shopping/Shopping';
 import Study from '../Study/Study';
-import Payment from '../Payment/Payment';  // ✅ นำเข้าไฟล์ Payment.js
+import Payment from '../Payment/Payment';  
 
 // Import Admin Pages
 import EditPayment from '../Admin/EditPayment';
