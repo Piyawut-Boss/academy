@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Table, Button, Empty, Input, message, Select } from 'antd';
 import { motion } from 'framer-motion';
@@ -6,69 +6,61 @@ import { ShoppingCart, CreditCard, Trash2 } from 'lucide-react';
 import axios from 'axios';
 import './Shopping.css';
 
-
 const { Option } = Select;
 
 function Shopping() {
-  const [cartCourses, setCartCourses] = useState([]); // สถานะเก็บคอร์สที่อยู่ในตะกร้า
-  const [orderHistory, setOrderHistory] = useState([]); // สถานะเก็บประวัติการสั่งซื้อ
-  const [promoCode, setPromoCode] = useState(''); // สถานะเก็บรหัสโปรโมชัน
-  const [validPromo, setValidPromo] = useState(null); // สถานะเก็บการตรวจสอบโปรโมชัน
-  const [discountedAmount, setDiscountedAmount] = useState(0); // สถานะเก็บจำนวนเงินที่ลดหลังจากโปรโมชัน
-  const [selectedStatus, setSelectedStatus] = useState('All'); // สถานะเก็บการเลือกสถานะของคำสั่งซื้อ
-
-  // ดึงข้อมูลตะกร้าและประวัติการสั่งซื้อจาก localStorage และ API
-  useEffect(() => {
+  const [cartCourses, setCartCourses] = useState(() => {
     const storedCartCourses = localStorage.getItem('cartCourses');
-    if (storedCartCourses) {
-      setCartCourses(JSON.parse(storedCartCourses));
-    }
+    return storedCartCourses ? JSON.parse(storedCartCourses) : [];
+  });
 
+  const [orderHistory, setOrderHistory] = useState([]);
+  const [promoCode, setPromoCode] = useState('');
+  const [validPromo, setValidPromo] = useState(null);
+  const [discountedAmount, setDiscountedAmount] = useState(() => {
     const storedDiscountedAmount = localStorage.getItem('discountedAmount');
-    if (storedDiscountedAmount) {
-      setDiscountedAmount(parseFloat(storedDiscountedAmount));
-    }
+    return storedDiscountedAmount ? parseFloat(storedDiscountedAmount) : 0;
+  });
+  const [selectedStatus, setSelectedStatus] = useState('All');
 
+  useEffect(() => {
     const fetchOrderHistory = async () => {
       try {
         const response = await axios.get('http://localhost:1337/api/payments?1=1&populate=*');
-        setOrderHistory(response.data.data); // เก็บประวัติการสั่งซื้อใน state
+        setOrderHistory(response.data.data);
       } catch (error) {
-        console.error('Error fetching order history:', error); // แสดงข้อผิดพลาดหากไม่สามารถดึงข้อมูลได้
+        console.error('Error fetching order history:', error);
       }
     };
 
     fetchOrderHistory();
   }, []);
 
-  // ฟังก์ชันลบคอร์สจากตะกร้า
   const removeFromCart = (courseId) => {
-    const updatedCartCourses = cartCourses.filter(course => course.id !== courseId); // ลบคอร์สที่เลือกจากตะกร้า
+    const updatedCartCourses = cartCourses.filter(course => course.id !== courseId);
     setCartCourses(updatedCartCourses);
-    localStorage.setItem('cartCourses', JSON.stringify(updatedCartCourses)); // บันทึกตะกร้าใหม่ลง localStorage
+    localStorage.setItem('cartCourses', JSON.stringify(updatedCartCourses));
   };
 
-  // ฟังก์ชันในการใช้รหัสโปรโมชัน
   const applyPromoCode = async () => {
     try {
       const response = await axios.get('http://localhost:1337/api/promotions?populate=*');
       const promotions = response.data.data;
-      const foundPromo = promotions.find(promo => promo.CodeName === promoCode); // ค้นหาข้อมูลโปรโมชันที่ตรงกับรหัสที่กรอก
+      const foundPromo = promotions.find(promo => promo.CodeName === promoCode);
 
       if (!foundPromo) {
-        message.error('โค้ดไม่ถูกต้อง'); // แสดงข้อความหากรหัสโปรโมชันไม่ถูกต้อง
+        message.error('โค้ดไม่ถูกต้อง');
         setValidPromo(null);
         setDiscountedAmount(0);
         return;
       }
 
-      // คัดกรองคอร์สที่สามารถใช้โปรโมชันได้
       const applicableCourses = cartCourses.filter(course =>
-        course.categories.some(cat => foundPromo.categories.some(promoCat => promoCat.id === cat.id))
+        course.categories?.some(cat => foundPromo.categories?.some(promoCat => promoCat.id === cat.id))
       );
 
       if (applicableCourses.length === 0) {
-        message.error('โค้ดนี้ไม่สามารถใช้กับคอร์สที่คุณเลือกได้'); // แสดงข้อความหากไม่สามารถใช้โปรโมชันได้
+        message.error('โค้ดนี้ไม่สามารถใช้กับคอร์สที่คุณเลือกได้');
         setValidPromo(null);
         setDiscountedAmount(0);
         return;
@@ -82,13 +74,12 @@ function Shopping() {
       const displayedAmount = Math.round(foundPromo ? newDiscountedAmount : realTotal);
       localStorage.setItem('displayedAmount', displayedAmount.toString());
 
-      message.success(`ใช้โค้ด ${promoCode} ได้สำเร็จ! ลด ${foundPromo.Discount}%`); // แสดงข้อความเมื่อโปรโมชันถูกใช้สำเร็จ
+      message.success(`ใช้โค้ด ${promoCode} ได้สำเร็จ! ลด ${foundPromo.Discount}%`);
     } catch (error) {
-      console.error('Error fetching promotions:', error); // แสดงข้อผิดพลาดเมื่อไม่สามารถดึงข้อมูลโปรโมชัน
+      console.error('Error fetching promotions:', error);
     }
   };
 
-  // คอลัมน์ที่ใช้ในการแสดงตารางคอร์สในตะกร้า
   const columns = [
     {
       title: 'ภาพตัวอย่าง',
@@ -132,7 +123,7 @@ function Shopping() {
           type="text"
           danger
           icon={<Trash2 size={18} />}
-          onClick={() => removeFromCart(record.id)} // ลบคอร์สที่เลือก
+          onClick={() => removeFromCart(record.id)}
           className="delete-button"
         >
           ลบรายการ
@@ -141,22 +132,18 @@ function Shopping() {
     },
   ];
 
-  // คอลัมน์ที่ใช้ในการแสดงประวัติการสั่งซื้อ
   const orderColumns = [
     {
       title: 'วันที่สั่งซื้อ',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (createdAt) => new Date(createdAt).toLocaleString(), // แสดงวันที่และเวลาในรูปแบบที่อ่านง่าย
+      render: (createdAt) => new Date(createdAt).toLocaleString(),
     },
     {
       title: 'คอร์สที่ซื้อ',
       dataIndex: 'courses',
       key: 'courses',
-      render: (courses) =>
-        courses?.length > 0
-          ? courses.map(course => course.attributes?.Title || 'ไม่มีชื่อ').join(', ')
-          : 'ไม่มีข้อมูล', // แสดงชื่อคอร์สที่ซื้อ
+      render: (courses) => courses.map(course => course.Title).join(', '),
     },
     {
       title: 'สถานะการชำระเงิน',
@@ -165,10 +152,10 @@ function Shopping() {
     },
   ];
 
-  // กรองประวัติการสั่งซื้อตามสถานะที่เลือก
-  const filteredOrderHistory = selectedStatus === 'All' ? orderHistory : orderHistory.filter(order => order.payment_status === selectedStatus);
+  const filteredOrderHistory = useMemo(() => {
+    return selectedStatus === 'All' ? orderHistory : orderHistory.filter(order => order.payment_status === selectedStatus);
+  }, [selectedStatus, orderHistory]);
 
-  // คำนวณยอดรวมก่อนและหลังจากใช้โปรโมชัน
   const realTotal = cartCourses.reduce((sum, course) => sum + (course.realprice || 0), 0);
   const totalAmount = cartCourses.reduce((sum, course) => sum + (course.Price || 0), 0);
   const displayedAmount = Math.round(validPromo ? discountedAmount : realTotal);
@@ -197,7 +184,7 @@ function Shopping() {
               <Input
                 placeholder="กรอกรหัสโปรโมชัน"
                 value={promoCode}
-                onChange={(e) => setPromoCode(e.target.value)} // เมื่อกรอกรหัสโปรโมชัน
+                onChange={(e) => setPromoCode(e.target.value)}
                 className="promo-input"
               />
               <Button onClick={applyPromoCode} type="primary" className="apply-button">
@@ -216,25 +203,21 @@ function Shopping() {
         )}
       </motion.div>
 
-<motion.div className="order-history-section" initial={{ y: 20 }} animate={{ y: 0 }} transition={{ delay: 0.2 }}>
-  <h2>ประวัติการสั่งซื้อ</h2>
-
-  {/* ตัวกรองสถานะคำสั่งซื้อ */}
-  <Select
-    value={selectedStatus}
-    onChange={setSelectedStatus} // เมื่อเลือกสถานะใหม่
-    style={{ width: 200, marginBottom: '20px', marginTop: '20px' }}
-    className={selectedStatus !== 'All' ? 'selected-status' : ''}
-  >
-    <Option value="All">All</Option>
-    <Option value="Pending">Pending</Option>
-    <Option value="Approved">Approved</Option>
-    <Option value="Rejected">Rejected</Option>
-  </Select>
-
-  <Table dataSource={filteredOrderHistory} columns={orderColumns} rowKey="id" className="modern-table" pagination={false} />
-</motion.div>
-
+      <motion.div className="order-history-section" initial={{ y: 20 }} animate={{ y: 0 }} transition={{ delay: 0.2 }}>
+        <h2>ประวัติการสั่งซื้อ</h2>
+        <Select
+          value={selectedStatus}
+          onChange={setSelectedStatus}
+          style={{ width: 200, marginBottom: '20px', marginTop: '20px' }}
+          className={selectedStatus !== 'All' ? 'selected-status' : ''}
+        >
+          <Option value="All">All</Option>
+          <Option value="Pending">Pending</Option>
+          <Option value="Approved">Approved</Option>
+          <Option value="Rejected">Rejected</Option>
+        </Select>
+        <Table dataSource={filteredOrderHistory} columns={orderColumns} rowKey="id" className="modern-table" pagination={false} />
+      </motion.div>
     </motion.div>
   );
 }
