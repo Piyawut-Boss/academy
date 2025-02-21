@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Row, Col, Select, message, Statistic, Modal, DatePicker, Checkbox } from 'antd';
+import { Card, Button, Row, Col, Select, message, Modal, DatePicker, Checkbox } from 'antd';
 import './Course.css';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
@@ -14,13 +14,12 @@ function Course() {
   const [showAllCourses, setShowAllCourses] = useState({});
   const [countDownData, setCountDownData] = useState([]);
   const [selectedExam, setSelectedExam] = useState(null);
-  const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const [setSelectedSubjects] = useState([]);
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [remainingTime, setRemainingTime] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentCourse, setCurrentCourse] = useState(null);
   const [categoryData, setCategoryData] = useState([]);
-
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
@@ -64,7 +63,6 @@ function Course() {
       fetchUserCourses();
     }
   }, [isLoggedIn, user?.username]);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -111,10 +109,6 @@ function Course() {
 
     setRemainingTime(`เหลือเวลาเรียนประมาณ ${diffDays} วัน ${diffHours} ชั่วโมง`);
   };
-
-  const filteredCourses = courses.filter(course =>
-    selectedSubjects.length === 0 || course.subjects?.some(sub => selectedSubjects.includes(sub.name))
-  );
 
   const toggleShowAllCourses = (category) => {
     setShowAllCourses(prev => ({
@@ -226,7 +220,7 @@ function Course() {
                           <Button type="link" className="details-button" onClick={() => handleViewDetails(course)}>
                             อ่านรายละเอียด
                           </Button>
-                          <Button type="primary" className="enroll-button" onClick={() => navigate("/study")}>
+                          <Button type="primary" className="enroll-button" onClick={() => navigate(`/study/${course.documentId}`)}>
                             ไปที่คอร์สของฉัน
                           </Button>
                         </div>
