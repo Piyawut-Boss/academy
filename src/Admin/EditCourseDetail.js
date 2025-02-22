@@ -348,4 +348,5 @@ function EditCourseDetail() {
     );
 }
 
+//test
 export default EditCourseDetail;    
