@@ -21,6 +21,9 @@ import EditPayment from '../Admin/EditPayment';
 import EditUser from '../Admin/EditUser';
 import EditCourse from '../Admin/EditCourse';
 import EditPromotion from '../Admin/EditPromotion';
+import EditCourseDetail from '../Admin/EditCourseDetail';
+
+
 
 import './App.css';
 
@@ -70,6 +73,7 @@ function App() {
               <Route path="/admin/edituser" element={<ProtectedRoute><EditUser /></ProtectedRoute>} />
               <Route path="/admin/editcourse" element={<ProtectedRoute><EditCourse /></ProtectedRoute>} />
               <Route path="/admin/editpromotion" element={<ProtectedRoute><EditPromotion /></ProtectedRoute>} />
+              <Route path="/admin/editcourse/:documentId" element={<ProtectedRoute><EditCourseDetail /></ProtectedRoute>} />
             </Routes>
           </div>
           <Footer />
