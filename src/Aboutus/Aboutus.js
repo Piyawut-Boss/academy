@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Typography, Carousel, FloatButton } from "antd";
-import { UpOutlined, TeamOutlined, EnvironmentOutlined, PhoneOutlined, CommentOutlined } from '@ant-design/icons';
+import { UpOutlined, TeamOutlined, EnvironmentOutlined, PhoneOutlined, PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import logo from './p1.png';
 import fbImage from '../images/facebook.png';
 import lineImage from '../images/line.png';
@@ -38,6 +38,7 @@ const Aboutus = () => {
   const [tutors, setTutors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showFloatButtons, setShowFloatButtons] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:1337/api/tutors?populate=image")
@@ -85,7 +86,7 @@ const Aboutus = () => {
 
       <div id="team-section" className="aboutus-team-tutor">
         <h2>Team Tutor</h2>
-        <div className="aboutus-tutor-images">
+        <Carousel autoplay slidesToShow={4} dots={false}>
           {loading ? (
             <Text>กำลังโหลดข้อมูลติวเตอร์...</Text>
           ) : error ? (
@@ -103,7 +104,7 @@ const Aboutus = () => {
           ) : (
             <Text>ไม่มีข้อมูลของติวเตอร์</Text>
           )}
-        </div>
+        </Carousel>
       </div>
 
       <div id="map-section" className="aboutus-map-section">
@@ -152,37 +153,46 @@ const Aboutus = () => {
         </Carousel>
       </div>
 
-      <FloatButton.Group shape="circle" style={{ right: 24 }}>
-        <FloatButton
-          icon={<UpOutlined />}
-          tooltip="Scroll to Top"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        />
-        <FloatButton
-          icon={<TeamOutlined />}
-          tooltip="Team Tutor"
-          onClick={() => {
-            const section = document.getElementById("team-section");
-            window.scrollTo({ top: section.offsetTop - 170, behavior: "smooth" });
-          }}
-        />
-        <FloatButton
-          icon={<EnvironmentOutlined />}
-          tooltip="Map"
-          onClick={() => {
-            const section = document.getElementById("map-section");
-            window.scrollTo({ top: section.offsetTop - 120, behavior: "smooth" });
-          }}
-        />
-        <FloatButton
-          icon={<PhoneOutlined />}
-          tooltip="Contact"
-          onClick={() => {
-            const section = document.getElementById("contact-section");
-            window.scrollTo({ top: section.offsetTop - 50, behavior: "smooth" });
-          }}
-        />
-      </FloatButton.Group>
+      <FloatButton
+        icon={showFloatButtons ? <CloseOutlined /> : <PlusOutlined />}
+        tooltip={showFloatButtons ? "Close Navigation" : "Show Navigation"}
+        onClick={() => setShowFloatButtons(!showFloatButtons)}
+        style={{ right: 24, bottom: 80 }}
+      />
+
+      {showFloatButtons && (
+        <FloatButton.Group shape="circle" style={{ right: 24, bottom: 140 }} gap={10}>
+          <FloatButton
+            icon={<UpOutlined />}
+            tooltip="Scroll to Top"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          />
+          <FloatButton
+            icon={<TeamOutlined />}
+            tooltip="Team Tutor"
+            onClick={() => {
+              const section = document.getElementById("team-section");
+              section && window.scrollTo({ top: section.offsetTop - 170, behavior: "smooth" });
+            }}
+          />
+          <FloatButton
+            icon={<EnvironmentOutlined />}
+            tooltip="Map"
+            onClick={() => {
+              const section = document.getElementById("map-section");
+              section && window.scrollTo({ top: section.offsetTop - 120, behavior: "smooth" });
+            }}
+          />
+          <FloatButton
+            icon={<PhoneOutlined />}
+            tooltip="Contact"
+            onClick={() => {
+              const section = document.getElementById("contact-section");
+              section && window.scrollTo({ top: section.offsetTop - 50, behavior: "smooth" });
+            }}
+          />
+        </FloatButton.Group>
+      )}
     </div>
   );
 };
