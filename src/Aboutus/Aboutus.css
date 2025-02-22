@@ -1,23 +1,213 @@
+.aboutus-container {
+  font-family: Arial, sans-serif;
+  color: #473E91;
+  background-color: transparent;
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.aboutus-header {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #473E91;
+}
+
+.aboutus-subheader {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.aboutus-subheader h2 {
+  color: #FFC900;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.aboutus-subheader p {
+  max-width: 2000px;
+  margin: 0 auto;
+  line-height: 1.6;
+  color: #666;
+  font-size: 1.5rem;
+}
+
+.aboutus-logo {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.aboutus-logo img {
+  width: 1000px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  margin-bottom: 60px;
+  margin-top: 90px;
+}
+
+.aboutus-info-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.aboutus-info-card {
+  background: #FFC900;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: box-shadow 0.3s ease;
+}
+
+.aboutus-info-card h3 {
+  font-size: 1.5rem;
+  color: #473E91;
+}
+
+.aboutus-info-card p {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 10px;
+  transition: color 0.3s ease;
+}
+
+.aboutus-info-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.aboutus-info-card:hover p {
+  color: #473E91;
+}
+
+.aboutus-team-tutor {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.aboutus-team-tutor h2 {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  font-size: 2rem;
+}
+
+.aboutus-tutor-images {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.aboutus-tutor-image {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.aboutus-tutor-image img {
+  width: 250px;
+  height: auto;
+  margin: 10px;
+}
+
+.aboutus-map-section {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.aboutus-map-section h3 {
+  margin-top: 50px;
+  margin-bottom: 90px;
+  font-size: 2rem;
+}
+
+.aboutus-map-section iframe {
+  border: 0;
+  max-width: 100%;
+  height: 450px;
+  width: 100%;
+}
+
+.aboutus-testimonials {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.aboutus-testimonials h3 {
+  margin-top: 150px;
+  margin-bottom: 30px;
+  font-size: 1.7rem;
+}
+
+.aboutus-testimonials p {
+  font-size: 1.3rem;
+  color: #666;
+}
+
+.aboutus-contact-section {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.aboutus-contact-section h4 {
+  margin-top: 100px;
+  margin-bottom: 30px;
+  font-size: 1.7rem;
+}
+
+.aboutus-contact-carousel .aboutus-carousel-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.aboutus-contact-carousel .aboutus-contact-image {
+  width: 250px;
+  height: 250px;
+  margin: 0 10px;
+  margin-top: 30px;
+}
+
+.contact-section {
+  text-align: center;
+  margin: 50px 0;
+}
+
 .contact-title {
-    font-size: 32px;
-    font-weight: bold;
-    margin-bottom: 100px;
-    margin-top: 100px;
-  }
-  
-  .contact-carousel {
-    width: auto;
-    margin-left: 100px;
-    margin: 0 auto;
-  }
-  
-  .contact-carousel .carousel-item {
-    width: calc(25% - 10px);
-    margin-right: 10px;
-  }
-  
-  .carousel-item {
-    display: flex;
-    justify-content: center;
-  }
-  
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 100px;
+  margin-top: 100px;
+}
+
+.contact-carousel {
+  width: auto;
+  margin-left: 100px;
+  margin: 0 auto;
+}
+
+.contact-carousel .carousel-item {
+  width: calc(25% - 10px);
+  margin-right: 10px;
+}
+
+.carousel-item {
+  display: flex;
+  justify-content: center;
+}
+
+.contact-image {
+  width: 100%;
+  max-width: 250px;
+  transition: transform 0.2s;
+  border-radius: 12px;
+  margin-left: 60px;
+  margin-top: 50px;
+}
+
+.contact-image:hover {
+  transform: translateY(-10px);
+}
