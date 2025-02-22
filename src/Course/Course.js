@@ -14,7 +14,7 @@ function Course() {
   const [showAllCourses, setShowAllCourses] = useState({});
   const [countDownData, setCountDownData] = useState([]);
   const [selectedExam, setSelectedExam] = useState(null);
-  const [setSelectedSubjects] = useState([]);
+  const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [remainingTime, setRemainingTime] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);

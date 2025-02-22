@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Row, Col, Card, Carousel, Typography, Button } from "antd";
+import { Layout, Row, Col, Card, Carousel, Typography, Button, FloatButton } from "antd";
+import { UpOutlined, TeamOutlined, TrophyOutlined, BookOutlined, PhoneOutlined, PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import myImage from '../images/in.png';
 import fbImage from '../images/facebook.png';
 import lineImage from '../images/line.png';
@@ -11,15 +12,13 @@ import './Home.css';
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
-
-
 const Home = () => {
   const [banners, setBanners] = useState([]);
   const [tutors, setTutors] = useState([]);
   const [congracts, setCongracts] = useState([]);
   const [congrate2s, setCongrate2s] = useState([]);
   const [recommendedCourses, setRecommendedCourses] = useState([]);
-
+  const [showFloatButtons, setShowFloatButtons] = useState(false);
 
   const addToCart = (course) => {
     const storedCartCourses = localStorage.getItem('cartCourses');
@@ -27,7 +26,6 @@ const Home = () => {
     cartCourses.push(course);
     localStorage.setItem('cartCourses', JSON.stringify(cartCourses));
   };
-
 
   useEffect(() => {
     // Banners
@@ -92,7 +90,7 @@ const Home = () => {
       })
       .catch((error) => console.error("Error fetching congrate2s:", error));
 
-    // Recommended 
+    // Recommended
     fetch("http://localhost:1337/api/courses?populate=*")
       .then((response) => response.json())
       .then((data) => {
@@ -134,7 +132,7 @@ const Home = () => {
           )}
         </Carousel>
 
-        <div className="section">
+        <div className="section" id="team-section">
           <Title level={1}>
             <span className="team-container">
               <span className="team-text">Team</span>
@@ -153,7 +151,6 @@ const Home = () => {
                     alt={`รูปติวเตอร์ ${tutor.name}`}
                     className="tutor-image"
                   />
-
                 </div>
               ))
             ) : (
@@ -162,7 +159,7 @@ const Home = () => {
           </Carousel>
         </div>
 
-        <div className="section">
+        <div className="section" id="congracts-section">
           <Title level={1}>
             <span className="std-container">
               <span className="congrate-text">ขอแสดงความยินดี</span>
@@ -186,7 +183,7 @@ const Home = () => {
           </Carousel>
         </div>
 
-        <div className="section">
+        <div className="section" id="congrate2-section">
           <Carousel autoplay slidesToShow={4} dots={false}>
             {congrate2s.length > 0 ? (
               congrate2s.map((congrate) => (
@@ -204,13 +201,11 @@ const Home = () => {
           </Carousel>
         </div>
 
-
         <div className="image-container">
           <img src={myImage} alt="" />
         </div>
 
-
-        <div className="section">
+        <div className="section" id="courses-section">
           <Title level={1}>
             <span className="team-container">
               <span className="Course-text">Course </span>
@@ -257,8 +252,7 @@ const Home = () => {
           </Row>
         </div>
 
-
-        <div className="contact-section">
+        <div className="contact-section" id="contact-section">
           <Title level={2} className="contact-title">ช่องทางการติดตาม</Title>
           <Carousel className="contact-carousel" slidesToShow={4} draggable={false} infinite={true} dots={false}>
             <div className="carousel-item">
@@ -284,8 +278,59 @@ const Home = () => {
           </Carousel>
         </div>
 
+        <FloatButton
+          icon={showFloatButtons ? <CloseOutlined /> : <PlusOutlined />}
+          tooltip={showFloatButtons ? "Close Navigation" : "Show Navigation"}
+          onClick={() => setShowFloatButtons(!showFloatButtons)}
+          style={{ right: 24, bottom: 80 }}
+        />
 
-
+        {showFloatButtons && (
+          <FloatButton.Group
+            shape="circle"
+            direction="up"
+            style={{ right: 24, bottom: 140 }}
+            gap={10}
+          >
+            <FloatButton
+              icon={<UpOutlined />}
+              tooltip="Scroll to Top"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            />
+            <FloatButton
+              icon={<TeamOutlined />}
+              tooltip="Team Tutor"
+              onClick={() => {
+                const section = document.getElementById("team-section");
+                section && window.scrollTo({ top: section.offsetTop - 100, behavior: "smooth" });
+              }}
+            />
+            <FloatButton
+              icon={<TrophyOutlined />}
+              tooltip="Student Congratulation"
+              onClick={() => {
+                const section = document.getElementById("congracts-section");
+                section && window.scrollTo({ top: section.offsetTop - 100, behavior: "smooth" });
+              }}
+            />
+            <FloatButton
+              icon={<BookOutlined />}
+              tooltip="Courses"
+              onClick={() => {
+                const section = document.getElementById("courses-section");
+                section && window.scrollTo({ top: section.offsetTop - 100, behavior: "smooth" });
+              }}
+            />
+            <FloatButton
+              icon={<PhoneOutlined />}
+              tooltip="Contact"
+              onClick={() => {
+                const section = document.getElementById("contact-section");
+                section && window.scrollTo({ top: section.offsetTop - 100, behavior: "smooth" });
+              }}
+            />
+          </FloatButton.Group>
+        )}
       </Content>
     </Layout>
   );
