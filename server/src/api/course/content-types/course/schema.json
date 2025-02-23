@@ -42,18 +42,6 @@
       "target": "api::category.category",
       "inversedBy": "courses"
     },
-    "payments": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::payment.payment",
-      "mappedBy": "course"
-    },
-    "users": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "courses"
-    },
     "units": {
       "type": "relation",
       "relation": "oneToMany",
@@ -65,6 +53,18 @@
     },
     "CourseDuration": {
       "type": "integer"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "courses"
+    },
+    "payment": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::payment.payment",
+      "inversedBy": "courses"
     }
   }
 }
