@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "congracts",
+  "info": {
+    "singularName": "congract",
+    "pluralName": "congracts",
+    "displayName": "Congrate",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "Name": {
+      "type": "string"
+    }
+  }
+}

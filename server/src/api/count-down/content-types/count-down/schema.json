@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "count_downs",
+  "info": {
+    "singularName": "count-down",
+    "pluralName": "count-downs",
+    "displayName": "CountDown",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "ExamName": {
+      "type": "string"
+    },
+    "EndTime": {
+      "type": "date"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "count_downs"
+    }
+  }
+}
