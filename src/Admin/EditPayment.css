@@ -1,154 +1,315 @@
-.edit-user-container {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+/* Home.css */
+body {
+  margin: 0;
   font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
 }
 
-h1 {
+.home-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.intro-section {
+  padding: 40px;
+
+  .home-layout {
+    background-color: #f5f7fa;
+  }
+
+  .banner-carousel img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+  }
+
+  .congract-carousel-item {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+  }
+
+  .congract-carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .section {
+    width: 90%;
+    max-width: 1200px;
+    background: white;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: none;
+    text-align: center;
+  }
+
+  .highlight-section {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+  }
+
+  .highlight-card {
+    background-color: #fffae6;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: none;
+  }
+
+  .winner-card {
+    text-align: center;
+  }
+
+  .carousel-dots {
+    bottom: -10px !important;
+  }
+
+  .special-features .ant-card {
+    text-align: center;
+  }
+
   text-align: center;
-  color: #473E91;
-  font-size: 30px;
-  margin-top: 40px;
-  margin-bottom: 60px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 800px;
+  border-radius: 8px;
 }
 
-/* ปรับแต่งตาราง */
-.table-container {
-  display: table;
-  width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* ส่วนหัวของตาราง */
-.table-header {
-  display: table-header-group;
-  background-color: #473E91;
-  color: white;
-  font-weight: bold;
-}
-
-.table-header .table-row {
-  display: table-row;
-}
-
-.table-header .table-cell {
-  display: table-cell;
-  padding: 12px 20px;
-  border: 1px solid #ddd;
-}
-
-/* ส่วนเนื้อหาตาราง */
-.table-body {
-  display: table-row-group;
-}
-
-.table-row {
-  display: table-row;
-}
-
-.table-cell {
-  display: table-cell;
-  padding: 12px 20px;
-  border: 1px solid #ddd;
-  text-align: left;
-  word-wrap: break-word;
-}
-
-/* สลับสีของแถว */
-.table-row:nth-child(even) {
-  background-color: #f4f4f4;
-}
-
-/* เพิ่ม hover ให้กับแถวในเนื้อหา */
-.table-body .table-row:hover {
-  background-color: #f1f1f1;
-  cursor: pointer;
-}
-
-/* ปุ่มต่างๆ */
-.button-group {
+.features-section {
   display: flex;
-  gap: 10px;
-}
-
-button {
-  padding: 6px 12px;
-  border: none;
-  cursor: pointer;
-  background-color: #473E91;
-  color: white;
-  border-radius: 5px;
-}
-
-button:hover {
-  background-color: #362b75;
-}
-
-button.cancel {
-  background-color: red;
-}
-
-button.cancel:hover {
-  background-color: darkred;
-}
-
-/* ปรับแต่ง select และ input */
-select, input[type="file"] {
-  padding: 6px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-/* เพิ่มสไตล์สำหรับ payment proof image */
-.payment-proof-image {
-  max-width: 50px;
-  max-height: 50px;
-  cursor: pointer;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-top: 10px;
-}
-
-/* สไตล์สำหรับ filter container */
-.filter-container {
-  display: flex;
+  justify-content: space-around;
+  padding: 20px;
   gap: 20px;
-  margin-bottom: 20px;
+}
+
+.feature {
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: none;
+  border-radius: 8px;
+  flex: 1;
+  text-align: center;
+}
+
+.home-footer {
+  margin-top: auto;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.team-container {
+  display: flex;
+  justify-content: center;
   align-items: center;
+  margin-top: 120px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.filter-container label {
-  font-weight: bold;
+.team-text {
+  display: inline;
+  color: black;
+  margin-right: 10px;
+}
+
+.tutor-text {
+  display: inline;
   color: #473E91;
+  margin-right: 10px;
+}
+.academy-text {
+  display: inline;
+  color: #FFC900;
+  margin-right: 10px;
 }
 
-.filter-container select {
-  padding: 6px;
-  border: 1px solid #ddd;
+.Course-text {
+  display: inline;
+  color: #000000;
+  margin-right: 10px;
+
+}
+.Recommend-text {
+  display: inline;
+  color: #473E91;
+  margin-right: 10px;
+
+}
+
+.cc-description {
+  font-size: 20px;
+  color: #FFC900;
+  margin-top: 5px;
+  text-align: center;
+  margin-bottom: 50px;
+
+}
+
+.std-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 200px;
+}
+
+.std2-carousel-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  min-height: 300px;
+}
+
+.std2-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.std2-image {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-left: 35px;
+  margin-top: 50px;
+}
+
+
+.congrate-text {
+  display: block;
+  color: black;
+  margin-bottom: 5px;
+}
+
+.std-text {
+  display: inline;
+  color: #473E91;
+  margin-right: 10px;
+  margin-bottom: 50px;
+}
+
+
+
+.team-description {
+  font-size: 20px;
+  color: black;
+  margin-top: 5px;
+  text-align: center;
+  margin-bottom: 100px;
+
+}
+
+.tutor-carousel-item {
+  text-align: center;
+  position: relative;
+}
+
+.tutor-image {
+  width: 100%;
+  height: 300px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.tutor-info {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 5px;
   border-radius: 4px;
+}
+
+.image-container{
+  margin-top: 100px;
+
+}
+
+.contact-section {
+  text-align: center;
+  margin: 50px 0;
+}
+
+.contact-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 100px;
+  margin-top: 100px;
+}
+
+.contact-carousel {
+  width: auto;
+  margin-left: 100px;
+  margin: 0 auto;
+
+}
+
+.contact-carousel .carousel-item {
+  width: calc(25% - 10px);
+  margin-right: 10px;
+}
+
+.carousel-item {
+  display: flex;
+  justify-content: center;
+}
+
+.contact-image {
+  width: 100%;
+  max-width: 250px;
+  transition: transform 0.2s;
+  border-radius: 12px;
+  margin-left: 60px;
+  margin-top: 50px;
+}
+
+.contact-image:hover {
+  transform: translateY(-10px);
+}
+.congract-carousel-item img {
+  width: 98%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  margin: 0 auto;
+  transition: transform 0.2s;
+}
+
+.image-container img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  margin: 0 auto;
+  transition: transform 0.2s;
+}
+
+.image-container img:hover {
+  transform: translateY(-10px);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .table-cell {
-    padding: 8px;
-  }
-
-  .button-group {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .filter-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .filter-container label,
-  .filter-container select {
-    width: 100%;
+  .image-container img {
+    max-width: 100%;
+    margin-top: 20px;
   }
 }
