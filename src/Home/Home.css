@@ -163,18 +163,18 @@ body {
 
 .std2-carousel-item {
   display: flex;
-  justify-content: center; 
-  align-items: center;      
+  justify-content: center;
+  align-items: center;
   position: relative;
-  min-height: 300px; 
+  min-height: 300px;
 }
 
 .std2-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; 
-  height: 100%;           
+  justify-content: center;
+  height: 100%;
 }
 
 .std2-image {
@@ -283,4 +283,33 @@ body {
 .contact-image:hover {
   transform: translateY(-10px);
 }
+.congract-carousel-item img {
+  width: 98%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  margin: 0 auto;
+  transition: transform 0.2s;
+}
 
+.image-container img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  margin: 0 auto;
+  transition: transform 0.2s;
+}
+
+.image-container img:hover {
+  transform: translateY(-10px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .image-container img {
+    max-width: 100%;
+    margin-top: 20px;
+  }
+}

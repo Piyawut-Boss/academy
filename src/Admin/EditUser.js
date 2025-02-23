@@ -16,7 +16,7 @@ function EditUser() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [selectedCourses, setSelectedCourses] = useState([]);
 
-    const token = '7a636603f59fa4cea900b468684046aa3e662d3f4ba69150200f83fa125b6d5a344aa19158bc53cef7eff2206896575fd1dd23b89034dc77c6b47dc1807e45e123a13a4bcda3834f97f126c52a93755f87495079abeb6e2d31adae8cac4ff33ace41cb45da8d312f5e5edd549935e16106eeedcd2a03b7e3ae7cd961cc52c071';
+    const token = 'ed762fbe8d59269b079859a38de47a1c0645a1d2465558df32981e23279d444e8efcb3d8d333faf223a2db2ce93a63d164f169f5ca09ecb982809780c9d66c9b3d49d9b4249b75bf1890a59da26cedbd48374b35e59a366a3ec2354396c02e863af6eaa68e86097dfdb8580a76e50b1b5bbba28bd37deb6261381d2af171f418';
 
     useEffect(() => {
         axios.get('http://localhost:1337/api/users?populate=courses')
@@ -33,7 +33,7 @@ function EditUser() {
         setUsername(user.username);
         setEmail(user.email);
         setPassword('');  // Clear the password field when editing
-        setSelectedCourses(user.courses ? user.courses.map(course => course.documentId) : []);
+        setSelectedCourses(user.courses ? user.courses.map(course => course.id) : []);
         setIsModalVisible(true);
     };
 
