@@ -182,7 +182,11 @@ function EditPayment() {
                 {payment.user?.username || 'N/A'}
               </div>
               <div className="table-cell">
-                {payment.courses.length > 0 ? payment.courses[0].Title : 'N/A'}
+                {payment.courses && payment.courses.length > 0
+                  ? payment.courses.map((course, index) => (
+                    <div key={index}>{course.Title}</div>
+                  ))
+                  : 'N/A'}
               </div>
               <div className="table-cell">
                 {payment.payment_proof ? (

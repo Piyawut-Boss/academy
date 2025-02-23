@@ -33,7 +33,7 @@ function EditUser() {
         setUsername(user.username);
         setEmail(user.email);
         setPassword('');  // Clear the password field when editing
-        setSelectedCourses(user.courses ? user.courses.map(course => course.id) : []);
+        setSelectedCourses(user.courses ? user.courses.map(course => course.documentId) : []);
         setIsModalVisible(true);
     };
 

@@ -38,37 +38,64 @@ function Payment() {
             const formData = new FormData();
             formData.append('files', file);
 
+            console.log('Uploading file:', file);
             const uploadRes = await axios.post('http://localhost:1337/api/upload', formData);
+            console.log('Upload response:', uploadRes.data);
+
             if (!uploadRes.data || uploadRes.data.length === 0) {
                 throw new Error('อัปโหลดไฟล์ไม่สำเร็จ');
             }
 
-            const fileUrl = uploadRes.data[0]?.url;
+           
+            const fileUploadResponse = uploadRes.data;
+            const fileId = fileUploadResponse[0]?.id;
+
             const user = JSON.parse(localStorage.getItem('user'));
-            const userId = user?.id || 1;
+            const userDocumentId = user?.documentId;
+
+            console.log('Cart Courses:', cartCourses);
+            console.log('User:', user);
+            console.log('User Document ID:', userDocumentId);
 
             const paymentData = {
                 data: {
-                    documentId: Math.random().toString(36).substr(2, 10),
                     payment_status: 'Pending',
-                    payment_proof: fileUrl,
-                    courses: cartCourses.map(course => course.id),
-                    totalAmount: displayedAmount || totalAmount, // ใช้ displayedAmount ถ้ามี ถ้าไม่มีให้ใช้ totalAmount
-                    user: userId,
+                    payment_proof: fileId,
+                    courses: {
+                        connect: cartCourses.map(course => course.documentId)
+                    },
+                    totalAmount: parseFloat(displayedAmount || totalAmount),
+                    user: {
+                        connect: [userDocumentId]
+                    }
                 }
             };
 
-            const paymentRes = await axios.post('http://localhost:1337/api/payments', paymentData);
+            console.log('Full Payment Data:', JSON.stringify(paymentData, null, 2));
+
+            const userToken = localStorage.getItem('jwt');
+            const headers = {
+                'Authorization': `Bearer ${userToken}`,
+                'Content-Type': 'application/json'
+            };
+
+            console.log('Making payment request with data:', paymentData);
+            const paymentRes = await axios.post('http://localhost:1337/api/payments', paymentData, { headers });
+            console.log('Payment response:', paymentRes);
+
             if (paymentRes.status === 200 || paymentRes.status === 201) {
                 message.success('สร้างคำสั่งซื้อสำเร็จ!');
                 localStorage.removeItem('cartCourses');
                 navigate('/');
-            } else {
-                throw new Error('การสร้างคำสั่งซื้อผิดพลาด');
             }
         } catch (error) {
             console.error('Error creating payment:', error);
-            message.error('เกิดข้อผิดพลาดในการชำระเงิน');
+            if (error.response?.data?.error) {
+                console.error('Detailed API Error:', error.response.data.error);
+                message.error(`เกิดข้อผิดพลาด: ${error.response.data.error.message || error.message}`);
+            } else {
+                message.error(`เกิดข้อผิดพลาดในการชำระเงิน: ${error.message}`);
+            }
         } finally {
             setLoading(false);
         }
