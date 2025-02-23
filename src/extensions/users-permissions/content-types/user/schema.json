@@ -65,23 +65,17 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "payments": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::payment.payment",
-      "mappedBy": "user"
-    },
     "courses": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::course.course",
       "mappedBy": "users"
     },
-    "Admin": {
+    "payments": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::admin.admin",
-      "mappedBy": "admin"
+      "relation": "oneToMany",
+      "target": "api::payment.payment",
+      "mappedBy": "user"
     }
   }
 }

@@ -20,11 +20,11 @@
         "Rejected"
       ]
     },
-    "course": {
+    "courses": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "oneToMany",
       "target": "api::course.course",
-      "inversedBy": "payments"
+      "mappedBy": "payment"
     },
     "user": {
       "type": "relation",
