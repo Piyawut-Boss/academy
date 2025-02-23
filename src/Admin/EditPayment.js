@@ -7,12 +7,14 @@ import './EditPayment.css';
 function EditPayment() {
   const [payments, setPayments] = useState([]);
   const [courses, setCourses] = useState([]);
+  const [users, setUsers] = useState([]);
   const [editingPayment, setEditingPayment] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [isImageModalVisible, setIsImageModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [filterStatus, setFilterStatus] = useState('All');
+  const [filterUser, setFilterUser] = useState('All');
   const navigate = useNavigate();
 
   const token = '026d08263b3ead716ea4e5b42c788650b0ab4a29f5a51f53d20cd1fb7262636f9a326a1cf4e236e1d5f474ae74b2a54fb57eef2413430ec925fc5cb550114572975324b04adfc8bf0f4adf8c5584b3148ea8d7c1729a996e6a56be2a2c7fe3d909a435bca999ca8ac8e6b3ac8ec222b8d840310e8352e5a47e297ad1893ed245';
@@ -42,13 +44,18 @@ function EditPayment() {
       .catch(error => {
         console.error('Error fetching courses:', error);
       });
+
+    axios.get('http://localhost:1337/api/users')
+      .then(response => {
+        setUsers(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching users:', error);
+      });
   }, [navigate]);
 
   const handleEdit = (payment) => {
-    setEditingPayment({
-      ...payment,
-      course: payment.courses.length > 0 ? payment.courses[0] : { documentId: '' }
-    });
+    setEditingPayment(payment);
     setPreviewImage(payment.payment_proof ? `http://localhost:1337${payment.payment_proof.url}` : null);
   };
 
@@ -103,8 +110,9 @@ function EditPayment() {
   };
 
   const filteredPayments = payments.filter(payment => {
-    if (filterStatus === 'All') return true;
-    return payment.payment_status === filterStatus;
+    const statusMatch = filterStatus === 'All' || payment.payment_status === filterStatus;
+    const userMatch = filterUser === 'All' || payment.user?.documentId === filterUser;
+    return statusMatch && userMatch;
   });
 
   return (
@@ -122,15 +130,29 @@ function EditPayment() {
           <option value="Approved">Approved</option>
           <option value="Rejected">Rejected</option>
         </select>
+        <label htmlFor="filterUser">Filter by User: </label>
+        <select
+          id="filterUser"
+          value={filterUser}
+          onChange={(e) => setFilterUser(e.target.value)}
+        >
+          <option value="All">All</option>
+          {users.map(user => (
+            <option key={user.documentId} value={user.documentId}>
+              {user.username}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="table-container">
         <div className="table-header">
           <div className="table-row">
             <div className="table-cell">Payment Status</div>
-            <div className="table-cell">Course</div>
             <div className="table-cell">User</div>
+            <div className="table-cell">Course</div>
             <div className="table-cell">Payment Proof</div>
             <div className="table-cell">Created At</div>
+            <div className="table-cell">Updated At</div>
             <div className="table-cell">Action</div>
           </div>
         </div>
@@ -157,39 +179,28 @@ function EditPayment() {
                 )}
               </div>
               <div className="table-cell">
-                {payment.courses.length > 0 ? payment.courses[0].Title : 'N/A'}
-              </div>
-              <div className="table-cell">
                 {payment.user?.username || 'N/A'}
               </div>
               <div className="table-cell">
-                {editingPayment && editingPayment.documentId === payment.documentId ? (
-                  <>
-                    <input type="file" onChange={handleFileChange} />
-                    {previewImage && (
-                      <img
-                        src={previewImage}
-                        alt="Payment Proof"
-                        className="payment-proof-image"
-                        onClick={() => handleImageClick(previewImage)}
-                      />
-                    )}
-                  </>
+                {payment.courses.length > 0 ? payment.courses[0].Title : 'N/A'}
+              </div>
+              <div className="table-cell">
+                {payment.payment_proof ? (
+                  <img
+                    src={`http://localhost:1337${payment.payment_proof.url}`}
+                    alt="Payment Proof"
+                    className="payment-proof-image"
+                    onClick={() => handleImageClick(`http://localhost:1337${payment.payment_proof.url}`)}
+                  />
                 ) : (
-                  payment.payment_proof ? (
-                    <img
-                      src={`http://localhost:1337${payment.payment_proof.url}`}
-                      alt="Payment Proof"
-                      className="payment-proof-image"
-                      onClick={() => handleImageClick(`http://localhost:1337${payment.payment_proof.url}`)}
-                    />
-                  ) : (
-                    'No Proof'
-                  )
+                  'No Proof'
                 )}
               </div>
               <div className="table-cell">
                 {new Date(payment.createdAt).toLocaleDateString() || 'N/A'}
+              </div>
+              <div className="table-cell">
+                {new Date(payment.updatedAt).toLocaleDateString() || 'N/A'}
               </div>
               <div className="table-cell">
                 {editingPayment && editingPayment.documentId === payment.documentId ? (
