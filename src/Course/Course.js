@@ -158,6 +158,7 @@ function Course() {
     const cartCourses = storedCartCourses ? JSON.parse(storedCartCourses) : [];
     cartCourses.push(course);
     localStorage.setItem('cartCourses', JSON.stringify(cartCourses));
+    message.success(`${course.Title} has been added to your cart!`);
   };
 
   const handleViewDetails = (course) => {

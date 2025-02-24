@@ -52,7 +52,7 @@ const Login = () => {
 
       // นำทางไปยังหน้า admin ถ้า role เป็น Admin
       if (role === 'Admin') {
-        navigate('/admin');
+        navigate('/admin/EditPayment');
       } else {
         navigate('/course');
       }
