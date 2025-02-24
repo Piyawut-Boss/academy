@@ -23,22 +23,40 @@ function User() {
   }, []);
 
   useEffect(() => {
-    if (user?.id) {
+    if ( user?.id) {
       const fetchUserCourses = async () => {
+        setLoading(true);  
         try {
-          const response = await fetch(`http://localhost:1337/api/users/${user.id}?populate=courses`);
-          const data = await response.json();
-          setUserCourses(data.courses || []);
+          const response = await fetch(`http://localhost:1337/api/courses?filters[user][id][$eq]=${user.id}&populate=user`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch user courses');
+          }
+          const userCoursesData = await response.json();
+          
+        
+          const documentIds = userCoursesData.data.map(course => course.documentId);
+          if (documentIds.length > 0) {
+            const fetchCoursesDetails = await fetch(`http://localhost:1337/api/courses?filters[documentId][$in]=${documentIds.join('&filters[documentId][$in]=')}&populate=*`);
+            if (!fetchCoursesDetails.ok) {
+              throw new Error('Failed to fetch course details');
+            }
+            const coursesDetailsData = await fetchCoursesDetails.json();
+            setUserCourses(coursesDetailsData.data || []);  
+          } else {
+            setUserCourses([]);  
+          }
         } catch (error) {
-          console.error("Error fetching user courses:", error);
+          console.error('Error fetching user courses:', error);
+          setError('Error fetching data');  
         } finally {
-          setLoading(false);
+          setLoading(false); 
         }
       };
+      
 
       fetchUserCourses();
     }
-  }, [user]);
+  }, [ user?.id]);
 
   const handleClick = () => {
     setShowHeart(true);

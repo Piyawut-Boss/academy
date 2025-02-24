@@ -52,9 +52,31 @@ function Course() {
     if (isLoggedIn && user?.id) {
       const fetchUserCourses = async () => {
         try {
-          const response = await fetch(`http://localhost:1337/api/users/${user.id}?populate=courses`);
-          const data = await response.json();
-          setUserCourses(data.courses || []);
+          console.log("Fetching user courses for user ID:", user.id);  
+          const response = await fetch(`http://localhost:1337/api/courses?filters[user][id][$eq]=${user.id}&populate=user`);
+          const userCoursesData = await response.json();
+          console.log("User courses data:", userCoursesData); 
+
+          const documentIds = userCoursesData.data.map(course => course.documentId);
+          console.log("Document IDs:", documentIds);  
+          console.log(`Fetching course details for documentIds: ${documentIds.join(', ')}`);
+
+
+          if (documentIds.length > 0) {
+            console.log(`Fetching course details for documentIds: ${documentIds.join(', ')}`);
+            const fetchCoursesDetails = await fetch(`http://localhost:1337/api/courses?filters[documentId][$in]=${documentIds.join('&filters[documentId][$in]=')}&populate=*`);
+            console.log("API URL for fetching courses:", `http://localhost:1337/api/courses?filters[documentId][$in]=${documentIds.join('&filters[documentId][$in]=')}&populate=*`);
+            const coursesDetailsData = await fetchCoursesDetails.json();
+            console.log("Courses details data:", coursesDetailsData);
+            console.log("User Courses Data: ", userCoursesData);
+            console.log("Courses Details Response: ", coursesDetailsData);
+
+
+
+            setUserCourses(coursesDetailsData.data || []);
+          } else {
+            console.log("No documentIds found for user courses.");
+          }
         } catch (error) {
           console.error("Error fetching user courses:", error);
         }
@@ -63,6 +85,16 @@ function Course() {
       fetchUserCourses();
     }
   }, [isLoggedIn, user?.id]);
+
+
+
+  useEffect(() => {
+    console.log(userCourses); 
+  }, [userCourses]);
+
+
+
+
 
   useEffect(() => {
     const fetchData = async () => {
