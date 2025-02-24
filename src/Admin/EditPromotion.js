@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Modal } from 'antd';
 import './EditPromotion.css';
 
 function EditPromotion() {
@@ -10,6 +11,8 @@ function EditPromotion() {
   const [promotionCategories, setPromotionCategories] = useState([]);  // สำหรับเก็บ categories
   const [isEditing, setIsEditing] = useState(false);
   const [editingPromotionId, setEditingPromotionId] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalImage, setModalImage] = useState('');
 
   useEffect(() => {
     axios.get('http://localhost:1337/api/promotions?populate=*')
@@ -24,8 +27,8 @@ function EditPromotion() {
     if (selectedPromotion) {
       setPromotionTitle(selectedPromotion.PromitionName);
       setPromotionDescription(selectedPromotion.Discription);
-      setPromotionImage(selectedPromotion.Image?.data?.attributes?.url || '');
-      setPromotionCategories(selectedPromotion.categories || []);  // โหลด categories
+      setPromotionImage(selectedPromotion.PromotePromo?.url || '');
+      setPromotionCategories(selectedPromotion.categories.map(cat => cat.Category) || []);  // โหลด categories
       setIsEditing(true);
       setEditingPromotionId(promotionId);
     }
@@ -35,7 +38,7 @@ function EditPromotion() {
     const updatedPromotion = {
       PromitionName: promotionTitle,
       Discription: promotionDescription,
-      Image: promotionImage,
+      PromotePromo: promotionImage,
       categories: promotionCategories,  // ส่ง categories กลับไปด้วย
     };
 
@@ -64,6 +67,16 @@ function EditPromotion() {
         setPromotions(promotions.filter(promo => promo.id !== promotionId));
       })
       .catch(error => console.error('Error deleting promotion:', error));
+  };
+
+  const handleImageClick = (imageUrl) => {
+    setModalImage(imageUrl);
+    setIsModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+    setModalImage('');
   };
 
   if (!promotions.length) {
@@ -119,11 +132,13 @@ function EditPromotion() {
                   />
                 ) : (
                   <img
-                    src={`http://localhost:1337${promo.Image?.data?.attributes?.url}`}
+                    src={`http://localhost:1337${promo.PromotePromo?.url}`}
                     alt="Promotion"
                     className="promotion-image"
                     width="100"
                     height="100"
+                    onClick={() => handleImageClick(`http://localhost:1337${promo.PromotePromo?.url}`)}
+                    style={{ cursor: 'pointer' }}
                   />
                 )}
               </div>
@@ -158,6 +173,10 @@ function EditPromotion() {
           ))}
         </div>
       </div>
+
+      <Modal visible={isModalVisible} footer={null} onCancel={handleModalClose}>
+        <img src={modalImage} alt="Promotion" style={{ width: '100%' }} />
+      </Modal>
     </div>
   );
 }
