@@ -11,6 +11,7 @@ const Study = () => {
   const [currentUnit, setCurrentUnit] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [videoTime, setVideoTime] = useState('00:00');
 
   console.log('Document ID:', documentId);
 
@@ -34,6 +35,17 @@ const Study = () => {
         setLoading(false);
       });
   }, [documentId]);
+
+  useEffect(() => {
+    if (currentUnit) {
+      const savedTime = localStorage.getItem(`videoTime-${currentUnit.documentId}`);
+      if (savedTime) {
+        setVideoTime(savedTime);
+      } else {
+        setVideoTime('00:00');
+      }
+    }
+  }, [currentUnit]);
 
   if (loading) return <div>กำลังโหลดข้อมูล...</div>;
   if (error) return <div>{error}</div>;
@@ -67,6 +79,28 @@ const Study = () => {
     }
   };
 
+  const handleTimeUpdate = (event) => {
+    const video = event.target;
+    const minutes = Math.floor(video.currentTime / 60);
+    const seconds = Math.floor(video.currentTime % 60);
+    const currentTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    setVideoTime(currentTime);
+    if (currentUnit) {
+      localStorage.setItem(`videoTime-${currentUnit.documentId}`, currentTime);
+    }
+  };
+
+  const handleVideoLoaded = (event) => {
+    const video = event.target;
+    if (currentUnit) {
+      const savedTime = localStorage.getItem(`videoTime-${currentUnit.documentId}`);
+      if (savedTime) {
+        const [minutes, seconds] = savedTime.split(':').map(Number);
+        video.currentTime = minutes * 60 + seconds;
+      }
+    }
+  };
+
   return (
     <div className="study-container">
       <div className="study-nav-bar">
@@ -95,13 +129,19 @@ const Study = () => {
             <div className="study-video-container">
               <div className="study-video-placeholder">
                 {currentUnit?.video?.url ? (
-                  <video key={currentUnit.documentId} controls>
+                  <video
+                    key={currentUnit.documentId}
+                    controls
+                    onTimeUpdate={handleTimeUpdate}
+                    onLoadedMetadata={handleVideoLoaded}
+                  >
                     <source src={`http://localhost:1337${currentUnit.video.url}`} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
                 ) : (
                   <span>No Video Available</span>
                 )}
+                <div className="study-video-timestamp">{videoTime}</div>
               </div>
             </div>
             <div className="study-content-description">
