@@ -13,7 +13,7 @@ function Promotion() {
             .then(data => {
                 if (data && data.data) {
                     // ทำซ้ำรายการ 3 ครั้ง
-                    const repeatedPromotions = Array(3).fill(data.data).flat();
+                    const repeatedPromotions = Array(2).fill(data.data).flat();
                     setPromotions(repeatedPromotions);
                     setFilteredPromotions(repeatedPromotions);
                 }
