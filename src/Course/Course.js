@@ -49,12 +49,12 @@ function Course() {
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn && user?.username) {
+    if (isLoggedIn && user?.id) {
       const fetchUserCourses = async () => {
         try {
-          const response = await fetch(`http://localhost:1337/api/courses?filters[users][username][$eq]=${user.username}&populate=*`);
+          const response = await fetch(`http://localhost:1337/api/users/${user.id}?populate=courses`);
           const data = await response.json();
-          setUserCourses(data.data || []);
+          setUserCourses(data.courses || []);
         } catch (error) {
           console.error("Error fetching user courses:", error);
         }
@@ -62,7 +62,7 @@ function Course() {
 
       fetchUserCourses();
     }
-  }, [isLoggedIn, user?.username]);
+  }, [isLoggedIn, user?.id]);
 
   useEffect(() => {
     const fetchData = async () => {

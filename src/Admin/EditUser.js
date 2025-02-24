@@ -16,7 +16,7 @@ function EditUser() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [selectedCourses, setSelectedCourses] = useState([]);
 
-    const token = 'ed762fbe8d59269b079859a38de47a1c0645a1d2465558df32981e23279d444e8efcb3d8d333faf223a2db2ce93a63d164f169f5ca09ecb982809780c9d66c9b3d49d9b4249b75bf1890a59da26cedbd48374b35e59a366a3ec2354396c02e863af6eaa68e86097dfdb8580a76e50b1b5bbba28bd37deb6261381d2af171f418';
+    const token = '578cec20b9ffa2e04e5b1f9bf875df82256b335184394dd479f2eef3cb9a8a49fd69ebf998e08c37e30dfad52476a215f7c8008cac99e49eb8465f27ea9df2d1d6899312c7484922d49a6323df1b9b237fea8897140d16ce42e8f2f70b749dc703b1e15ac2861de887fddd437be8c8b355f5deeb0bd25c49dbf33cdb44f046cc';
 
     useEffect(() => {
         axios.get('http://localhost:1337/api/users?populate=courses')
@@ -26,7 +26,7 @@ function EditUser() {
         axios.get('http://localhost:1337/api/courses')
             .then(response => setCourses(response.data.data))
             .catch(error => console.error('Error fetching courses:', error));
-    }, []);
+    }, []);                                                                                                                                                                                                         
 
     const handleEdit = (user) => {
         setCurrentUser(user);

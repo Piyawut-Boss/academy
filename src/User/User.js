@@ -23,12 +23,12 @@ function User() {
   }, []);
 
   useEffect(() => {
-    if (user?.username) {
+    if (user?.id) {
       const fetchUserCourses = async () => {
         try {
-          const response = await fetch(`http://localhost:1337/api/courses?filters[users][username][$eq]=${user.username}&populate=*`);
+          const response = await fetch(`http://localhost:1337/api/users/${user.id}?populate=courses`);
           const data = await response.json();
-          setUserCourses(data.data || []);
+          setUserCourses(data.courses || []);
         } catch (error) {
           console.error("Error fetching user courses:", error);
         } finally {
@@ -66,7 +66,6 @@ function User() {
   }
 
   return (
-
     <div className="user-profile">
       <div className="user-details">
         <h2 className="profile-title">User Profile</h2>
@@ -77,8 +76,8 @@ function User() {
           {showHeart && <span className="heart">❤️</span>}  {/* แสดงหัวใจเมื่อคลิก */}
         </div>
 
-          <h3 className="username">Username: {user.username}</h3>
-          <p className="email">Email: {user.email}</p>
+        <h3 className="username">Username: {user.username}</h3>
+        <p className="email">Email: {user.email}</p>
       </div>
 
       <h2>My Courses</h2>
@@ -111,8 +110,7 @@ function User() {
                       </Button>
                       <Button type="primary" className="enroll-button" onClick={() => navigate(`/study/${course.documentId}`)}>
                         ไปที่คอร์สของฉัน
-                       </Button>
-
+                      </Button>
                     </div>
                   </Card>
                 </Col>
