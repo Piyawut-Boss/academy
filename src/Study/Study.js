@@ -141,7 +141,6 @@ const Study = () => {
                 ) : (
                   <span>No Video Available</span>
                 )}
-                <div className="study-video-timestamp">{videoTime}</div>
               </div>
             </div>
             <div className="study-content-description">
