@@ -55,7 +55,7 @@ function EditUser() {
                 ? { ...user, username, email, courses: updatedCourses }
                 : user
         ));
-        
+
         } catch (error) {
             message.error('Error updating user');
         }
@@ -185,3 +185,4 @@ function EditUser() {
 }
 
 export default EditUser;
+
