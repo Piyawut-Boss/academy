@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Modal, Button, Input, message, Select } from 'antd';
+import { Edit, UserPlus } from 'lucide-react';
 import './EditUser.css';
 
 function EditUser() {
@@ -16,11 +17,19 @@ function EditUser() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [selectedCourses, setSelectedCourses] = useState([]);
 
-    const token = '026d08263b3ead716ea4e5b42c788650b0ab4a29f5a51f53d20cd1fb7262636f9a326a1cf4e236e1d5f474ae74b2a54fb57eef2413430ec925fc5cb550114572975324b04adfc8bf0f4adf8c5584b3148ea8d7c1729a996e6a56be2a2c7fe3d909a435bca999ca8ac8e6b3ac8ec222b8d840310e8352e5a47e297ad1893ed245';
+    const token = '6fea988a29f7c35f02cf01573097a41fed37f418132ef9d8f1f1243b5e31288fb98f17422433de6792660f6c7b8cd5277c2f1950c095a1c3a2ad7021480520a91d07901a12919476f70610d8e4e62998024a1349faedc87fae8e98caa024aaebe68539f384c0ede8866b6eea4506309dec1d41aee360bdcd4f1f50d2fb769d7e';
 
     useEffect(() => {
-        axios.get('http://localhost:1337/api/users?populate=courses')
-            .then(response => setUsers(response.data))
+        // Update API call to include role information
+        axios.get('http://localhost:1337/api/users?populate=*')
+            .then(response => {
+                // Filter out admin users and only show regular users
+                const filteredUsers = response.data.filter(user => 
+                    user.role?.type === 'authenticated' || 
+                    !user.role?.type.toLowerCase().includes('admin')
+                );
+                setUsers(filteredUsers);
+            })
             .catch(error => setError('Error fetching users'));
 
         axios.get('http://localhost:1337/api/courses')
@@ -81,33 +90,53 @@ function EditUser() {
 
     return (
         <div className="edit-user-container">
-            <h1>Edit User</h1>
+            <h1>User Management</h1>
+            
             {error && <p className="error-message">{error}</p>}
-            <Button type="primary" onClick={() => setIsRegisterModalVisible(true)}>Create Account</Button>
-            <table className="user-table">
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Created At</th>
-                        <th>Courses</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map(user => (
-                        <tr key={user.id}>
-                            <td>{user.username}</td>
-                            <td>{user.email}</td>
-                            <td>{new Date(user.createdAt).toLocaleDateString()}</td>
-                            <td>{user.courses && user.courses.length > 0 ? user.courses.map(course => course.Title).join(', ') : 'No courses'}</td>
-                            <td>
-                                <button onClick={() => handleEdit(user)}>Edit</button>
-                            </td>
+            
+            <button 
+                className="create-account-btn"
+                onClick={() => setIsRegisterModalVisible(true)}
+            >
+                <UserPlus size={18} />
+                <span>New Account</span>
+            </button>
+
+            <div className="user-table-container">
+                <table className="user-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Registration Date</th>
+                            <th>Enrolled Courses</th>
+                            <th>Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {users.map(user => (
+                            <tr key={user.id}>
+                                <td>{user.username}</td>
+                                <td>{user.email}</td>
+                                <td>{new Date(user.createdAt).toLocaleDateString()}</td>
+                                <td>{user.courses?.length > 0 ? 
+                                    user.courses.map(course => course.Title).join(', ') : 
+                                    'No courses'}
+                                </td>
+                                <td>
+                                    <button 
+                                        className="action-button"
+                                        onClick={() => handleEdit(user)}
+                                    >
+                                        <Edit size={16} />
+                                        Edit
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
             {/* Edit User Modal */}
             <Modal title="Edit User" open={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null}>

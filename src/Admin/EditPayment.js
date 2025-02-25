@@ -17,7 +17,7 @@ function EditPayment() {
   const [filterUser, setFilterUser] = useState('All');
   const navigate = useNavigate();
 
-  const token = '026d08263b3ead716ea4e5b42c788650b0ab4a29f5a51f53d20cd1fb7262636f9a326a1cf4e236e1d5f474ae74b2a54fb57eef2413430ec925fc5cb550114572975324b04adfc8bf0f4adf8c5584b3148ea8d7c1729a996e6a56be2a2c7fe3d909a435bca999ca8ac8e6b3ac8ec222b8d840310e8352e5a47e297ad1893ed245';
+  const token = '6fea988a29f7c35f02cf01573097a41fed37f418132ef9d8f1f1243b5e31288fb98f17422433de6792660f6c7b8cd5277c2f1950c095a1c3a2ad7021480520a91d07901a12919476f70610d8e4e62998024a1349faedc87fae8e98caa024aaebe68539f384c0ede8866b6eea4506309dec1d41aee360bdcd4f1f50d2fb769d7e';
 
   useEffect(() => {
     const role = localStorage.getItem('role');
@@ -150,30 +150,35 @@ function EditPayment() {
     <div className="edit-user-container">
       <h1>Payment Records</h1>
       <div className="filter-container">
-        <label htmlFor="filterStatus">Filter by Payment Status: </label>
-        <select
-          id="filterStatus"
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
-        >
-          <option value="All">All</option>
-          <option value="Pending">Pending</option>
-          <option value="Approved">Approved</option>
-          <option value="Rejected">Rejected</option>
-        </select>
-        <label htmlFor="filterUser">Filter by User: </label>
-        <select
-          id="filterUser"
-          value={filterUser}
-          onChange={(e) => setFilterUser(e.target.value)}
-        >
-          <option value="All">All</option>
-          {users.map(user => (
-            <option key={user.documentId} value={user.documentId}>
-              {user.username}
-            </option>
-          ))}
-        </select>
+        <div className="filter-group">
+          <label htmlFor="filterStatus">Filter by Payment Status:</label>
+          <select
+            id="filterStatus"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
+        
+        <div className="filter-group">
+          <label htmlFor="filterUser">Filter by User:</label>
+          <select
+            id="filterUser"
+            value={filterUser}
+            onChange={(e) => setFilterUser(e.target.value)}
+          >
+            <option value="All">All</option>
+            {users.map(user => (
+              <option key={user.documentId} value={user.documentId}>
+                {user.username}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div className="table-container">
         <div className="table-header">
