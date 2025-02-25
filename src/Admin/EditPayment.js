@@ -59,45 +59,76 @@ function EditPayment() {
     setPreviewImage(payment.payment_proof ? `http://localhost:1337${payment.payment_proof.url}` : null);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!editingPayment || !editingPayment.documentId) {
       alert('Missing payment information');
       return;
     }
-
-    const updateData = {
-      data: {
-        payment_status: editingPayment.payment_status
+  
+    try {
+      const updateData = {
+        data: {
+          payment_status: editingPayment.payment_status
+        }
+      };
+  
+      // อัปเดตสถานะการชำระเงิน
+      await axios.put(
+        `http://localhost:1337/api/payments/${editingPayment.documentId}`,
+        updateData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      // ถ้าเปลี่ยนเป็น Approved ให้เพิ่มคอร์สให้กับ User
+      if (editingPayment.payment_status === 'Approved') {
+        const userId = editingPayment.user?.id;
+        const courseIds = editingPayment.courses?.map(course => course.id) || [];
+  
+        if (userId && courseIds.length > 0) {
+          // ดึงข้อมูล user ปัจจุบัน
+          const userResponse = await axios.get(
+            `http://localhost:1337/api/users/${userId}?populate=courses`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+  
+          const existingCourses = userResponse.data.courses.map(course => course.id);
+          const updatedCourses = [...new Set([...existingCourses, ...courseIds])]; // ป้องกันการเพิ่มคอร์สซ้ำซ้อน
+  
+          await axios.put(
+            `http://localhost:1337/api/users/${userId}`,
+            { courses: updatedCourses },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        }
       }
-    };
-
-    axios.put(`http://localhost:1337/api/payments/${editingPayment.documentId}`, updateData, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(() => {
-        // Refresh the data after successful update
-        return axios.get('http://localhost:1337/api/payments?populate=*');
-      })
-      .then(response => {
-        setPayments(response.data.data);
-        setEditingPayment(null);
-        setSelectedFile(null);
-        setPreviewImage(null);
-      })
-      .catch(error => {
-        console.error('Error updating payment:', error);
-        alert('Failed to update payment. Please try again.');
-      });
+  
+      // รีเฟรชข้อมูลหลังอัปเดตสำเร็จ
+      const response = await axios.get('http://localhost:1337/api/payments?populate=*');
+      setPayments(response.data.data);
+      setEditingPayment(null);
+      setSelectedFile(null);
+      setPreviewImage(null);
+    } catch (error) {
+      console.error('Error updating payment:', error);
+      alert('Failed to update payment. Please try again.');
+    }
   };
+  
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
-    setPreviewImage(URL.createObjectURL(file));
-  };
 
   const handleImageClick = (imageUrl) => {
     setSelectedImage(imageUrl);

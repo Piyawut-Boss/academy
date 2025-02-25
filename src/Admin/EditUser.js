@@ -102,7 +102,7 @@ function EditUser() {
             </table>
 
             {/* Edit User Modal */}
-            <Modal title="Edit User" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null}>
+            <Modal title="Edit User" open={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null}>
                 <div className="form-group">
                     <label>Username</label>
                     <Input
@@ -138,7 +138,7 @@ function EditUser() {
             </Modal>
 
             {/* Create Account Modal */}
-            <Modal title="Create Account" visible={isRegisterModalVisible} onCancel={() => setIsRegisterModalVisible(false)} footer={null}>
+            <Modal title="Create Account" open={isRegisterModalVisible} onCancel={() => setIsRegisterModalVisible(false)} footer={null}>
                 <div className="form-group">
                     <label>Username</label>
                     <Input
