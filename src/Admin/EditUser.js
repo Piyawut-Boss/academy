@@ -45,9 +45,17 @@ function EditUser() {
                     Authorization: `Bearer ${token}`
                 }
             });
+
+            const updatedCourses = courses.filter(course => selectedCourses.includes(course.id));
+
             message.success('User updated successfully!');
             setIsModalVisible(false);
-            setUsers(users.map(user => user.id === currentUser.id ? { ...user, username, email, courses: selectedCourses } : user));
+             setUsers(users.map(user =>
+            user.id === currentUser.id
+                ? { ...user, username, email, courses: updatedCourses }
+                : user
+        ));
+        
         } catch (error) {
             message.error('Error updating user');
         }
