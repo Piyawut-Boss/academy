@@ -31,6 +31,8 @@ function Header() {
                     <li><Link to="/admin/EditUser">User</Link></li>
                     <li><Link to="/admin/EditCourse">Course</Link></li>
                     <li><Link to="/admin/EditPromotion">Promotion</Link></li>
+                    <li><Link to="/admin/EditUnit">Unit</Link></li>
+
 
                     {/* ✅ แสดงปุ่ม Login ถ้ายังไม่ได้ล็อกอิน */}
                     {!isLoggedIn && <li><Link to="/login">Login</Link></li>}
