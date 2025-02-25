@@ -145,6 +145,13 @@ function Course() {
     ]
     : [];
 
+  // จัดลำดับ "Recommend" ให้อยู่บนสุด
+  const sortedCategories = categories.sort((a, b) => {
+    if (a === "Recommend") return -1;
+    if (b === "Recommend") return 1;
+    return 0;
+  });
+
   return (
     <div className="course-container">
       <div className="selection-container">
@@ -217,7 +224,7 @@ function Course() {
       )}
       <h2>คอร์สเรียนทั้งหมด</h2>
       <div className="category-section">
-        {categories.map((category) => {
+        {sortedCategories.map((category) => {
           const filteredCourses = courses.filter(course =>
             course.categories?.some(cat => cat.Category === category)
           );

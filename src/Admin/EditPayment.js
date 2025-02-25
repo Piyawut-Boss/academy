@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 import './EditPayment.css';
 
 function EditPayment() {
@@ -64,14 +64,14 @@ function EditPayment() {
       alert('Missing payment information');
       return;
     }
-  
+
     try {
       const updateData = {
         data: {
           payment_status: editingPayment.payment_status
         }
       };
-  
+
       // อัปเดตสถานะการชำระเงิน
       await axios.put(
         `http://localhost:1337/api/payments/${editingPayment.documentId}`,
@@ -83,12 +83,12 @@ function EditPayment() {
           },
         }
       );
-  
+
       // ถ้าเปลี่ยนเป็น Approved ให้เพิ่มคอร์สให้กับ User
       if (editingPayment.payment_status === 'Approved') {
         const userId = editingPayment.user?.id;
         const courseIds = editingPayment.courses?.map(course => course.id) || [];
-  
+
         if (userId && courseIds.length > 0) {
           // ดึงข้อมูล user ปัจจุบัน
           const userResponse = await axios.get(
@@ -99,10 +99,10 @@ function EditPayment() {
               },
             }
           );
-  
+
           const existingCourses = userResponse.data.courses.map(course => course.id);
           const updatedCourses = [...new Set([...existingCourses, ...courseIds])]; // ป้องกันการเพิ่มคอร์สซ้ำซ้อน
-  
+
           await axios.put(
             `http://localhost:1337/api/users/${userId}`,
             { courses: updatedCourses },
@@ -115,20 +115,19 @@ function EditPayment() {
           );
         }
       }
-  
+
       // รีเฟรชข้อมูลหลังอัปเดตสำเร็จ
       const response = await axios.get('http://localhost:1337/api/payments?populate=*');
       setPayments(response.data.data);
       setEditingPayment(null);
       setSelectedFile(null);
       setPreviewImage(null);
+      message.success('Payment status updated successfully!');
     } catch (error) {
       console.error('Error updating payment:', error);
       alert('Failed to update payment. Please try again.');
     }
   };
-  
-
 
   const handleImageClick = (imageUrl) => {
     setSelectedImage(imageUrl);
