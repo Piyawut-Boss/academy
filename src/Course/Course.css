@@ -251,20 +251,53 @@ body {
 
 
 .selection-container {
-  border: 1px solid #dcdcdc;  /* สร้างกรอบรอบ */
-  padding: 20px;              /* เพิ่มระยะห่างภายใน */
-  border-radius: 8px;         /* มุมโค้ง */
-  background-color: #f9f9f9;  /* สีพื้นหลัง */
-  margin-bottom: 20px;        /* ระยะห่างด้านล่าง */
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.selection-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .selection-container h4 {
   font-weight: 600;
   margin-bottom: 10px;
+  color: #333;
+  font-size: 1.2em;
 }
 
 .selection-container p {
-  font-size: 14px;
+  font-size: 1.1em;
+  color: #333;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.selection-container select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  margin-bottom: 10px;
+  font-size: 1em;
   color: #555;
+  transition: border-color 0.3s ease;
+}
+
+.selection-container select:hover {
+  border-color: #473e91;
+}
+
+.selection-container select:focus {
+  outline: none;
+  border-color: #473e91;
+  box-shadow: none;
 }
 

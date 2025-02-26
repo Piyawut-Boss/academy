@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback  } from 'react';
-import { Card, Button, Row, Col, Select, message, Modal, DatePicker, Checkbox } from 'antd';
+import { Card, Button, Row, Col, message, Modal } from 'antd';
 import './Course.css';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
@@ -200,20 +200,18 @@ function Course() {
     <div className="course-container">
     <div className="selection-container">
       <h4>เลือกวิชาเพื่อดูเวลา count down:</h4>
-      <Select
+      <select
         value={selectedSubject}
-        onChange={handleSubjectChange}
-        style={{ width: '100%', marginBottom: '10px' }}
-        placeholder="เลือกวิชา"
+        onChange={(e) => handleSubjectChange(e.target.value)}
       >
+        <option value="" disabled>เลือกวิชา</option>
         {countDownData.map((exam) => (
-          <Select.Option key={exam.id} value={exam.id}>
+          <option key={exam.id} value={exam.id}>
             {exam.ExamName}
-          </Select.Option>
+          </option>
         ))}
-      </Select>
-
-      {remainingTime && <p style={{ marginTop: '10px' }}>{remainingTime}</p>}
+      </select>
+      {remainingTime && <p>{remainingTime}</p>}
     </div>
 
       <h1>คอร์สเรียนทั้งหมด</h1>
