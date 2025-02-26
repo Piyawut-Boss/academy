@@ -74,7 +74,7 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
-  
+
 }
 
 /* ให้การ์ดมีการจัดวางที่เหมือนกัน */
@@ -94,7 +94,7 @@ body {
   color: #333;
   padding-bottom: 10px; /* ให้ระยะห่างระหว่างชื่อคอร์สกับคำอธิบาย */
   margin-right: 10px;
-  
+
 }
 
 .course-card p {
@@ -111,7 +111,7 @@ body {
   gap: 5px;
   font-size: 1.1em;
   margin-top: auto; /* ทำให้ราคาอยู่ท้ายสุดของการ์ด */
-  
+
 }
 
 /* ปรับให้ปุ่มอยู่ในแนวนอนและตำแหน่งที่ต้องการ */
@@ -300,4 +300,63 @@ body {
   border-color: #473e91;
   box-shadow: none;
 }
+.course-container {
+  padding: 20px;
+}
 
+.countdown-section {
+  margin-bottom: 20px;
+}
+
+.countdown-section h4 {
+  margin-bottom: 10px;
+}
+
+.countdown-section select {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+}
+
+.countdown-timer {
+  margin-bottom: 20px;
+}
+
+.countdown-timer h5 {
+  margin-bottom: 5px;
+}
+
+.course-card {
+  font-size: 1.2em;
+}
+
+.course-card h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.course-card p {
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+.price {
+  margin-top: 10px;
+}
+
+.price-original {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.price-discounted {
+  color: #f5222d;
+  font-weight: bold;
+}
+
+.time-left {
+  margin-top: 10px;
+  font-size: 0
+}

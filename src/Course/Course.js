@@ -1,8 +1,89 @@
-import React, { useState, useEffect, useCallback  } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Row, Col, message, Modal } from 'antd';
 import './Course.css';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+
+function CountdownSection() {
+  const [countDownData, setCountDownData] = useState([]);
+  const [selectedExam, setSelectedExam] = useState(null);
+  const [timeRemaining, setTimeRemaining] = useState(null);
+
+  useEffect(() => {
+    const fetchCountDownData = async () => {
+      try {
+        const response = await fetch("http://localhost:1337/api/count-downs");
+        const data = await response.json();
+        setCountDownData(data.data || []);
+      } catch (error) {
+        console.error("Error fetching countdown data:", error);
+      }
+    };
+
+    fetchCountDownData();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedExam) return;
+
+    const exam = countDownData.find((exam) => exam.id === selectedExam);
+    if (!exam) return;
+
+    const updateCountdown = () => {
+      const endTime = moment(exam.EndTime).toDate();
+      const now = new Date();
+      const diff = endTime - now;
+
+      if (diff > 0) {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        setTimeRemaining(`${days} days`);
+      } else {
+        setTimeRemaining("หมดเวลา");
+      }
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(interval);
+  }, [selectedExam, countDownData]);
+
+  return (
+    <div className="countdown-section">
+      <h4>เลือกวันสอบ:</h4>
+      <select
+        value={selectedExam || ""}
+        onChange={(e) => setSelectedExam(Number(e.target.value))}
+        style={{ width: "100%", marginBottom: "20px" }}
+      >
+        <option value="" disabled>
+          เลือกวันสอบ
+        </option>
+        {countDownData.map((exam) => (
+          <option key={exam.id} value={exam.id}>
+            {exam.ExamName}
+          </option>
+        ))}
+      </select>
+
+      {selectedExam && (
+        <>
+          <h5>Time Remaining:</h5>
+          <p>{timeRemaining}</p>
+
+          <div style={{ marginTop: "20px" }}>
+            <h5>Exam Date:</h5>
+            <p>
+              {moment(countDownData.find((exam) => exam.id === selectedExam)?.EndTime)
+                .locale("en")
+                .format("dddd, D MMMM YYYY")}
+            </p>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 function Course() {
   const navigate = useNavigate();
@@ -12,15 +93,10 @@ function Course() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [showAllCourses, setShowAllCourses] = useState({});
-  const [selectedExam, setSelectedExam] = useState(null);
-  const [selectedSubject, setSelectedSubject] = useState([]);
-  const [selectedStartDate, setSelectedStartDate] = useState(null);
-  const [remainingTime, setRemainingTime] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentCourse, setCurrentCourse] = useState(null);
-  const [countDownData, setCountDownData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
   const [error, setError] = useState(null);
-
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
@@ -62,7 +138,6 @@ function Course() {
           console.log("Document IDs:", documentIds);
           console.log(`Fetching course details for documentIds: ${documentIds.join(', ')}`);
 
-
           if (documentIds.length > 0) {
             console.log(`Fetching course details for documentIds: ${documentIds.join(', ')}`);
             const fetchCoursesDetails = await fetch(`http://localhost:1337/api/courses?filters[documentId][$in]=${documentIds.join('&filters[documentId][$in]=')}&populate=*`);
@@ -71,8 +146,6 @@ function Course() {
             console.log("Courses details data:", coursesDetailsData);
             console.log("User Courses Data: ", userCoursesData);
             console.log("Courses Details Response: ", coursesDetailsData);
-
-
 
             setUserCourses(coursesDetailsData.data || []);
           } else {
@@ -87,8 +160,6 @@ function Course() {
     }
   }, [isLoggedIn, user?.id]);
 
-
-
   useEffect(() => {
     console.log(userCourses);
   }, [userCourses]);
@@ -96,10 +167,9 @@ function Course() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const countDownResponse = await fetch("http://localhost:1337/api/count-downs");
-        const countDownData = await countDownResponse.json();
-        setCountDownData(countDownData.data || []);
-
+        const categoryResponse = await fetch("http://localhost:1337/api/categories");
+        const categoryData = await categoryResponse.json();
+        setCategoryData(categoryData.data || []);
       } catch (error) {
         console.error("Error fetching data:", error);
         message.error("ไม่สามารถดึงข้อมูลได้");
@@ -108,43 +178,6 @@ function Course() {
 
     fetchData();
   }, []);
-
-  const handleExamChange = (value) => {
-    setSelectedExam(value);
-    calculateRemainingTime(selectedStartDate, value);
-  };
-
-  const handleStartDateChange = (date) => {
-    setSelectedStartDate(date);
-    calculateRemainingTime(date, selectedExam);
-  };
-
-  const handleSubjectChange = useCallback((value) => {
-    setSelectedSubject(value);
-    const selectedExam = countDownData.find(exam => exam.id === value);
-    if (selectedExam) {
-      const now = moment();
-      const examDate = moment(selectedExam.EndTime);
-      const diffDays = examDate.diff(now, 'days');
-      const diffHours = examDate.diff(now, 'hours') % 24;
-      setRemainingTime(`เหลือเวลา ${diffDays} วัน ${diffHours} ชั่วโมง`);
-    } else {
-      setRemainingTime(null);
-    }
-  }, [countDownData]);
-
-  const calculateRemainingTime = (startDate, examId) => {
-    if (!startDate || !examId) return;
-
-    const exam = countDownData.find(exam => exam.id === examId);
-    if (!exam || !exam.EndTime) return;
-
-    const examDate = moment(exam.EndTime);
-    const diffDays = examDate.diff(moment(startDate), 'days');
-    const diffHours = examDate.diff(moment(startDate), 'hours') % 24;
-
-    setRemainingTime(`เหลือเวลาเรียนประมาณ ${diffDays} วัน ${diffHours} ชั่วโมง`);
-  };
 
   const toggleShowAllCourses = (category) => {
     setShowAllCourses(prev => ({
@@ -162,6 +195,7 @@ function Course() {
     const cartCourses = storedCartCourses ? JSON.parse(storedCartCourses) : [];
     cartCourses.push(course);
     localStorage.setItem('cartCourses', JSON.stringify(cartCourses));
+    message.success(`${course.Title} has been added to your cart!`);
   };
 
   const handleViewDetails = (course) => {
@@ -172,6 +206,14 @@ function Course() {
   const handleCancel = () => {
     setIsModalVisible(false);
     setCurrentCourse(null);
+  };
+
+  const calculateDaysLeft = (endTime) => {
+    if (!endTime) return "ไม่ระบุวันสิ้นสุด";
+    const now = moment();
+    const examDate = moment(endTime);
+    const diffDays = examDate.diff(now, 'days');
+    return diffDays > 0 ? `เหลือเวลา ${diffDays} วัน` : "หมดเวลาแล้ว";
   };
 
   if (loading) {
@@ -198,21 +240,7 @@ function Course() {
 
   return (
     <div className="course-container">
-    <div className="selection-container">
-      <h4>เลือกวิชาเพื่อดูเวลา count down:</h4>
-      <select
-        value={selectedSubject}
-        onChange={(e) => handleSubjectChange(e.target.value)}
-      >
-        <option value="" disabled>เลือกวิชา</option>
-        {countDownData.map((exam) => (
-          <option key={exam.id} value={exam.id}>
-            {exam.ExamName}
-          </option>
-        ))}
-      </select>
-      {remainingTime && <p>{remainingTime}</p>}
-    </div>
+      <CountdownSection />
 
       <h1>คอร์สเรียนทั้งหมด</h1>
       {
@@ -222,7 +250,7 @@ function Course() {
             {userCourses.length > 0 ? (
               <Row gutter={[16, 16]}>
                 {userCourses.map((course) => {
-                  const { Title, Description, Price, realprice, id, Promotepic } = course;
+                  const { Title, Description, Price, realprice, id, Promotepic, EndTime } = course;
                   const imageUrl = Promotepic ? `http://localhost:1337${Promotepic.url}` : '';
 
                   return (
@@ -244,6 +272,9 @@ function Course() {
                         <div className="price">
                           <span className="price-original">{Price ? Price.toLocaleString() : 'ราคาปกติไม่ระบุ'} บาท</span>
                           <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท</span>
+                        </div>
+                        <div className="time-left">
+                          <p>{calculateDaysLeft(EndTime)}</p>
                         </div>
                         <div className="buttons">
                           <Button type="link" className="details-button" onClick={() => handleViewDetails(course)}>
@@ -268,7 +299,7 @@ function Course() {
       }
       <h2>คอร์สเรียนทั้งหมด</h2>
       <div className="category-section">
-        {categories.map((category) => {
+        {sortedCategories.map((category) => {
           const filteredCourses = courses.filter(course =>
             course.categories?.some(cat => cat.Category === category)
           );
@@ -278,7 +309,7 @@ function Course() {
               <h3>{category}</h3>
               <Row gutter={[16, 16]}>
                 {filteredCourses.slice(0, showAllCourses[category] ? filteredCourses.length : 4).map((course) => {
-                  const { Title, Description, Price, realprice, id, Promotepic } = course;
+                  const { Title, Description, Price, realprice, id, Promotepic, EndTime } = course;
                   const imageUrl = Promotepic ? `http://localhost:1337${Promotepic.url}` : '';
 
                   return (
@@ -300,6 +331,9 @@ function Course() {
                         <div className="price">
                           <span className="price-original">{Price ? Price.toLocaleString() : 'ไม่ระบุราคา'} บาท</span>
                           <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ไม่ระบุราคา'} บาท</span>
+                        </div>
+                        <div className="time-left">
+                          <p>{calculateDaysLeft(EndTime)}</p>
                         </div>
                         <div className="buttons">
                           <Button type="link" className="details-button" onClick={() => handleViewDetails(course)}>
@@ -347,6 +381,7 @@ function Course() {
               <span className="price-original">{currentCourse.Price.toLocaleString()} บาท</span>
               <span className="price-discounted">{currentCourse.realprice.toLocaleString()} บาท</span>
             </div>
+            <p>{calculateDaysLeft(currentCourse?.EndTime)}</p>
           </Modal>
         )
       }
