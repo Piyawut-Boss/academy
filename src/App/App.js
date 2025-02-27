@@ -1,7 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
-import { HeaderPromoteProvider } from '../Header/HeaderPromote';
-import HeaderPromote from '../Header/HeaderPromote';
 import Header from '../Header/Header';
 import HeaderAdmin from '../Header/AdminHeader';
 import Footer from '../Footer';
@@ -24,8 +22,6 @@ import EditPromotion from '../Admin/EditPromotion';
 import EditCourseDetail from '../Admin/EditCourseDetail';
 import EditUnit from '../Admin/EditUnit.js';
 
-
-
 import './App.css';
 
 function Layout() {
@@ -37,7 +33,6 @@ function Layout() {
     <>
       {!isLoginPage && (
         <>
-          <HeaderPromote />
           {role === 'Admin' ? <HeaderAdmin /> : <Header />}
         </>
       )}
@@ -53,36 +48,32 @@ function ProtectedRoute({ children }) {
 function App() {
   return (
     <Router>
-      <HeaderPromoteProvider>
-        <div className="app-container">
-          <Layout />
-          <div className="main-content">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/course" element={<Course />} />
-              <Route path="/user" element={<User />} />
-              <Route path="/howto" element={<Howto />} />
-              <Route path="/aboutus" element={<Aboutus />} />
-              <Route path="/promotion" element={<Promotion />} />
-              <Route path="/shopping" element={<Shopping />} />
-              <Route path="/study/:documentId" element={<Study />} />
-              <Route path="/payment" element={<Payment />} />
+      <div className="app-container">
+        <Layout />
+        <div className="main-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/course" element={<Course />} />
+            <Route path="/user" element={<User />} />
+            <Route path="/howto" element={<Howto />} />
+            <Route path="/aboutus" element={<Aboutus />} />
+            <Route path="/promotion" element={<Promotion />} />
+            <Route path="/shopping" element={<Shopping />} />
+            <Route path="/study/:documentId" element={<Study />} />
+            <Route path="/payment" element={<Payment />} />
 
-              {/* Protected Routes for Admin */}
-              <Route path="/admin/editpayment" element={<ProtectedRoute><EditPayment /></ProtectedRoute>} />
-              <Route path="/admin/edituser" element={<ProtectedRoute><EditUser /></ProtectedRoute>} />
-              <Route path="/admin/editcourse" element={<ProtectedRoute><EditCourse /></ProtectedRoute>} />
-              <Route path="/admin/editpromotion" element={<ProtectedRoute><EditPromotion /></ProtectedRoute>} />
-              <Route path="/admin/editcourse/:documentId" element={<ProtectedRoute><EditCourseDetail /></ProtectedRoute>} />
-              <Route path="/admin/editunit" element={<ProtectedRoute><EditUnit /></ProtectedRoute>} />
-
-
-            </Routes>
-          </div>
-          <Footer />
+            {/* Protected Routes for Admin */}
+            <Route path="/admin/editpayment" element={<ProtectedRoute><EditPayment /></ProtectedRoute>} />
+            <Route path="/admin/edituser" element={<ProtectedRoute><EditUser /></ProtectedRoute>} />
+            <Route path="/admin/editcourse" element={<ProtectedRoute><EditCourse /></ProtectedRoute>} />
+            <Route path="/admin/editpromotion" element={<ProtectedRoute><EditPromotion /></ProtectedRoute>} />
+            <Route path="/admin/editcourse/:documentId" element={<ProtectedRoute><EditCourseDetail /></ProtectedRoute>} />
+            <Route path="/admin/editunit" element={<ProtectedRoute><EditUnit /></ProtectedRoute>} />
+          </Routes>
         </div>
-      </HeaderPromoteProvider>
+        <Footer />
+      </div>
     </Router>
   );
 }

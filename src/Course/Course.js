@@ -50,14 +50,14 @@ function CountdownSection() {
 
   return (
     <div className="countdown-section">
-      <h4>เลือกวันสอบ:</h4>
+      <h4>Exam countdown</h4>
       <select
         value={selectedExam || ""}
         onChange={(e) => setSelectedExam(Number(e.target.value))}
         style={{ width: "100%", marginBottom: "20px" }}
       >
         <option value="" disabled>
-          เลือกวันสอบ
+          เลือกวิชาที่สอบ
         </option>
         {countDownData.map((exam) => (
           <option key={exam.id} value={exam.id}>
@@ -241,12 +241,10 @@ function Course() {
   return (
     <div className="course-container">
       <CountdownSection />
-
-      <h1>คอร์สเรียนทั้งหมด</h1>
       {
         isLoggedIn ? (
           <div>
-            <h2>คอร์สของฉัน</h2>
+            <h1>คอร์สของฉัน</h1>
             {userCourses.length > 0 ? (
               <Row gutter={[16, 16]}>
                 {userCourses.map((course) => {
