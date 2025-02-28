@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { Button, Modal, Input, message, Select } from 'antd';
-import { Edit } from 'lucide-react';
+import { Edit, Trash2 } from 'lucide-react';
 import "./EditCourse.css";
+
+const { confirm } = Modal;
 
 const token = '6fea988a29f7c35f02cf01573097a41fed37f418132ef9d8f1f1243b5e31288fb98f17422433de6792660f6c7b8cd5277c2f1950c095a1c3a2ad7021480520a91d07901a12919476f70610d8e4e62998024a1349faedc87fae8e98caa024aaebe68539f384c0ede8866b6eea4506309dec1d41aee360bdcd4f1f50d2fb769d7e';
 
@@ -95,6 +97,42 @@ function EditCourse() {
       });
   };
 
+  const handleDeleteCourse = async (courseId) => {
+    try {
+      await axios.delete(`http://localhost:1337/api/courses/${courseId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Refresh the courses list
+      axios
+        .get("http://localhost:1337/api/courses?populate=*")
+        .then((response) => {
+          setCourses(response.data.data);
+        })
+        .catch((error) => console.error("Error fetching courses:", error));
+
+      message.success("Course deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting course:", error);
+      message.error("Failed to delete course. Please try again.");
+    }
+  };
+
+  const showDeleteCourseConfirm = (courseId) => {
+    confirm({
+      title: 'Are you sure you want to delete this course?',
+      content: 'This action cannot be undone.',
+      onOk() {
+        handleDeleteCourse(courseId);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
   const handleUnitChange = (value) => {
     setSelectedUnits(value);
   };
@@ -163,6 +201,47 @@ function EditCourse() {
     }
   };
 
+  const handleDeletePdf = async (unitId) => {
+    try {
+      await axios.put(`http://localhost:1337/api/units/${unitId}`, {
+        data: {
+          File: null,
+        }
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Refresh the units list
+      axios
+        .get("http://localhost:1337/api/units")
+        .then((response) => {
+          setUnits(response.data.data);
+        })
+        .catch((error) => console.error("Error fetching units:", error));
+
+      message.success("PDF file deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting PDF file:", error);
+      message.error("Failed to delete PDF file. Please try again.");
+    }
+  };
+
+  const showDeletePdfConfirm = (unitId) => {
+    confirm({
+      title: 'Are you sure you want to delete this PDF file?',
+      content: 'This action cannot be undone.',
+      onOk() {
+        handleDeletePdf(unitId);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
   const filteredCourses = courses.filter(course =>
     course.Title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -201,6 +280,13 @@ function EditCourse() {
               <td>{course.Promotepic?.url ? <img src={`http://localhost:1337${course.Promotepic.url}`} alt="Promotion" style={{ width: "50px" }} /> : "No Image"}</td>
               <td>
                 <Button icon={<Edit />} onClick={() => showModal(course)}>Edit</Button>
+                <Button
+                  icon={<Trash2 />}
+                  onClick={() => showDeleteCourseConfirm(course.documentId)}
+                  style={{ marginLeft: '10px' }}
+                >
+                  Delete
+                </Button>
               </td>
             </tr>
           ))}
@@ -299,6 +385,13 @@ function EditCourse() {
                 <a href={`http://localhost:1337${unit.File.url}`} target="_blank" rel="noopener noreferrer">
                   View PDF
                 </a>
+                <Button
+                  icon={<Trash2 />}
+                  onClick={() => showDeletePdfConfirm(unit.documentId)}
+                  style={{ marginLeft: '10px' }}
+                >
+                  Delete
+                </Button>
               </div>
             )
           ))}
