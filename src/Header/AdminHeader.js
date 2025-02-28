@@ -32,6 +32,7 @@ function Header() {
                     <li><Link to="/admin/EditCourse">Course</Link></li>
                     <li><Link to="/admin/EditPromotion">Promotion</Link></li>
                     <li><Link to="/admin/EditUnit">Unit</Link></li>
+                    <li><Link to="/admin/DashBoard">Dash Board</Link></li>
 
 
                     {/* ✅ แสดงปุ่ม Login ถ้ายังไม่ได้ล็อกอิน */}

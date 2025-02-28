@@ -15,13 +15,13 @@ import Study from '../Study/Study';
 import Payment from '../Payment/Payment';  
 
 // Import Admin Pages
-import EditPayment from '../Admin/EditPayment';
-import EditUser from '../Admin/EditUser';
-import EditCourse from '../Admin/EditCourse';
-import EditPromotion from '../Admin/EditPromotion';
-import EditCourseDetail from '../Admin/EditCourseDetail';
+import EditPayment from '../Admin/EditPayment.js';
+import EditUser from '../Admin/EditUser.js';
+import EditCourse from '../Admin/EditCourse.js';
+import EditPromotion from '../Admin/EditPromotion.js';
+import EditCourseDetail from '../Admin/EditCourseDetail.js';
 import EditUnit from '../Admin/EditUnit.js';
-
+import DashBoard from '../Admin/DashBoard.js';
 import './App.css';
 
 function Layout() {
@@ -70,6 +70,7 @@ function App() {
             <Route path="/admin/editpromotion" element={<ProtectedRoute><EditPromotion /></ProtectedRoute>} />
             <Route path="/admin/editcourse/:documentId" element={<ProtectedRoute><EditCourseDetail /></ProtectedRoute>} />
             <Route path="/admin/editunit" element={<ProtectedRoute><EditUnit /></ProtectedRoute>} />
+            <Route path="/admin/dashboard" element={<ProtectedRoute><DashBoard /></ProtectedRoute>} />
           </Routes>
         </div>
         <Footer />
