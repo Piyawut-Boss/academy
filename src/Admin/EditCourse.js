@@ -18,6 +18,7 @@ function EditCourse() {
   const [price, setPrice] = useState('');
   const [realPrice, setRealPrice] = useState('');
   const [selectedUnits, setSelectedUnits] = useState([]);
+  const [promotionImage, setPromotionImage] = useState("");
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
@@ -45,6 +46,7 @@ function EditCourse() {
     setPrice(course.Price);
     setRealPrice(course.realprice);
     setSelectedUnits(course.units ? course.units.map(unit => unit.documentId) : []);
+    setPromotionImage(course.Promotepic?.url || "");
     setIsModalVisible(true);
   };
 
@@ -64,6 +66,7 @@ function EditCourse() {
         Price: price,
         realprice: realPrice,
         units: selectedUnits,
+        Promotepic: promotionImage ? { id: promotionImage.id } : null,
       }
     };
 
@@ -97,6 +100,37 @@ function EditCourse() {
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const imageUrl = URL.createObjectURL(file);
+    setPromotionImage(imageUrl);
+
+    handleImageUpload(file);
+  };
+
+  const handleImageUpload = async (file) => {
+    const formData = new FormData();
+    formData.append("files", file);
+
+    try {
+      const response = await axios.post("http://localhost:1337/api/upload", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const uploadedImage = response.data[0];
+      setPromotionImage(uploadedImage);
+
+      console.log("Uploaded Image:", uploadedImage);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      message.error("Failed to upload image. Please try again.");
+    }
   };
 
   const filteredCourses = courses.filter(course =>
@@ -203,6 +237,24 @@ function EditCourse() {
               </Select.Option>
             ))}
           </Select>
+        </div>
+        <div className="form-group">
+          <label>Promotion Image</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+          {promotionImage && (
+            <div>
+              <p>Current Promotion Image:</p>
+              <img
+                src={`http://localhost:1337${promotionImage.url || promotionImage}`}
+                alt="Promotion"
+                style={{ maxWidth: "200px" }}
+              />
+            </div>
+          )}
         </div>
         <Button type="primary" onClick={handleSave}>Save</Button>
       </Modal>
