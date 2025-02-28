@@ -19,6 +19,7 @@ function EditCourse() {
   const [realPrice, setRealPrice] = useState('');
   const [selectedUnits, setSelectedUnits] = useState([]);
   const [promotionImage, setPromotionImage] = useState("");
+  const [pdfFile, setPdfFile] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
@@ -130,6 +131,35 @@ function EditCourse() {
     } catch (error) {
       console.error("Error uploading image:", error);
       message.error("Failed to upload image. Please try again.");
+    }
+  };
+
+  const handlePdfUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setPdfFile(file);
+  };
+
+  const uploadFile = async (file) => {
+    if (!file) return null;
+
+    const formData = new FormData();
+    formData.append("files", file);
+
+    try {
+      const response = await axios.post("http://localhost:1337/api/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data && response.data.length > 0) {
+        return response.data[0];
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      return null;
     }
   };
 
@@ -255,6 +285,23 @@ function EditCourse() {
               />
             </div>
           )}
+        </div>
+        <div className="form-group">
+          <label>📄 PDF File (Unit PDF)</label>
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={handlePdfUpload}
+          />
+          {currentCourse && currentCourse.units && currentCourse.units.map(unit => (
+            unit.File && (
+              <div key={unit.documentId}>
+                <a href={`http://localhost:1337${unit.File.url}`} target="_blank" rel="noopener noreferrer">
+                  View PDF
+                </a>
+              </div>
+            )
+          ))}
         </div>
         <Button type="primary" onClick={handleSave}>Save</Button>
       </Modal>
