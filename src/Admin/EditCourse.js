@@ -18,6 +18,7 @@ function EditCourse() {
   const [price, setPrice] = useState('');
   const [realPrice, setRealPrice] = useState('');
   const [selectedUnits, setSelectedUnits] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -94,9 +95,23 @@ function EditCourse() {
     setSelectedUnits(value);
   };
 
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredCourses = courses.filter(course =>
+    course.Title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="edit-course-container">
       <h1>Edit Course</h1>
+      <Input
+        placeholder="Search by course title"
+        value={searchTerm}
+        onChange={handleSearch}
+        style={{ marginBottom: '20px' }}
+      />
       <table className="edit-course-table">
         <thead>
           <tr>
@@ -111,7 +126,7 @@ function EditCourse() {
           </tr>
         </thead>
         <tbody>
-          {courses.map((course) => (
+          {filteredCourses.map((course) => (
             <tr key={course.documentId}>
               <td>{course.Title}</td>
               <td>{course.Description}</td>
