@@ -113,6 +113,10 @@ function EditUnit() {
             };
 
             console.log("Saving unit:", updatedUnit);
+            console.log("Data being sent:", {
+                title: values.unitname,
+                description: values.Discription
+            });
 
             const request = currentUnit
                 ? axios.put(`http://localhost:1337/api/units/${currentUnit.documentId}`, { data: updatedUnit }, {
