@@ -118,18 +118,29 @@ function EditPromotion() {
     };
 
     try {
-      const response = await axios.put(
-        `http://localhost:1337/api/promotions/${editingPromotionDocId}`,
-        { data: updatedPromotion },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      const response = isEditing
+        ? await axios.put(
+            `http://localhost:1337/api/promotions/${editingPromotionDocId}`,
+            { data: updatedPromotion },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+              },
+            }
+          )
+        : await axios.post(
+            'http://localhost:1337/api/promotions',
+            { data: updatedPromotion },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+              },
+            }
+          );
 
-      message.success('Promotion updated successfully!');
+      message.success(`Promotion ${isEditing ? 'updated' : 'created'} successfully!`);
       setIsModalVisible(false);
       setIsEditing(false);
       setEditingPromotionDocId(null);
@@ -143,11 +154,11 @@ function EditPromotion() {
       const promotionsResponse = await axios.get('http://localhost:1337/api/promotions?populate=*');
       setPromotions(promotionsResponse.data.data);
     } catch (error) {
-      console.error('Error updating promotion:', error);
+      console.error(`Error ${isEditing ? 'updating' : 'creating'} promotion:`, error);
       if (error.response) {
         console.error('Server response:', error.response.data);
       }
-      message.error('Failed to update promotion. Please check the API and permissions.');
+      message.error(`Failed to ${isEditing ? 'update' : 'create'} promotion. Please check the API and permissions.`);
     }
   };
 
@@ -184,9 +195,22 @@ function EditPromotion() {
     }
   };
 
+  const handleCreateNewPromotion = () => {
+    setPromotionTitle('');
+    setPromotionDescription('');
+    setPromotionImage(null);
+    setPromotionCategories([]);
+    setPromotionCodeName('');
+    setPromotionDiscount('');
+    setIsEditing(false);
+    setEditingPromotionDocId(null);
+    setIsModalVisible(true);
+  };
+
   return (
     <div className="edit-promotion-container">
       <h1>Edit Promotion</h1>
+      <Button type="primary" onClick={handleCreateNewPromotion}>Create New Promotion</Button>
       <div className="edit-promotion-table">
         <div className="edit-promotion-table-header">
           <div className="edit-promotion-table-row">
@@ -232,12 +256,12 @@ function EditPromotion() {
       </div>
 
       <Modal
-        title="Edit Promotion"
+        title={isEditing ? "Edit Promotion" : "Create New Promotion"}
         open={isModalVisible}
         onCancel={handleCancel}
         footer={[
           <Button key="cancel" onClick={handleCancel}>Cancel</Button>,
-          <Button key="save" type="primary" onClick={handleSave}>Save</Button>,
+          <Button key="save" type="primary" onClick={handleSave}>{isEditing ? "Save" : "Create"}</Button>,
         ]}
       >
         <div className="edit-promotion-modal">
