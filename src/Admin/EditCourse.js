@@ -314,7 +314,7 @@ function EditCourse() {
             <th>Units</th>
             <th>Price</th>
             <th>Real Price</th>
-            <th>Promotion Image</th>
+            <th>Promote Image</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -405,7 +405,7 @@ function EditCourse() {
           </Select>
         </div>
         <div className="form-group">
-          <label>Promotion Image</label>
+          <label>Promote Image</label>
           <input
             type="file"
             accept="image/*"
@@ -484,7 +484,7 @@ function EditCourse() {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name="promotionImage" label="Promotion Image">
+          <Form.Item name="promotionImage" label="PromoteImage">
             <input
               type="file"
               accept="image/*"
@@ -505,7 +505,6 @@ function EditCourse() {
         </Form>
       </Modal>
       <Modal
-        title="Promotion Image"
         visible={isImageModalVisible}
         onCancel={handleImageModalCancel}
         footer={null}

@@ -5,6 +5,7 @@ import './EditPromotion.css';
 
 function EditPromotion() {
   const [promotions, setPromotions] = useState([]);
+  const [filteredPromotions, setFilteredPromotions] = useState([]);
   const [promotionTitle, setPromotionTitle] = useState('');
   const [promotionDescription, setPromotionDescription] = useState('');
   const [promotionImage, setPromotionImage] = useState(null);
@@ -15,6 +16,7 @@ function EditPromotion() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [promotionCodeName, setPromotionCodeName] = useState('');
   const [promotionDiscount, setPromotionDiscount] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const token = '6fea988a29f7c35f02cf01573097a41fed37f418132ef9d8f1f1243b5e31288fb98f17422433de6792660f6c7b8cd5277c2f1950c095a1c3a2ad7021480520a91d07901a12919476f70610d8e4e62998024a1349faedc87fae8e98caa024aaebe68539f384c0ede8866b6eea4506309dec1d41aee360bdcd4f1f50d2fb769d7e';
 
@@ -24,6 +26,7 @@ function EditPromotion() {
       .then(response => {
         console.log('Promotions fetched:', response.data.data);
         setPromotions(response.data.data);
+        setFilteredPromotions(response.data.data);
       })
       .catch(error => console.error('Error fetching promotions:', error));
 
@@ -153,6 +156,7 @@ function EditPromotion() {
 
       const promotionsResponse = await axios.get('http://localhost:1337/api/promotions?populate=*');
       setPromotions(promotionsResponse.data.data);
+      setFilteredPromotions(promotionsResponse.data.data);
     } catch (error) {
       console.error(`Error ${isEditing ? 'updating' : 'creating'} promotion:`, error);
       if (error.response) {
@@ -186,6 +190,7 @@ function EditPromotion() {
 
           message.success('Promotion deleted successfully!');
           setPromotions(promotions.filter(promo => promo.documentId !== documentId));
+          setFilteredPromotions(promotions.filter(promo => promo.documentId !== documentId));
         } catch (error) {
           console.error('Error deleting promotion:', error);
           if (error.response) {
@@ -209,9 +214,24 @@ function EditPromotion() {
     setIsModalVisible(true);
   };
 
+  const handleSearch = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchTerm(value);
+    const filtered = promotions.filter(promo =>
+      promo.PromitionName.toLowerCase().includes(value)
+    );
+    setFilteredPromotions(filtered);
+  };
+
   return (
     <div className="edit-promotion-container">
       <h1>Edit Promotion</h1>
+      <Input
+        placeholder="Search by Title"
+        value={searchTerm}
+        onChange={handleSearch}
+        style={{ marginBottom: '20px' }}
+      />
       <Button type="primary" onClick={handleCreateNewPromotion}>Create New Promotion</Button>
       <div className="edit-promotion-table">
         <div className="edit-promotion-table-header">
@@ -225,7 +245,7 @@ function EditPromotion() {
           </div>
         </div>
         <div className="edit-promotion-table-body">
-          {promotions.map(promo => (
+          {filteredPromotions.map(promo => (
             <div key={promo.documentId} className="edit-promotion-table-row">
               <div className="edit-promotion-table-cell">
                 {promo.PromitionName}
