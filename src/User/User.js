@@ -27,7 +27,7 @@ function User() {
       const fetchUserCourses = async () => {
         setLoading(true);  
         try {
-          const response = await fetch(`http://localhost:1337/api/courses?filters[user][id][$eq]=${user.id}&populate=user`);
+          const response = await fetch(`http://localhost:1337/api/courses?filters[users][id][$eq]=${user.id}&populate=users`);
           if (!response.ok) {
             throw new Error('Failed to fetch user courses');
           }

@@ -130,7 +130,7 @@ function Course() {
       const fetchUserCourses = async () => {
         try {
           console.log("Fetching user courses for user ID:", user.id);
-          const response = await fetch(`http://localhost:1337/api/courses?filters[user][id][$eq]=${user.id}&populate=user`);
+          const response = await fetch(`http://localhost:1337/api/courses?filters[users][id][$eq]=${user.id}&populate=users`);
           const userCoursesData = await response.json();
           console.log("User courses data:", userCoursesData);
 
