@@ -174,25 +174,27 @@ function EditPromotion() {
   };
 
   const handleDelete = async (documentId) => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this promotion?');
-    if (confirmDelete) {
-      try {
-        await axios.delete(`http://localhost:1337/api/promotions/${documentId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    Modal.confirm({
+      title: 'Are you sure you want to delete this promotion?',
+      onOk: async () => {
+        try {
+          await axios.delete(`http://localhost:1337/api/promotions/${documentId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
-        message.success('Promotion deleted successfully!');
-        setPromotions(promotions.filter(promo => promo.documentId !== documentId));
-      } catch (error) {
-        console.error('Error deleting promotion:', error);
-        if (error.response) {
-          console.error('Server response:', error.response.data);
+          message.success('Promotion deleted successfully!');
+          setPromotions(promotions.filter(promo => promo.documentId !== documentId));
+        } catch (error) {
+          console.error('Error deleting promotion:', error);
+          if (error.response) {
+            console.error('Server response:', error.response.data);
+          }
+          message.error('Failed to delete promotion. Please check the API and permissions.');
         }
-        message.error('Failed to delete promotion. Please check the API and permissions.');
-      }
-    }
+      },
+    });
   };
 
   const handleCreateNewPromotion = () => {
@@ -218,6 +220,7 @@ function EditPromotion() {
             <div className="edit-promotion-table-cell">Description</div>
             <div className="edit-promotion-table-cell">Image</div>
             <div className="edit-promotion-table-cell">Categories</div>
+            <div className="edit-promotion-table-cell">Discount</div>
             <div className="edit-promotion-table-cell">Actions</div>
           </div>
         </div>
@@ -245,6 +248,9 @@ function EditPromotion() {
                 {promo.categories.map((cat, index) => (
                   <div key={index}>{cat.Category}</div>
                 ))}
+              </div>
+              <div className="edit-promotion-table-cell">
+                {promo.Discount}%
               </div>
               <div className="edit-promotion-table-cell">
                 <button className="edit-promotion-button" onClick={() => handleEdit(promo.documentId)}>Edit</button>
