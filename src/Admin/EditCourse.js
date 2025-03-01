@@ -14,6 +14,7 @@ function EditCourse() {
   const [units, setUnits] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+  const [isImageModalVisible, setIsImageModalVisible] = useState(false);
   const [currentCourse, setCurrentCourse] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -24,6 +25,7 @@ function EditCourse() {
   const [promotionImage, setPromotionImage] = useState("");
   const [pdfFile, setPdfFile] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedImage, setSelectedImage] = useState(null);
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [createForm] = Form.useForm();
@@ -272,6 +274,16 @@ function EditCourse() {
     });
   };
 
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setIsImageModalVisible(true);
+  };
+
+  const handleImageModalCancel = () => {
+    setIsImageModalVisible(false);
+    setSelectedImage(null);
+  };
+
   const filteredCourses = courses.filter(course =>
     course.Title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -315,7 +327,7 @@ function EditCourse() {
               <td>{course.units ? course.units.map((unit) => unit.unitname).join(", ") : "No Units"}</td>
               <td>{course.Price}</td>
               <td>{course.realprice}</td>
-              <td>{course.Promotepic?.url ? <img src={`http://localhost:1337${course.Promotepic.url}`} alt="Promotion" style={{ width: "50px" }} /> : "No Image"}</td>
+              <td>{course.Promotepic?.url ? <img src={`http://localhost:1337${course.Promotepic.url}`} alt="Promotion" style={{ width: "50px", cursor: "pointer" }} onClick={() => handleImageClick(`http://localhost:1337${course.Promotepic.url}`)} /> : "No Image"}</td>
               <td>
                 <Button icon={<Edit />} onClick={() => showModal(course)}>Edit</Button>
                 <Button
@@ -405,7 +417,8 @@ function EditCourse() {
               <img
                 src={`http://localhost:1337${promotionImage.url || promotionImage}`}
                 alt="Promotion"
-                style={{ maxWidth: "200px" }}
+                style={{ maxWidth: "200px", cursor: "pointer" }}
+                onClick={() => handleImageClick(`http://localhost:1337${promotionImage.url || promotionImage}`)}
               />
             </div>
           )}
@@ -483,12 +496,25 @@ function EditCourse() {
                 <img
                   src={`http://localhost:1337${promotionImage.url || promotionImage}`}
                   alt="Promotion"
-                  style={{ maxWidth: "200px" }}
+                  style={{ maxWidth: "200px", cursor: "pointer" }}
+                  onClick={() => handleImageClick(`http://localhost:1337${promotionImage.url || promotionImage}`)}
                 />
               </div>
             )}
           </Form.Item>
         </Form>
+      </Modal>
+      <Modal
+        title="Promotion Image"
+        visible={isImageModalVisible}
+        onCancel={handleImageModalCancel}
+        footer={null}
+      >
+        <img
+          src={selectedImage}
+          alt="Promotion"
+          style={{ width: "100%" }}
+        />
       </Modal>
     </div>
   );
