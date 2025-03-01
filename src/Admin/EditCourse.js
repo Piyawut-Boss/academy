@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-import { Button, Modal, Input, message, Select } from 'antd';
-import { Edit, Trash2 } from 'lucide-react';
+import { Button, Modal, Input, message, Select, Form } from 'antd';
+import { Edit, Plus, Trash2 } from 'lucide-react';
 import "./EditCourse.css";
 
 const { confirm } = Modal;
@@ -13,6 +13,7 @@ function EditCourse() {
   const [courses, setCourses] = useState([]);
   const [units, setUnits] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [currentCourse, setCurrentCourse] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -24,15 +25,11 @@ function EditCourse() {
   const [pdfFile, setPdfFile] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const [form] = Form.useForm();
+  const [createForm] = Form.useForm();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:1337/api/courses?populate=*")
-      .then((response) => {
-        setCourses(response.data.data);
-      })
-      .catch((error) => console.error("Error fetching courses:", error));
-
+    fetchCourses();
     axios
       .get("http://localhost:1337/api/units")
       .then((response) => {
@@ -40,6 +37,15 @@ function EditCourse() {
       })
       .catch((error) => console.error("Error fetching units:", error));
   }, []);
+
+  const fetchCourses = () => {
+    axios
+      .get("http://localhost:1337/api/courses?populate=*")
+      .then((response) => {
+        setCourses(response.data.data);
+      })
+      .catch((error) => console.error("Error fetching courses:", error));
+  };
 
   const showModal = (course) => {
     setCurrentCourse(course);
@@ -53,9 +59,17 @@ function EditCourse() {
     setIsModalVisible(true);
   };
 
+  const showCreateModal = () => {
+    setIsCreateModalVisible(true);
+  };
+
   const handleCancel = () => {
     setIsModalVisible(false);
     setCurrentCourse(null);
+  };
+
+  const handleCreateCancel = () => {
+    setIsCreateModalVisible(false);
   };
 
   const handleSave = () => {
@@ -84,17 +98,38 @@ function EditCourse() {
         setIsModalVisible(false);
         setCurrentCourse(null);
         // Refresh the courses list
-        axios
-          .get("http://localhost:1337/api/courses?populate=*")
-          .then((response) => {
-            setCourses(response.data.data);
-          })
-          .catch((error) => console.error("Error fetching courses:", error));
+        fetchCourses();
       })
       .catch(error => {
         console.error('Error updating course:', error);
         message.error('Failed to update course. Please try again.');
       });
+  };
+
+  const handleCreate = async (values) => {
+    try {
+      const courseData = {
+        Title: values.title,
+        Description: values.description,
+        Detail: values.detail,
+        Price: values.price,
+        realprice: values.realPrice,
+        units: values.units,
+        Promotepic: promotionImage ? { id: promotionImage.id } : null,
+      };
+
+      await axios.post('http://localhost:1337/api/courses', { data: courseData }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      message.success('Course created successfully');
+      setIsCreateModalVisible(false);
+      fetchCourses();
+    } catch (error) {
+      console.error('Error creating course:', error);
+      message.error('Failed to create course. Please try again.');
+    }
   };
 
   const handleDeleteCourse = async (courseId) => {
@@ -106,12 +141,7 @@ function EditCourse() {
       });
 
       // Refresh the courses list
-      axios
-        .get("http://localhost:1337/api/courses?populate=*")
-        .then((response) => {
-          setCourses(response.data.data);
-        })
-        .catch((error) => console.error("Error fetching courses:", error));
+      fetchCourses();
 
       message.success("Course deleted successfully!");
     } catch (error) {
@@ -249,6 +279,14 @@ function EditCourse() {
   return (
     <div className="edit-course-container">
       <h1>Edit Course</h1>
+      <Button
+        type="primary"
+        icon={<Plus />}
+        onClick={showCreateModal}
+        style={{ marginBottom: '20px' }}
+      >
+        Create New Course
+      </Button>
       <Input
         placeholder="Search by course title"
         value={searchTerm}
@@ -397,6 +435,60 @@ function EditCourse() {
           ))}
         </div>
         <Button type="primary" onClick={handleSave}>Save</Button>
+      </Modal>
+      <Modal
+        title="Create New Course"
+        visible={isCreateModalVisible}
+        onCancel={handleCreateCancel}
+        onOk={createForm.submit}
+      >
+        <Form form={createForm} onFinish={handleCreate}>
+          <Form.Item name="title" label="Title" rules={[{ required: true, message: 'Please enter the course title' }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="description" label="Description" rules={[{ required: true, message: 'Please enter the course description' }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="detail" label="Detail" rules={[{ required: true, message: 'Please enter the course detail' }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="price" label="Price" rules={[{ required: true, message: 'Please enter the course price' }]}>
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="realPrice" label="Real Price" rules={[{ required: true, message: 'Please enter the course real price' }]}>
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="units" label="Units" rules={[{ required: true, message: 'Please select units' }]}>
+            <Select
+              mode="multiple"
+              style={{ width: '100%' }}
+              placeholder="Select units"
+            >
+              {units.map(unit => (
+                <Select.Option key={unit.documentId} value={unit.documentId}>
+                  {unit.unitname}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item name="promotionImage" label="Promotion Image">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+            {promotionImage && (
+              <div>
+                <p>Current Promotion Image:</p>
+                <img
+                  src={`http://localhost:1337${promotionImage.url || promotionImage}`}
+                  alt="Promotion"
+                  style={{ maxWidth: "200px" }}
+                />
+              </div>
+            )}
+          </Form.Item>
+        </Form>
       </Modal>
     </div>
   );
