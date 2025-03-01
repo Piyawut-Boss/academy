@@ -16,7 +16,6 @@ function EditPromotion() {
   const [promotionCodeName, setPromotionCodeName] = useState('');
   const [promotionDiscount, setPromotionDiscount] = useState('');
 
-
   const token = '6fea988a29f7c35f02cf01573097a41fed37f418132ef9d8f1f1243b5e31288fb98f17422433de6792660f6c7b8cd5277c2f1950c095a1c3a2ad7021480520a91d07901a12919476f70610d8e4e62998024a1349faedc87fae8e98caa024aaebe68539f384c0ede8866b6eea4506309dec1d41aee360bdcd4f1f50d2fb769d7e';
 
   useEffect(() => {
@@ -140,7 +139,6 @@ function EditPromotion() {
       setPromotionCategories([]);
       setPromotionCodeName('');
       setPromotionDiscount('');
-
 
       const promotionsResponse = await axios.get('http://localhost:1337/api/promotions?populate=*');
       setPromotions(promotionsResponse.data.data);
