@@ -126,43 +126,38 @@ function Course() {
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn && user?.id) {
+    if (user?.id) {
       const fetchUserCourses = async () => {
+        setLoading(true);
         try {
-          console.log("Fetching user courses for user ID:", user.id);
           const response = await fetch(`http://localhost:1337/api/courses?filters[users][id][$eq]=${user.id}&populate=users`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch user courses');
+          }
           const userCoursesData = await response.json();
-          console.log("User courses data:", userCoursesData);
 
           const documentIds = userCoursesData.data.map(course => course.documentId);
-          console.log("Document IDs:", documentIds);
-          console.log(`Fetching course details for documentIds: ${documentIds.join(', ')}`);
-
           if (documentIds.length > 0) {
-            console.log(`Fetching course details for documentIds: ${documentIds.join(', ')}`);
             const fetchCoursesDetails = await fetch(`http://localhost:1337/api/courses?filters[documentId][$in]=${documentIds.join('&filters[documentId][$in]=')}&populate=*`);
-            console.log("API URL for fetching courses:", `http://localhost:1337/api/courses?filters[documentId][$in]=${documentIds.join('&filters[documentId][$in]=')}&populate=*`);
+            if (!fetchCoursesDetails.ok) {
+              throw new Error('Failed to fetch course details');
+            }
             const coursesDetailsData = await fetchCoursesDetails.json();
-            console.log("Courses details data:", coursesDetailsData);
-            console.log("User Courses Data: ", userCoursesData);
-            console.log("Courses Details Response: ", coursesDetailsData);
-
             setUserCourses(coursesDetailsData.data || []);
           } else {
-            console.log("No documentIds found for user courses.");
+            setUserCourses([]);
           }
         } catch (error) {
-          console.error("Error fetching user courses:", error);
+          console.error('Error fetching user courses:', error);
+          setError('Error fetching data');
+        } finally {
+          setLoading(false);
         }
       };
 
       fetchUserCourses();
     }
-  }, [isLoggedIn, user?.id]);
-
-  useEffect(() => {
-    console.log(userCourses);
-  }, [userCourses]);
+  }, [user?.id]);
 
   useEffect(() => {
     const fetchData = async () => {

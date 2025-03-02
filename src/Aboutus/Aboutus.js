@@ -117,15 +117,6 @@ const Aboutus = () => {
         ></iframe>
       </div>
 
-      <div id="contact-section" className="aboutus-testimonials">
-        <h3>ความคิดเห็นจากนักเรียน</h3>
-        <p>
-          "สถาบันนี้ช่วยให้ลูกของเราเรียนรู้ได้อย่างสนุกและมีประสิทธิภาพมากขึ้น!"
-        </p>
-        <p>
-          "ติวเตอร์เป็นมืออาชีพและมีทักษะในการสอนที่เยี่ยม"
-        </p>
-      </div>
 
       <div className="aboutus-contact-section">
         <h4>ช่องทางการติดต่อ</h4>
