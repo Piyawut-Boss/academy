@@ -4,6 +4,9 @@ import './Course.css';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
+
 function CountdownSection() {
   const [countDownData, setCountDownData] = useState([]);
   const [selectedExam, setSelectedExam] = useState(null);

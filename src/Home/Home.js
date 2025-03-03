@@ -11,6 +11,8 @@ import './Home.css';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 
 const Home = () => {
   const [banners, setBanners] = useState([]);

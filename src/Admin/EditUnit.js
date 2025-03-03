@@ -21,9 +21,9 @@ function EditUnit() {
     const [loading, setLoading] = useState(false);
     
     const token = process.env.REACT_APP_STRAPI_API_TOKEN;
-    const pageSize = 10;
+    const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
-    // นิยาม fetchUnitsWithSearch ภายนอก useEffect
+    const pageSize = 10;
     const fetchUnitsWithSearch = useCallback(async (page) => {
         setLoading(true);
         
@@ -55,7 +55,6 @@ function EditUnit() {
         }
     }, [searchTerm, token, pageSize]);
 
-    // นิยาม fetchCourses ภายนอก useEffect
     const fetchCourses = useCallback(async () => {
         try {
             const response = await axios.get("http://localhost:1337/api/courses", {
@@ -127,7 +126,7 @@ function EditUnit() {
                 },
             });
 
-            fetchUnitsWithSearch(currentPage); // เรียกใช้ fetchUnitsWithSearch
+            fetchUnitsWithSearch(currentPage); 
             message.success("Unit updated successfully!");
             handleCancel();
         } catch (error) {
@@ -144,7 +143,7 @@ function EditUnit() {
                 }
             })
             .then(() => {
-                fetchUnitsWithSearch(currentPage); // เรียกใช้ fetchUnitsWithSearch
+                fetchUnitsWithSearch(currentPage); 
                 message.success("Unit deleted successfully!");
             })
             .catch((error) => {

@@ -19,6 +19,8 @@ function EditPromotion() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const token = process.env.REACT_APP_STRAPI_API_TOKEN;
+  const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 
   useEffect(() => {
     console.log('Fetching promotions...');

@@ -19,12 +19,12 @@ function EditUser() {
     const [searchTerm, setSearchTerm] = useState('');
 
     const token = process.env.REACT_APP_STRAPI_API_TOKEN;
+    const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 
     useEffect(() => {
-        // Update API call to include role information
         axios.get('http://localhost:1337/api/users?populate=*')
             .then(response => {
-                // Filter out admin users and only show regular users
                 const filteredUsers = response.data.filter(user => 
                     user.role?.type === 'authenticated' || 
                     !user.role?.type.toLowerCase().includes('admin')
@@ -42,7 +42,7 @@ function EditUser() {
         setCurrentUser(user);
         setUsername(user.username);
         setEmail(user.email);
-        setPassword('');  // Clear the password field when editing
+        setPassword('');  
         setSelectedCourses(user.courses ? user.courses.map(course => course.id) : []);
         setIsModalVisible(true);
     };
@@ -154,7 +154,6 @@ function EditUser() {
                 </table>
             </div>
 
-            {/* Edit User Modal */}
             <Modal title="Edit User" open={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null}>
                 <div className="form-group">
                     <label>Username</label>
@@ -190,7 +189,6 @@ function EditUser() {
                 <Button type="primary" onClick={handleSave}>Save</Button>
             </Modal>
 
-            {/* Create Account Modal */}
             <Modal title="Create Account" open={isRegisterModalVisible} onCancel={() => setIsRegisterModalVisible(false)} footer={null}>
                 <div className="form-group">
                     <label>Username</label>

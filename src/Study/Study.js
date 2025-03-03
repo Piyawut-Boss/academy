@@ -4,6 +4,8 @@ import axios from 'axios';
 import './Study.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 const Study = () => {
   const { documentId } = useParams();
   const [course, setCourse] = useState(null);

@@ -18,6 +18,8 @@ function EditPayment() {
   const navigate = useNavigate();
 
   const token = process.env.REACT_APP_STRAPI_API_TOKEN;
+  const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 
   useEffect(() => {
     const role = localStorage.getItem('role');

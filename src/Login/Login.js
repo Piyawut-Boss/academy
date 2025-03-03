@@ -6,6 +6,9 @@ import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import './Login.css';
 
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
+
 const Login = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');

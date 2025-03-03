@@ -3,6 +3,9 @@ import './User.css';
 import { Button, Card, Row, Col, Modal } from 'antd';  
 import { useNavigate } from 'react-router-dom';
 
+
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 function User() {
   const [user, setUser] = useState(null);
   const [userCourses, setUserCourses] = useState([]);

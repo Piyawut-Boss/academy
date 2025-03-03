@@ -6,6 +6,8 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import './Payment.css';
 
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 function Payment() {
     const [cartCourses, setCartCourses] = useState([]);
     const [file, setFile] = useState(null);

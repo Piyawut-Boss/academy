@@ -7,6 +7,8 @@ import axios from 'axios';
 import './Shopping.css';
 
 const { Option } = Select;
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 
 function Shopping() {
   const [cartCourses, setCartCourses] = useState(() => {
