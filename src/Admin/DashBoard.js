@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { Row, Col, Spin, Alert, Typography, Divider } from "antd";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, BarChart, Bar, CartesianGrid } from "recharts";
+import { Row, Col, Spin, Alert, Typography } from "antd";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, CartesianGrid } from "recharts";
 import { UserOutlined, DollarOutlined, RiseOutlined, BookOutlined } from "@ant-design/icons";
 import "./DashBoard.css";
 
 const { Title, Text } = Typography;
 
-const API_BASE = "http://localhost:1337/api";
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
 function DashBoard() {
   const [loading, setLoading] = useState(true);
@@ -35,29 +35,7 @@ function DashBoard() {
 
   const formatCurrency = (value) => `฿${value.toLocaleString()}`;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await Promise.all([
-          fetchTotalUsers(),
-          fetchUserGrowth(),
-          fetchTopCourses(),
-          fetchNewStudents(),
-          fetchNewStudents(),
-          fetchRevenue(),
-          fetchCategoryStats(),
-        ]);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const fetchTotalUsers = async () => {
+  const fetchTotalUsers = useCallback(async () => {
     try {
       const { data } = await axios.get(`${API_BASE}/users?filters[role][name][$eq]=Authenticated`);
       if (data && data.data) {
@@ -69,9 +47,9 @@ function DashBoard() {
       console.error("Error fetching total users:", err);
       setError("Failed to fetch total users");
     }
-  };
+  }, []);
 
-  const fetchUserGrowth = async () => {
+  const fetchUserGrowth = useCallback(async () => {
     try {
       const { data } = await axios.get(`${API_BASE}/users?filters[role][name][$eq]=Authenticated`);
       const usersData = data.data || data;
@@ -81,31 +59,33 @@ function DashBoard() {
       console.error("Error fetching user growth data:", err);
       setError("Failed to fetch user growth data");
     }
-  };
+  }, []);
 
-  const fetchTopCourses = async () => {
+  const fetchTopCourses = useCallback(async () => {
     try {
-      const { data: paymentsData } = await axios.get(`${API_BASE}/payments?filters[payment_status][$eq]=Approved&populate=courses`);
-      const payments = paymentsData.data || paymentsData;
-      const courseStats = calculateTopCourses(payments);
-      setTopCourses(courseStats);
+      const { data } = await axios.get(
+        `${API_BASE}/payments?filters[payment_status][$eq]=Approved&populate[0]=courses&populate[1]=user`
+      );
+      const payments = data.data || data;
+      const topCourses = calculateTopCourses(payments);
+      setTopCourses(topCourses);
     } catch (err) {
       console.error("Error fetching top courses:", err);
       setError("Failed to fetch top courses");
     }
-  };
+  }, []);
 
-  const fetchNewStudents = async () => {
+  const fetchNewStudents = useCallback(async () => {
     try {
       const [approvedData, pendingData] = await Promise.all([
         axios.get(`${API_BASE}/payments?filters[payment_status][$eq]=Approved&populate=user`),
         axios.get(`${API_BASE}/payments?filters[payment_status][$eq]=Pending&populate=user`)
       ]);
-  
+
       const currentDate = new Date();
-      const currentMonth = currentDate.getMonth(); 
+      const currentMonth = currentDate.getMonth();
       const currentYear = currentDate.getFullYear();
-  
+
       const filterPaymentsByCurrentMonth = (payments) => {
         return payments.filter((payment) => {
           const updatedAt = payment.attributes?.updatedAt || payment.updatedAt;
@@ -119,10 +99,10 @@ function DashBoard() {
           return false;
         });
       };
-  
+
       const approvedPayments = filterPaymentsByCurrentMonth(approvedData.data.data);
       const pendingPayments = filterPaymentsByCurrentMonth(pendingData.data.data);
-  
+
       const approvedUsers = new Set();
       approvedPayments.forEach((payment) => {
         const userId = payment.attributes?.user?.data?.id || payment.user?.id;
@@ -130,7 +110,7 @@ function DashBoard() {
           approvedUsers.add(userId);
         }
       });
-  
+
       const pendingUsers = new Set();
       pendingPayments.forEach((payment) => {
         const userId = payment.attributes?.user?.data?.id || payment.user?.id;
@@ -138,7 +118,7 @@ function DashBoard() {
           pendingUsers.add(userId);
         }
       });
-  
+
       setNewStudents([
         { name: 'อนุมัติแล้ว', value: approvedUsers.size, fill: colors.success },
         { name: 'รออนุมัติ', value: pendingUsers.size, fill: colors.warning }
@@ -147,9 +127,9 @@ function DashBoard() {
       console.error("Error fetching new students data:", err);
       setError("Failed to fetch new students data");
     }
-  };
+  }, [colors.success, colors.warning]);
 
-  const fetchRevenue = async () => {
+  const fetchRevenue = useCallback(async () => {
     try {
       const { data } = await axios.get(`${API_BASE}/payments?filters[payment_status][$eq]=Approved`);
       const payments = data.data || data;
@@ -159,9 +139,9 @@ function DashBoard() {
       console.error("Error fetching revenue data:", err);
       setError("Failed to fetch revenue data");
     }
-  };
+  }, []);
 
-  const fetchCategoryStats = async () => {
+  const fetchCategoryStats = useCallback(async () => {
     try {
       const { data: coursesData } = await axios.get(`${API_BASE}/courses?populate=categories`);
       const { data: paymentsData } = await axios.get(`${API_BASE}/payments?filters[payment_status][$eq]=Approved&populate=courses`);
@@ -175,7 +155,28 @@ function DashBoard() {
       console.error("Error fetching category stats:", err);
       setError("Failed to fetch category stats");
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await Promise.all([
+          fetchTotalUsers(),
+          fetchUserGrowth(),
+          fetchTopCourses(),
+          fetchNewStudents(),
+          fetchRevenue(),
+          fetchCategoryStats(),
+        ]);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [fetchCategoryStats, fetchNewStudents, fetchRevenue, fetchTopCourses, fetchUserGrowth, fetchTotalUsers]);
 
   const groupByMonth = (users = []) => {
     const monthlyData = {};
@@ -199,27 +200,44 @@ function DashBoard() {
   };
 
   const calculateTopCourses = (payments = []) => {
-    const courseRevenue = {};
-
+    const courseStats = {};
+  
     payments.forEach((payment) => {
       const paymentData = payment.attributes || payment;
       const paymentStatus = paymentData.payment_status;
       const totalAmount = paymentData.totalAmount || 0;
       const courses = paymentData.courses?.data || paymentData.courses || [];
-
+      const userId = paymentData.user?.data?.id || paymentData.user?.id;
+  
       if (paymentStatus === "Approved" && courses.length > 0) {
         const course = courses[0].attributes || courses[0];
         const courseTitle = course.Title || "Unknown Course";
-        courseRevenue[courseTitle] = (courseRevenue[courseTitle] || 0) + totalAmount;
+  
+        if (!courseStats[courseTitle]) {
+          courseStats[courseTitle] = {
+            revenue: 0,
+            users: new Set(), // ใช้ Set เพื่อเก็บ ID ผู้ใช้ที่ไม่ซ้ำกัน
+          };
+        }
+  
+        // เพิ่มรายได้และผู้ใช้
+        courseStats[courseTitle].revenue += totalAmount;
+        if (userId) {
+          courseStats[courseTitle].users.add(userId);
+        }
       }
     });
-
-    return Object.entries(courseRevenue)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5)
-      .map(([courseTitle, revenue]) => ({ courseTitle, revenue }));
+  
+    // แปลงเป็น Array และเรียงลำดับตามรายได้จากมากไปน้อย
+    return Object.entries(courseStats)
+      .map(([courseTitle, data]) => ({
+        courseTitle,
+        revenue: data.revenue,
+        userCount: data.users.size, // นับจำนวนผู้ใช้ที่ไม่ซ้ำกัน
+      }))
+      .sort((a, b) => b.revenue - a.revenue) // เรียงลำดับตามรายได้จากมากไปน้อย
+      .slice(0, 5); // เลือกเฉพาะ 5 อันดับแรก
   };
-
 
   const calculateRevenue = (payments = []) => {
     let total = 0, monthly = 0;
@@ -436,14 +454,25 @@ function DashBoard() {
                       key={index}
                       className="popular-course"
                       style={{
-                        borderLeft: `3px solid ${chartColors[index % chartColors.length]}`
+                        borderLeft: `3px solid ${chartColors[index % chartColors.length]}`,
                       }}
                     >
                       <div className="course-title">
-                        <BookOutlined style={{ marginRight: 4, color: chartColors[index % chartColors.length], fontSize: '12px' }} />
-                        <Text style={{ fontSize: '12px' }}>{course.courseTitle}</Text>
+                        <BookOutlined
+                          style={{
+                            marginRight: 4,
+                            color: chartColors[index % chartColors.length],
+                            fontSize: "12px",
+                          }}
+                        />
+                        <Text style={{ fontSize: "12px" }}>{course.courseTitle}</Text>
                       </div>
-                      <Text strong style={{ color: colors.success, fontSize: '12px' }}>{formatCurrency(course.revenue)}</Text>
+                      <Text type="secondary" style={{ fontSize: "10px",marginLeft:"auto" }}>
+                        ผู้เรียน: {course.userCount} คน
+                      </Text>
+                      <Text strong style={{ color: colors.success, fontSize: "12px",marginLeft:"10px" }}>
+                        {formatCurrency(course.revenue)}
+                      </Text>
                     </div>
                   ))}
                 </div>

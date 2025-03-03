@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import './User.css';  // นำเข้าไฟล์ CSS
-import { Button, Card, Row, Col, Modal } from 'antd';  // นำเข้า Button และ Card จาก antd
+import './User.css';  
+import { Button, Card, Row, Col, Modal } from 'antd';  
 import { useNavigate } from 'react-router-dom';
 
 function User() {
@@ -10,7 +10,7 @@ function User() {
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentCourse, setCurrentCourse] = useState(null);
-  const [showHeart, setShowHeart] = useState(false);  // สถานะสำหรับการแสดงหัวใจ
+  const [showHeart, setShowHeart] = useState(false);  // ตรงที่แสดงหัวใจ
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,7 +61,7 @@ function User() {
   const handleClick = () => {
     setShowHeart(true);
     setTimeout(() => {
-      setShowHeart(false);  // หัวใจหายไปหลังจาก 1.5 วินาที
+      setShowHeart(false); 
     }, 1500);
   };
 
@@ -140,7 +140,6 @@ function User() {
         </Row>
       )}
 
-      {/* Modal for course details */}
       {currentCourse && (
         <Modal
           title={currentCourse.Title}

@@ -5,6 +5,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    margin-top: -20px;
   }
   
   .dashboard-content {
@@ -25,6 +26,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
   }
   
   .stat-box:hover {
@@ -54,6 +56,7 @@
     padding: 12px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     height: 100%;
+    max-height: 250px;
     display: flex;
     flex-direction: column;
   }

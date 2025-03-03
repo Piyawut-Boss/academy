@@ -95,8 +95,8 @@ function Course() {
   const [showAllCourses, setShowAllCourses] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentCourse, setCurrentCourse] = useState(null);
-  const [categoryData, setCategoryData] = useState([]);
-  const [error, setError] = useState(null);
+  const [, setCategoryData] = useState([]);
+  const [, setError] = useState(null);
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { Modal, Button, Input, Form, Select, Pagination, Upload, message } from "antd";
 import { UploadOutlined } from '@ant-design/icons';
@@ -19,21 +19,12 @@ function EditUnit() {
     const [pdfFile, setPdfFile] = useState(null);
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [loading, setLoading] = useState(false);
-
-    const token = "6fea988a29f7c35f02cf01573097a41fed37f418132ef9d8f1f1243b5e31288fb98f17422433de6792660f6c7b8cd5277c2f1950c095a1c3a2ad7021480520a91d07901a12919476f70610d8e4e62998024a1349faedc87fae8e98caa024aaebe68539f384c0ede8866b6eea4506309dec1d41aee360bdcd4f1f50d2fb769d7e";
+    
+    const token = process.env.REACT_APP_STRAPI_API_TOKEN;
     const pageSize = 10;
 
-    useEffect(() => {
-        fetchUnitsWithSearch(currentPage);
-        fetchCourses();
-    }, [currentPage]);
-
-    useEffect(() => {
-        setCurrentPage(1);
-        fetchUnitsWithSearch(1);
-    }, [searchTerm]);
-
-    const fetchUnitsWithSearch = (page) => {
+    // นิยาม fetchUnitsWithSearch ภายนอก useEffect
+    const fetchUnitsWithSearch = useCallback(async (page) => {
         setLoading(true);
         
         let url = `http://localhost:1337/api/units?populate=course&pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
@@ -43,44 +34,51 @@ function EditUnit() {
             url += `&filters[$or][1][course][Title][$containsi]=${encodeURIComponent(searchTerm)}`;
         }
         
-        axios
-            .get(url, {
+        try {
+            const response = await axios.get(url, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            })
-            .then((response) => {
-                const sortedUnits = response.data.data.sort((a, b) => {
-                    const titleA = a.course?.Title || "";
-                    const titleB = b.course?.Title || "";
-                    return titleA.localeCompare(titleB);
-                });
-                setUnits(sortedUnits);
-                setTotalUnits(response.data.meta.pagination.total);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching units:", error);
-                setLoading(false);
-                message.error("Failed to fetch units. Please try again.");
             });
-    };
+            const sortedUnits = response.data.data.sort((a, b) => {
+                const titleA = a.course?.Title || "";
+                const titleB = b.course?.Title || "";
+                return titleA.localeCompare(titleB);
+            });
+            setUnits(sortedUnits);
+            setTotalUnits(response.data.meta.pagination.total);
+        } catch (error) {
+            console.error("Error fetching units:", error);
+            message.error("Failed to fetch units. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    }, [searchTerm, token, pageSize]);
 
-    const fetchCourses = () => {
-        axios
-            .get("http://localhost:1337/api/courses", {
+    // นิยาม fetchCourses ภายนอก useEffect
+    const fetchCourses = useCallback(async () => {
+        try {
+            const response = await axios.get("http://localhost:1337/api/courses", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            })
-            .then((response) => {
-                setCourses(response.data.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching courses:", error);
-                message.error("Failed to fetch courses. Please try again.");
             });
-    };
+            setCourses(response.data.data);
+        } catch (error) {
+            console.error("Error fetching courses:", error);
+            message.error("Failed to fetch courses. Please try again.");
+        }
+    }, [token]);
+
+    useEffect(() => {
+        fetchUnitsWithSearch(currentPage);
+        fetchCourses();
+    }, [currentPage, fetchCourses, fetchUnitsWithSearch]);
+
+    useEffect(() => {
+        setCurrentPage(1);
+        fetchUnitsWithSearch(1);
+    }, [searchTerm, fetchUnitsWithSearch]);
 
     const showModal = (unit) => {
         setCurrentUnit(unit);
@@ -129,7 +127,7 @@ function EditUnit() {
                 },
             });
 
-            fetchUnitsWithSearch(currentPage);
+            fetchUnitsWithSearch(currentPage); // เรียกใช้ fetchUnitsWithSearch
             message.success("Unit updated successfully!");
             handleCancel();
         } catch (error) {
@@ -146,7 +144,7 @@ function EditUnit() {
                 }
             })
             .then(() => {
-                fetchUnitsWithSearch(currentPage);
+                fetchUnitsWithSearch(currentPage); // เรียกใช้ fetchUnitsWithSearch
                 message.success("Unit deleted successfully!");
             })
             .catch((error) => {

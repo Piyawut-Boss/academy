@@ -6,18 +6,18 @@ import './EditPayment.css';
 
 function EditPayment() {
   const [payments, setPayments] = useState([]);
-  const [courses, setCourses] = useState([]);
+  const [, setCourses] = useState([]);
   const [users, setUsers] = useState([]);
   const [editingPayment, setEditingPayment] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
+  const [, setSelectedFile] = useState(null);
+  const [, setPreviewImage] = useState(null);
   const [isImageModalVisible, setIsImageModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [filterStatus, setFilterStatus] = useState('All');
   const [filterUser, setFilterUser] = useState('All');
   const navigate = useNavigate();
 
-  const token = '6fea988a29f7c35f02cf01573097a41fed37f418132ef9d8f1f1243b5e31288fb98f17422433de6792660f6c7b8cd5277c2f1950c095a1c3a2ad7021480520a91d07901a12919476f70610d8e4e62998024a1349faedc87fae8e98caa024aaebe68539f384c0ede8866b6eea4506309dec1d41aee360bdcd4f1f50d2fb769d7e';
+  const token = process.env.REACT_APP_STRAPI_API_TOKEN;
 
   useEffect(() => {
     const role = localStorage.getItem('role');
