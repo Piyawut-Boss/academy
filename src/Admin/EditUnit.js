@@ -14,19 +14,37 @@ function EditUnit() {
     const [form] = Form.useForm();
     const [currentPage, setCurrentPage] = useState(1);
     const [totalUnits, setTotalUnits] = useState(0);
-    const [fileList, setFileList] = useState([]);
-    const [videoList, setVideoList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [videoFile, setVideoFile] = useState(null);
+    const [pdfFile, setPdfFile] = useState(null);
+    const [selectedCourse, setSelectedCourse] = useState(null);
+    const [loading, setLoading] = useState(false);
+
     const token = "6fea988a29f7c35f02cf01573097a41fed37f418132ef9d8f1f1243b5e31288fb98f17422433de6792660f6c7b8cd5277c2f1950c095a1c3a2ad7021480520a91d07901a12919476f70610d8e4e62998024a1349faedc87fae8e98caa024aaebe68539f384c0ede8866b6eea4506309dec1d41aee360bdcd4f1f50d2fb769d7e";
+    const pageSize = 10;
 
     useEffect(() => {
-        fetchUnits(currentPage);
+        fetchUnitsWithSearch(currentPage);
         fetchCourses();
     }, [currentPage]);
 
-    const fetchUnits = (page) => {
+    useEffect(() => {
+        setCurrentPage(1);
+        fetchUnitsWithSearch(1);
+    }, [searchTerm]);
+
+    const fetchUnitsWithSearch = (page) => {
+        setLoading(true);
+        
+        let url = `http://localhost:1337/api/units?populate=course&pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
+        
+        if (searchTerm) {
+            url += `&filters[$or][0][unitname][$containsi]=${encodeURIComponent(searchTerm)}`;
+            url += `&filters[$or][1][course][Title][$containsi]=${encodeURIComponent(searchTerm)}`;
+        }
+        
         axios
-            .get(`http://localhost:1337/api/units?populate=course&pagination[page]=${page}&pagination[pageSize]=10`, {
+            .get(url, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -39,8 +57,13 @@ function EditUnit() {
                 });
                 setUnits(sortedUnits);
                 setTotalUnits(response.data.meta.pagination.total);
+                setLoading(false);
             })
-            .catch((error) => console.error("Error fetching units:", error));
+            .catch((error) => {
+                console.error("Error fetching units:", error);
+                setLoading(false);
+                message.error("Failed to fetch units. Please try again.");
+            });
     };
 
     const fetchCourses = () => {
@@ -53,7 +76,10 @@ function EditUnit() {
             .then((response) => {
                 setCourses(response.data.data);
             })
-            .catch((error) => console.error("Error fetching courses:", error));
+            .catch((error) => {
+                console.error("Error fetching courses:", error);
+                message.error("Failed to fetch courses. Please try again.");
+            });
     };
 
     const showModal = (unit) => {
@@ -72,76 +98,43 @@ function EditUnit() {
         setIsModalOpen(false);
         setCurrentUnit(null);
         form.resetFields();
-        setFileList([]);
-        setVideoList([]);
+        setPdfFile(null);
+        setVideoFile(null);
     };
 
-    const handleSave = async (values) => {
+    const handleSave = async () => {
+        if (!currentUnit) return;
+
+        const unitName = form.getFieldValue('unitname');
+        const unitDescription = form.getFieldValue('Discription');
+
+        const uploadedVideo = videoFile ? await uploadFile(videoFile) : null;
+        const uploadedPdf = pdfFile ? await uploadFile(pdfFile) : null;
+
+        const updatedUnit = {
+            data: {
+                unitname: unitName !== currentUnit.unitname ? unitName : currentUnit.unitname,
+                Discription: unitDescription !== currentUnit.Discription ? unitDescription : currentUnit.Discription,
+                video: uploadedVideo ? uploadedVideo.id : currentUnit.video ? currentUnit.video.id : null,
+                File: uploadedPdf ? uploadedPdf.id : currentUnit.File ? currentUnit.File.id : null,
+                course: selectedCourse ? selectedCourse : currentUnit.course?.id
+            },
+        };
+
         try {
-            let fileUrl = values.File;
-            let videoUrl = values.video;
-
-            if (fileList.length > 0) {
-                const formData = new FormData();
-                formData.append('files', fileList[0]);
-                const uploadRes = await axios.post('http://localhost:1337/api/upload', formData, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                fileUrl = uploadRes.data[0]?.url;
-            }
-
-            if (videoList.length > 0) {
-                const formData = new FormData();
-                formData.append('files', videoList[0]);
-                const uploadRes = await axios.post('http://localhost:1337/api/upload', formData, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                videoUrl = uploadRes.data[0]?.url;
-            }
-
-            const selectedCourse = courses.find(course => course.Title === values.course);
-            const updatedUnit = {
-                unitname: values.unitname,
-                Discription: values.Discription,
-                video: videoUrl,
-                course: selectedCourse ? { id: selectedCourse.id, Title: selectedCourse.Title } : null,
-                File: fileUrl
-            };
-
-            console.log("Saving unit:", updatedUnit);
-            console.log("Data being sent:", {
-                title: values.unitname,
-                description: values.Discription
+            const response = await axios.put(`http://localhost:1337/api/units/${currentUnit.documentId}?populate=*`, updatedUnit, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
             });
 
-            const request = currentUnit
-                ? axios.put(`http://localhost:1337/api/units/${currentUnit.documentId}`, { data: updatedUnit }, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                : axios.post("http://localhost:1337/api/units", { data: updatedUnit }, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-
-            await request;
-            fetchUnits(currentPage);
+            fetchUnitsWithSearch(currentPage);
+            message.success("Unit updated successfully!");
             handleCancel();
-            message.success("Unit saved successfully!");
         } catch (error) {
-            console.error("Error saving unit:", error);
-            if (error.response) {
-                console.error("Error response data:", error.response.data);
-                message.error(`Failed to save unit: ${error.response.data.message}`);
-            } else {
-                message.error("Failed to save unit. Please check the API and permissions.");
-            }
+            console.error('Error updating unit:', error.response?.data);
+            message.error('Failed to update unit. Please try again.');
         }
     };
 
@@ -153,7 +146,7 @@ function EditUnit() {
                 }
             })
             .then(() => {
-                fetchUnits(currentPage);
+                fetchUnitsWithSearch(currentPage);
                 message.success("Unit deleted successfully!");
             })
             .catch((error) => {
@@ -166,74 +159,124 @@ function EditUnit() {
         setCurrentPage(page);
     };
 
-    const handleSearch = (e) => {
+    const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
     };
 
-    const filteredUnits = units.filter(unit => 
-        unit.unitname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        unit.course?.Title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const handleClearSearch = () => {
+        setSearchTerm("");
+    };
 
-    const uploadProps = {
-        name: 'file',
-        action: 'http://localhost:1337/upload',
-        headers: {
-            Authorization: `Bearer ${token}`
-        },
-        onChange(info) {
-            if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
+    const uploadFile = async (file) => {
+        if (!file) return null;
+
+        const formData = new FormData();
+        formData.append("files", file);
+
+        try {
+            const response = await axios.post("http://localhost:1337/api/upload", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            return response.data[0];
+        } catch (error) {
+            console.error("Error uploading file:", error);
+            message.error("Failed to upload file. Please try again.");
+            return null;
         }
     };
 
     return (
         <div className="edit-unit-container">
             <h2>Units</h2>
-            <Input
-                placeholder="Search by unit name or course title"
-                value={searchTerm}
-                onChange={handleSearch}
+            <div style={{ display: 'flex', marginBottom: '20px' }}>
+                <Input
+                    placeholder="Search by unit name or course title"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    style={{ flex: 1, marginRight: '10px' }}
+                    onPressEnter={() => fetchUnitsWithSearch(1)}
+                />
+                <Button 
+                    type="primary" 
+                    onClick={() => fetchUnitsWithSearch(1)}
+                >
+                    Search
+                </Button>
+                {searchTerm && (
+                    <Button 
+                        onClick={handleClearSearch}
+                        style={{ marginLeft: '10px' }}
+                    >
+                        Clear
+                    </Button>
+                )}
+            </div>
+
+            <Button 
+                type="primary" 
+                onClick={() => showModal(null)}
                 style={{ marginBottom: '20px' }}
-            />
-            <Button type="primary" onClick={() => showModal(null)}>Create New Unit</Button>
-            <table className="unit-table">
-                <thead>
-                    <tr>
-                        <th>Unit Name</th>
-                        <th>Description</th>
-                        <th>Video</th>
-                        <th>Course Title</th>
-                        <th>File</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredUnits.map((unit) => (
-                        <tr key={unit.documentId}>
-                            <td>{unit.unitname}</td>
-                            <td>{unit.Discription}</td>
-                            <td>{unit.video}</td>
-                            <td>{unit.course?.Title}</td>
-                            <td>{unit.File}</td>
-                            <td>
-                                <Button onClick={() => showModal(unit)}>Edit</Button>
-                                <Button onClick={() => handleDelete(unit.documentId)} danger>Delete</Button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <Pagination
-                current={currentPage}
-                pageSize={10}
-                total={totalUnits}
-                onChange={handlePageChange}
-                style={{ marginTop: '20px', textAlign: 'center' }}
-            />
+            >
+                Create New Unit
+            </Button>
+
+            {loading ? (
+                <div style={{ textAlign: 'center', padding: '20px' }}>Loading...</div>
+            ) : units.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '20px' }}>
+                    {searchTerm ? `No units found matching "${searchTerm}"` : "No units available"}
+                </div>
+            ) : (
+                <>
+                    <table className="unit-table">
+                        <thead>
+                            <tr>
+                                <th>Unit Name</th>
+                                <th>Description</th>
+                                <th>Video</th>
+                                <th>Course Title</th>
+                                <th>File</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {units.map((unit) => (
+                                <tr key={unit.documentId}>
+                                    <td>{unit.unitname}</td>
+                                    <td>{unit.Discription}</td>
+                                    <td>{unit.video}</td>
+                                    <td>{unit.course?.Title}</td>
+                                    <td>{unit.File}</td>
+                                    <td>
+                                        <Button onClick={() => showModal(unit)}>Edit</Button>
+                                        <Button 
+                                            onClick={() => handleDelete(unit.documentId)} 
+                                            danger 
+                                            style={{ marginLeft: '10px' }}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    
+                    <Pagination
+                        current={currentPage}
+                        pageSize={pageSize}
+                        total={totalUnits}
+                        onChange={handlePageChange}
+                        style={{ marginTop: '20px', textAlign: 'center' }}
+                        showSizeChanger={false}
+                    />
+                </>
+            )}
+
             <Modal
                 title={currentUnit ? "Edit Unit" : "Create New Unit"}
                 open={isModalOpen}
@@ -248,19 +291,47 @@ function EditUnit() {
                         <Input.TextArea placeholder="Enter unit description" />
                     </Form.Item>
                     <Form.Item name="video" label="Video Upload">
-                        <Upload {...uploadProps} fileList={videoList} onChange={({ fileList }) => setVideoList(fileList)}>
+                        <Upload
+                            onChange={({ file }) => setVideoFile(file)}
+                            fileList={videoFile ? [videoFile] : []}
+                            beforeUpload={() => false} 
+                        >
                             <Button icon={<UploadOutlined />}>Click to Upload</Button>
                         </Upload>
+                        {videoFile && videoFile.url && (
+                            <div>
+                                <p>Current Video:</p>
+                                <video width="200" controls>
+                                    <source src={`http://localhost:1337${videoFile.url}`} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        )}
                     </Form.Item>
                     <Form.Item name="File" label="File Upload">
-                        <Upload {...uploadProps} fileList={fileList} onChange={({ fileList }) => setFileList(fileList)}>
+                        <Upload
+                            onChange={({ file }) => setPdfFile(file)}
+                            fileList={pdfFile ? [pdfFile] : []}
+                            beforeUpload={() => false}
+                        >
                             <Button icon={<UploadOutlined />}>Click to Upload</Button>
                         </Upload>
+                        {pdfFile && pdfFile.url && (
+                            <div>
+                                <p>Current PDF File:</p>
+                                <a href={`http://localhost:1337${pdfFile.url}`} target="_blank" rel="noopener noreferrer">
+                                    View PDF
+                                </a>
+                            </div>
+                        )}
                     </Form.Item>
                     <Form.Item name="course" label="Course Title" rules={[{ required: true, message: 'Please select a course' }]}>
-                        <Select placeholder="Select a course">
+                        <Select
+                            placeholder="Select a course"
+                            onChange={(value) => setSelectedCourse(value)} 
+                        >
                             {courses.map(course => (
-                                <Option key={course.id} value={course.Title}>{course.Title}</Option>
+                                <Option key={course.id} value={course.id}>{course.Title}</Option>
                             ))}
                         </Select>
                     </Form.Item>
