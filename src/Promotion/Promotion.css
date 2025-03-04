@@ -72,8 +72,7 @@
 
 .slider-wrapper {
     position: relative;
-    padding: 10px; /* ย่อขนาดส่วนที่เป็นสไลด์ */
-    width: 700px; /* กำหนดความกว้างของสไลด์ให้ยาวขึ้น */
+    width: 800px; /* กำหนดความกว้างของสไลด์ให้ยาวขึ้น */
     overflow: hidden; /* ซ่อนส่วนที่เกิน */
 }
 
@@ -103,11 +102,14 @@
     max-width: 700px;
     height: auto;
     border-radius: 8px;
+    margin-right: auto; 
 }
 
 .slider-details {
-    text-align: center;
+    text-align: left;
     margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
 }
 
 .slider-title {
@@ -121,6 +123,7 @@
 .slider-code {
     margin: 5px 0;
     color: #555;
+    margin-right: 200px;
 }
 
 .slider-indicators {
@@ -163,16 +166,17 @@
 }
 
 .promotion-image {
-    width: 100%; /* ปรับขนาดความกว้างของรูปภาพในส่วนโปรโมชั่น */
-    height: auto;
-    max-height: none; /* ยกเลิกการจำกัดความสูงสูงสุดของรูปภาพในส่วนโปรโมชั่น */
+    min-width: 300px;
+    width: 500px !important; /* กำหนดขนาดของรูปภาพในรายการโปรโมชั่น */
+    height: 150px !important;
     object-fit: cover; /* ทำให้รูปภาพครอบคลุมพื้นที่ที่กำหนด */
 }
 
 
 .promotion-details {
     flex: 1;
-    text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+    text-align: left; /* จัดข้อความให้อยู่ตรงกลาง */
+    margin-left: 30px; 
 }
 
 .promotion-title {
@@ -199,4 +203,6 @@
     height: auto;
     max-height: 150px; /* ปรับขนาดความสูงสูงสุดของรูปภาพในสไลด์ */
     object-fit: cover; /* ทำให้รูปภาพครอบคลุมพื้นที่ที่กำหนด */
+    left: 50px;
+
 }
