@@ -288,8 +288,7 @@ const Home = () => {
         <div className="section" id="courses-section">
           <Title level={1}>
             <span className="team-container">
-              <span className="Course-text">Course </span>
-              <span className="Recommend-text">Recommend</span>
+              <span className="Recommend-text">คอร์สเรียนแนะนำ</span>
             </span>
           </Title>
           <p className="cc-description">สอบเข้ามหาลัยฯ ไปด้วยกัน !!</p>

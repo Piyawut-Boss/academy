@@ -148,7 +148,7 @@ function Payment() {
                 <h1>หน้าชำระเงิน</h1>
                 <p>กรุณาโอนเงินไปที่บัญชี:</p>
                 <div className='bank-details'>
-                    <p>ชื่อบัญชี: บริษัท Happu Learning Academy จำกัด</p>
+                    <p>ชื่อบัญชี: บริษัท Happy Learning Academy จำกัด</p>
                     <p>ธนาคารไทยพาณิชย์</p>
                     <p>เลขบัญชี: 123-456-7890</p>
                     <img src={require('./qr-code.png')} alt='QR Code' className='qr-code' />
@@ -180,7 +180,7 @@ function Payment() {
                         className="confirm-button"
                         disabled={loading || cartCourses.length === 0}
                     >
-                        {loading ? <Spin /> : 'ยืนยันการ��ำระเงิน'}
+                        {loading ? <Spin /> : 'ยืนยันการชำระเงิน'}
                     </Button>
                 </div>
             </div>
