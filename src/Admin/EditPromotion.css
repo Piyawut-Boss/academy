@@ -22,6 +22,26 @@
     color: white;
   }
   
+  .edit-promotion-table-header .edit-promotion-table-cell:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+  
+  .edit-promotion-table-header .edit-promotion-table-cell:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  .edit-promotion-table-header .edit-promotion-table-cell.first-cell {
+    border-top-left-radius: 10px; 
+    border-bottom-left-radius: 10px;
+  }
+
+  .edit-promotion-table-header .edit-promotion-table-cell.last-cell {
+    border-top-right-radius: 10px; 
+    border-bottom-right-radius: 10px;
+  }
+  
   .edit-promotion-table-row {
     display: flex;
     align-items: center;
@@ -64,14 +84,13 @@
   .edit-promotion-button {
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.5s;
   }
   
   .edit-promotion-button:hover {
     background-color: #473E91;
-    color: white;
   }
   
   .edit-promotion-button.cancel {
@@ -84,7 +103,7 @@
   
   .edit-promotion-button.delete {
     background-color: #e74c3c;
-    margin-left: 20px;
+    margin-left: 3px;
     color: white;
   }
   
@@ -102,6 +121,20 @@
   .select-input:focus {
     border-color: #473E91;
     outline: none;
+  }
+
+  .create-promotion-button {
+    background-color: #473E91;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+  }
+  
+  .create-promotion-button:hover {
+    background-color: #362a7c;
+    
   }
   
   /* Responsive Design */
@@ -121,4 +154,3 @@
       align-items: flex-start;
     }
   }
-  

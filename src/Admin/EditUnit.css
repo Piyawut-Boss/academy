@@ -1,0 +1,101 @@
+.edit-unit-button {
+    padding: 10px 25px;
+    width: 80px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    background-color: #473E91;
+    color: white;
+    margin-left: 8px;
+    margin-bottom: 5px;
+  
+  }
+  
+  .edit-unit-button:hover {
+    background-color: #473E91 !important;
+    color: white !important;
+  }
+  
+  .edit-unit-button.cancel {
+    background-color: #ccc;
+  }
+  
+  .edit-unit-button.cancel:hover {
+    background-color: #999;
+  }
+
+.edit-unit-button.delete {
+    background-color: #e74c3c; 
+    color: white;
+}
+
+.edit-unit-button.delete:hover {
+    background-color: #c0392b !important; 
+}
+
+.page-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #473E91;
+}
+
+.search-bar {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.create-unit-button {
+    margin-bottom: 20px;
+}
+
+.loading, .no-units {
+    text-align: center;
+    padding: 20px;
+}
+
+.unit-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+
+}
+
+.unit-table th, .unit-table td {
+    padding: 8px;
+    text-align: left;
+}
+
+.unit-table th {
+    background-color: #473E91; 
+    color: white; 
+    font-size: 18px; 
+    height: 50px; 
+}
+
+.unit-table th:first-child {
+    border-radius: 10px 0 0 0; 
+}
+
+.unit-table th:last-child {
+    border-radius: 0 10px 0 0; 
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.edit-unit-modal .ant-modal-content {
+    border-radius: 10px;
+}
+
+.cancel-button {
+    margin-left: 10px;
+}

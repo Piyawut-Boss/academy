@@ -146,7 +146,6 @@ function EditUser() {
                                         className="action-button"
                                         onClick={() => handleEdit(user)}
                                     >
-                                        <Edit size={16} />
                                         Edit
                                     </button>
                                 </td>

@@ -226,16 +226,16 @@ function EditPromotion() {
         onChange={handleSearch}
         style={{ marginBottom: '20px' }}
       />
-      <Button type="primary" onClick={handleCreateNewPromotion}>Create New Promotion</Button>
+      <Button type="primary" className="create-promotion-button" onClick={handleCreateNewPromotion}>Create New Promotion</Button>
       <div className="edit-promotion-table">
         <div className="edit-promotion-table-header">
           <div className="edit-promotion-table-row">
-            <div className="edit-promotion-table-cell">Title</div>
+            <div className="edit-promotion-table-cell first-cell">Title</div>
             <div className="edit-promotion-table-cell">Description</div>
             <div className="edit-promotion-table-cell">Image</div>
             <div className="edit-promotion-table-cell">Categories</div>
             <div className="edit-promotion-table-cell">Discount</div>
-            <div className="edit-promotion-table-cell">Actions</div>
+            <div className="edit-promotion-table-cell last-cell">Actions</div>
           </div>
         </div>
         <div className="edit-promotion-table-body">

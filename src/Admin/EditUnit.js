@@ -21,20 +21,20 @@ function EditUnit() {
     const [pdfFile, setPdfFile] = useState(null);
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [loading, setLoading] = useState(false);
-    
+
 
 
     const pageSize = 10;
     const fetchUnitsWithSearch = useCallback(async (page) => {
         setLoading(true);
-        
+
         let url = `${API_BASE}/api/units?populate=course&pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
-        
+
         if (searchTerm) {
             url += `&filters[$or][0][unitname][$containsi]=${encodeURIComponent(searchTerm)}`;
             url += `&filters[$or][1][course][Title][$containsi]=${encodeURIComponent(searchTerm)}`;
         }
-        
+
         try {
             const response = await axios.get(url, {
                 headers: {
@@ -126,10 +126,10 @@ function EditUnit() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            
+
             console.log('Updated Unit Response:', response.data);
 
-            fetchUnitsWithSearch(currentPage); 
+            fetchUnitsWithSearch(currentPage);
             message.success("Unit updated successfully!");
             handleCancel();
         } catch (error) {
@@ -146,7 +146,7 @@ function EditUnit() {
                 }
             })
             .then(() => {
-                fetchUnitsWithSearch(currentPage); 
+                fetchUnitsWithSearch(currentPage);
                 message.success("Unit deleted successfully!");
             })
             .catch((error) => {
@@ -191,45 +191,22 @@ function EditUnit() {
 
     return (
         <div className="edit-unit-container">
-            <h2>Units</h2>
-            <div style={{ display: 'flex', marginBottom: '20px' }}>
+            <h2 className="page-title">Units</h2>
+            <div className="search-bar">
                 <Input
                     placeholder="Search by unit name or course title"
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    style={{ flex: 1, marginRight: '10px' }}
                     onPressEnter={() => fetchUnitsWithSearch(1)}
                 />
-                <Button 
-                    type="primary" 
-                    onClick={() => fetchUnitsWithSearch(1)}
-                >
-                    Search
-                </Button>
-                {searchTerm && (
-                    <Button 
-                        onClick={handleClearSearch}
-                        style={{ marginLeft: '10px' }}
-                    >
-                        Clear
-                    </Button>
-                )}
+                <Button type="primary" onClick={() => fetchUnitsWithSearch(1)}>Search</Button>
+                {searchTerm && <Button onClick={handleClearSearch}>Clear</Button>}
             </div>
-
-            <Button 
-                type="primary" 
-                onClick={() => showModal(null)}
-                style={{ marginBottom: '20px' }}
-            >
-                Create New Unit
-            </Button>
-
+            <Button type="primary" onClick={() => showModal(null)} className="create-unit-button">Create New Unit</Button>
             {loading ? (
-                <div style={{ textAlign: 'center', padding: '20px' }}>Loading...</div>
+                <div className="loading">Loading...</div>
             ) : units.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '20px' }}>
-                    {searchTerm ? `No units found matching "${searchTerm}"` : "No units available"}
-                </div>
+                <div className="no-units">{searchTerm ? `No units found matching "${searchTerm}"` : "No units available"}</div>
             ) : (
                 <>
                     <table className="unit-table">
@@ -252,36 +229,29 @@ function EditUnit() {
                                     <td>{unit.course?.Title}</td>
                                     <td>{unit.File}</td>
                                     <td>
-                                        <Button onClick={() => showModal(unit)}>Edit</Button>
-                                        <Button 
-                                            onClick={() => handleDelete(unit.documentId)} 
-                                            danger 
-                                            style={{ marginLeft: '10px' }}
-                                        >
-                                            Delete
-                                        </Button>
+                                        <Button className="edit-unit-button" onClick={() => showModal(unit)}>Edit</Button>
+                                        <Button className="edit-unit-button delete" onClick={() => handleDelete(unit.documentId)} danger>Delete</Button>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
-                    
                     <Pagination
                         current={currentPage}
                         pageSize={pageSize}
                         total={totalUnits}
                         onChange={handlePageChange}
-                        style={{ marginTop: '20px', textAlign: 'center' }}
                         showSizeChanger={false}
+                        className="pagination"
                     />
                 </>
             )}
-
             <Modal
                 title={currentUnit ? "Edit Unit" : "Create New Unit"}
                 open={isModalOpen}
                 onCancel={handleCancel}
                 footer={null}
+                className="edit-unit-modal"
             >
                 <Form form={form} onFinish={handleSave} layout="vertical">
                     <Form.Item name="unitname" label="Unit Name" rules={[{ required: true, message: 'Please enter unit name' }]}>
@@ -291,11 +261,7 @@ function EditUnit() {
                         <Input.TextArea placeholder="Enter unit description" />
                     </Form.Item>
                     <Form.Item name="video" label="Video Upload">
-                        <Upload
-                            onChange={({ file }) => setVideoFile(file)}
-                            fileList={videoFile ? [videoFile] : []}
-                            beforeUpload={() => false} 
-                        >
+                        <Upload onChange={({ file }) => setVideoFile(file)} fileList={videoFile ? [videoFile] : []} beforeUpload={() => false}>
                             <Button icon={<UploadOutlined />}>Click to Upload</Button>
                         </Upload>
                         {videoFile && videoFile.url && (
@@ -309,27 +275,18 @@ function EditUnit() {
                         )}
                     </Form.Item>
                     <Form.Item name="File" label="File Upload">
-                        <Upload
-                            onChange={({ file }) => setPdfFile(file)}
-                            fileList={pdfFile ? [pdfFile] : []}
-                            beforeUpload={() => false}
-                        >
+                        <Upload onChange={({ file }) => setPdfFile(file)} fileList={pdfFile ? [pdfFile] : []} beforeUpload={() => false}>
                             <Button icon={<UploadOutlined />}>Click to Upload</Button>
                         </Upload>
                         {pdfFile && pdfFile.url && (
                             <div>
                                 <p>Current PDF File:</p>
-                                <a href={`${API_BASE}${pdfFile.url}`} target="_blank" rel="noopener noreferrer">
-                                    View PDF
-                                </a>
+                                <a href={`${API_BASE}${pdfFile.url}`} target="_blank" rel="noopener noreferrer">View PDF</a>
                             </div>
                         )}
                     </Form.Item>
                     <Form.Item name="course" label="Course Title" rules={[{ required: true, message: 'Please select a course' }]}>
-                        <Select
-                            placeholder="Select a course"
-                            onChange={(value) => setSelectedCourse(value)} 
-                        >
+                        <Select placeholder="Select a course" onChange={(value) => setSelectedCourse(value)}>
                             {courses.map(course => (
                                 <Option key={course.id} value={course.id}>{course.Title}</Option>
                             ))}
@@ -337,7 +294,7 @@ function EditUnit() {
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit">Save</Button>
-                        <Button onClick={handleCancel} style={{ marginLeft: '10px' }}>Cancel</Button>
+                        <Button onClick={handleCancel} className="cancel-button">Cancel</Button>
                     </Form.Item>
                 </Form>
             </Modal>

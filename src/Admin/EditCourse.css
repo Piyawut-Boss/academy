@@ -84,6 +84,42 @@ h1 {
   margin-bottom: 0.5rem;
 }
 
+.edit-course-button {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  background-color: #473E91;
+  color: white;
+  margin-left: 8px;
+  margin-bottom: 5px;
+
+}
+
+.edit-course-button:hover {
+  background-color: #473E91 !important;
+  color: white !important;
+}
+
+.edit-course-button.cancel {
+  background-color: #ccc;
+}
+
+.edit-course-button.cancel:hover {
+  background-color: #999;
+}
+
+.edit-button-delete {
+  background-color: #e74c3c !important;
+  color: white !important;
+  border: none !important;
+}
+
+.edit-button-delete:hover {
+  background-color: #c0392b;
+}
+
 .ant-input,
 .ant-select,
 .ant-input-password {

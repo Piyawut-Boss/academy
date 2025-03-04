@@ -189,7 +189,7 @@ function EditCourse() {
     try {
       const response = await axios.post(`${API_BASE}/api/upload`, formData, {
         headers: {
-           Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -305,9 +305,9 @@ function EditCourse() {
               <td>{course.realprice}</td>
               <td>{course.Promotepic?.url ? <img src={`${API_BASE}${course.Promotepic.url}`} alt="Promotion" style={{ width: "50px", cursor: "pointer" }} onClick={() => handleImageClick(`${API_BASE}${course.Promotepic.url}`)} /> : "No Image"}</td>
               <td>
-                <Button icon={<Edit />} onClick={() => showModal(course)}>Edit</Button>
+                <Button className="edit-course-button" onClick={() => showModal(course)}>Edit</Button>
                 <Button
-                  icon={<Trash2 />}
+                  className="edit-button-delete"
                   onClick={() => showDeleteCourseConfirm(course.documentId)}
                   style={{ marginLeft: '10px' }}
                 >
