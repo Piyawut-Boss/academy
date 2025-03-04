@@ -23,14 +23,14 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await axios.post(`${API_BASE}/auth/local`, {
+      const response = await axios.post(`${API_BASE}/api/auth/local`, {
         identifier: username,
         password: password,
       });
 
       const { jwt, user } = response.data;
 
-      const meResponse = await axios.get(`${API_BASE}/users/me?populate=*`, {
+      const meResponse = await axios.get(`${API_BASE}/api/users/me?populate=*`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
@@ -68,7 +68,7 @@ const Login = () => {
     }
 
     try {
-      await axios.post(`${API_BASE}/auth/local/register`, {
+      await axios.post(`${API_BASE}/api/auth/local/register`, {
         username,
         email,
         password,

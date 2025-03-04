@@ -37,7 +37,7 @@ function DashBoard() {
 
   const fetchTotalUsers = useCallback(async () => {
     try {
-      const { data } = await axios.get(`${API_BASE}/users?filters[role][name][$eq]=Authenticated`);
+      const { data } = await axios.get(`${API_BASE}/api/users?filters[role][name][$eq]=Authenticated`);
       if (data && data.data) {
         setTotalUsers(data.data.length);
       } else {
@@ -51,7 +51,7 @@ function DashBoard() {
 
   const fetchUserGrowth = useCallback(async () => {
     try {
-      const { data } = await axios.get(`${API_BASE}/users?filters[role][name][$eq]=Authenticated`);
+      const { data } = await axios.get(`${API_BASE}/api/users?filters[role][name][$eq]=Authenticated`);
       const usersData = data.data || data;
       const groupedData = groupByMonth(usersData);
       setUserGrowthData(groupedData);
@@ -64,7 +64,7 @@ function DashBoard() {
   const fetchTopCourses = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        `${API_BASE}/payments?filters[payment_status][$eq]=Approved&populate[0]=courses&populate[1]=user`
+        `${API_BASE}/api/payments?filters[payment_status][$eq]=Approved&populate[0]=courses&populate[1]=user`
       );
       const payments = data.data || data;
       const topCourses = calculateTopCourses(payments);
@@ -78,8 +78,8 @@ function DashBoard() {
   const fetchNewStudents = useCallback(async () => {
     try {
       const [approvedData, pendingData] = await Promise.all([
-        axios.get(`${API_BASE}/payments?filters[payment_status][$eq]=Approved&populate=user`),
-        axios.get(`${API_BASE}/payments?filters[payment_status][$eq]=Pending&populate=user`)
+        axios.get(`${API_BASE}/api/payments?filters[payment_status][$eq]=Approved&populate=user`),
+        axios.get(`${API_BASE}/api/payments?filters[payment_status][$eq]=Pending&populate=user`)
       ]);
 
       const currentDate = new Date();
@@ -131,7 +131,7 @@ function DashBoard() {
 
   const fetchRevenue = useCallback(async () => {
     try {
-      const { data } = await axios.get(`${API_BASE}/payments?filters[payment_status][$eq]=Approved`);
+      const { data } = await axios.get(`${API_BASE}/api/payments?filters[payment_status][$eq]=Approved`);
       const payments = data.data || data;
       const revenueData = calculateRevenue(payments);
       setRevenue(revenueData);
@@ -143,8 +143,8 @@ function DashBoard() {
 
   const fetchCategoryStats = useCallback(async () => {
     try {
-      const { data: coursesData } = await axios.get(`${API_BASE}/courses?populate=categories`);
-      const { data: paymentsData } = await axios.get(`${API_BASE}/payments?filters[payment_status][$eq]=Approved&populate=courses`);
+      const { data: coursesData } = await axios.get(`${API_BASE}/api/courses?populate=categories`);
+      const { data: paymentsData } = await axios.get(`${API_BASE}/api/payments?filters[payment_status][$eq]=Approved&populate=courses`);
 
       const courses = coursesData.data || coursesData;
       const payments = paymentsData.data || paymentsData;

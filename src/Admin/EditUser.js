@@ -4,6 +4,9 @@ import { Modal, Button, Input, message, Select } from 'antd';
 import { Edit, UserPlus } from 'lucide-react';
 import './EditUser.css';
 
+const token = process.env.REACT_APP_STRAPI_API_TOKEN;
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 function EditUser() {
     const [users, setUsers] = useState([]);
     const [courses, setCourses] = useState([]);
@@ -18,12 +21,11 @@ function EditUser() {
     const [selectedCourses, setSelectedCourses] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const token = process.env.REACT_APP_STRAPI_API_TOKEN;
-    const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 
 
     useEffect(() => {
-        axios.get('http://localhost:1337/api/users?populate=*')
+        axios.get(`${API_BASE}/api/users?populate=*`)
             .then(response => {
                 const filteredUsers = response.data.filter(user => 
                     user.role?.type === 'authenticated' || 
@@ -33,7 +35,7 @@ function EditUser() {
             })
             .catch(error => setError('Error fetching users'));
 
-        axios.get('http://localhost:1337/api/courses')
+        axios.get(`${API_BASE}/api/courses`)
             .then(response => setCourses(response.data.data))
             .catch(error => console.error('Error fetching courses:', error));
     }, []);                                                                                                                                                                                                         
@@ -50,7 +52,7 @@ function EditUser() {
     const handleSave = async () => {
         try {
             const data = { username, email, courses: selectedCourses };
-            await axios.put(`http://localhost:1337/api/users/${currentUser.id}`, data, {
+            await axios.put(`${API_BASE}/api/users/${currentUser.id}`, data, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -81,7 +83,7 @@ function EditUser() {
         }
 
         try {
-            await axios.post('http://localhost:1337/api/auth/local/register', { username, email, password });
+            await axios.post(`${API_BASE}/api/auth/local/register`, { username, email, password });
             message.success('Account created successfully!');
             setIsRegisterModalVisible(false);
         } catch (error) {

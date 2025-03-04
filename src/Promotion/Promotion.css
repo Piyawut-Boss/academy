@@ -1,0 +1,202 @@
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+}
+
+.title {
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    color: #FFC900;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.search-slider-container {
+    display: flex;
+    align-items: flex-start; /* จัดให้ทุกอย่างอยู่ในแถวเดียวกัน */
+    justify-content: center; /* จัดให้อยู่ตรงกลาง */
+    margin-bottom: 40px;
+    gap: 20px; /* ช่องว่างระหว่างส่วนค้นหากับสไลด์ */
+}
+
+.search-box {
+    background-color: white; /* พื้นหลังสีขาว */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* จัดให้ปุ่มค้นหาอยู่ข้างล่างช่องค้นหา */
+    gap: 10px; /* ช่องว่างระหว่างช่องค้นหากับปุ่มค้นหา */
+    width: 300px; /* ขนาดของบล็อก */
+}
+
+.search-input {
+    padding: 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 100%; /* ขนาดของช่องค้นหา */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-button {
+    padding: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #FFC900;
+    color: #fff;
+    transition: background-color 0.2s ease-in-out;
+    width: 100%; /* ขนาดของปุ่มค้นหา */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.search-button.clicked {
+    background-color: #800080;
+}
+
+.slider-container {
+    margin-bottom: 40px;
+}
+
+.slider-wrapper {
+    position: relative;
+    padding: 10px; /* ย่อขนาดส่วนที่เป็นสไลด์ */
+    width: 700px; /* กำหนดความกว้างของสไลด์ให้ยาวขึ้น */
+    overflow: hidden; /* ซ่อนส่วนที่เกิน */
+}
+
+.slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out; /* เพิ่มการเปลี่ยนแปลงที่ราบรื่น */
+}
+
+.slide {
+    min-width: 100%; /* ทำให้สไลด์แต่ละอันมีความกว้างเต็มที่ */
+    box-sizing: border-box; /* รวม padding และ border ในขนาดของสไลด์ */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide.even {
+    background-color: #CBBFE0; /* สีพื้นหลังสำหรับสไลด์เลขคู่ */
+}
+
+.slide.odd {
+    background-color: #FFF4BC; /* สีพื้นหลังสำหรับสไลด์เลขคี่ */
+}
+
+.slider-image {
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.slider-details {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.slider-title {
+    font-size: 1.5em;
+    margin: 0;
+    color: #333;
+}
+
+.slider-description,
+.slider-discount,
+.slider-code {
+    margin: 5px 0;
+    color: #555;
+}
+
+.slider-indicators {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.indicator {
+    font-size: 1.5rem;
+    color: #ccc;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.indicator.active {
+    color: #333;
+}
+
+.promotion-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px; /* เพิ่ม padding ให้กับรายการโปรโมชั่น */
+    width: 100%; /* เพิ่มความกว้างของรายการโปรโมชั่น */
+    transition: transform 0.3s ease-in-out; /* เพิ่มการเปลี่ยนแปลงที่ราบรื่น */
+}
+
+.promotion-item:hover {
+    transform: translateY(-10px); /* เด้งขึ้นเมื่อเลื่อนเมาส์ไปหา */
+}
+
+.promotion-item.even {
+    background-color: #CBBFE0;
+}
+
+.promotion-item.odd {
+    background-color: #FFF4BC;
+}
+
+.promotion-image {
+    width: 100%; /* ปรับขนาดความกว้างของรูปภาพในส่วนโปรโมชั่น */
+    height: auto;
+    max-height: none; /* ยกเลิกการจำกัดความสูงสูงสุดของรูปภาพในส่วนโปรโมชั่น */
+    object-fit: cover; /* ทำให้รูปภาพครอบคลุมพื้นที่ที่กำหนด */
+}
+
+
+.promotion-details {
+    flex: 1;
+    text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+}
+
+.promotion-title {
+    font-size: 1.5em; /* เพิ่มขนาดตัวอักษร */
+    margin: 0;
+    color: #333;
+}
+
+.promotion-description,
+.promotion-discount,
+.promotion-code {
+    margin: 10px 0; /* เพิ่ม margin ให้กับรายละเอียด */
+    color: #555;
+}
+
+.no-results {
+    text-align: center;
+    font-size: 1.2em;
+    color: #888;
+}
+/* Promotion.css */
+.slider-image {
+    width: 30%;
+    height: auto;
+    max-height: 150px; /* ปรับขนาดความสูงสูงสุดของรูปภาพในสไลด์ */
+    object-fit: cover; /* ทำให้รูปภาพครอบคลุมพื้นที่ที่กำหนด */
+}

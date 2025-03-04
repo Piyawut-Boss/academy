@@ -3,6 +3,9 @@ import axios from 'axios';
 import { Modal, Select, message, Input, Button } from 'antd';
 import './EditPromotion.css';
 
+const token = process.env.REACT_APP_STRAPI_API_TOKEN;
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 function EditPromotion() {
   const [promotions, setPromotions] = useState([]);
   const [filteredPromotions, setFilteredPromotions] = useState([]);
@@ -18,13 +21,11 @@ function EditPromotion() {
   const [promotionDiscount, setPromotionDiscount] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const token = process.env.REACT_APP_STRAPI_API_TOKEN;
-  const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
 
   useEffect(() => {
     console.log('Fetching promotions...');
-    axios.get('http://localhost:1337/api/promotions?populate=*')
+    axios.get(`${API_BASE}/api/promotions?populate=*`)
       .then(response => {
         console.log('Promotions fetched:', response.data.data);
         setPromotions(response.data.data);
@@ -36,7 +37,7 @@ function EditPromotion() {
   }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:1337/api/categories')
+    axios.get(`${API_BASE}/api/categories`)
       .then(response => {
         const options = response.data.data.map(cat => ({
           value: cat.id,
@@ -62,22 +63,12 @@ function EditPromotion() {
     }
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const imageUrl = URL.createObjectURL(file);
-    setPromotionImage(imageUrl);
-
-    handleImageUpload(file);
-  };
-
   const handleImageUpload = async (file) => {
     const formData = new FormData();
     formData.append('files', file);
 
     try {
-      const uploadResponse = await axios.post('http://localhost:1337/api/upload', formData, {
+      const uploadResponse = await axios.post(`${API_BASE}/api/upload`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -125,7 +116,7 @@ function EditPromotion() {
     try {
       const response = isEditing
         ? await axios.put(
-            `http://localhost:1337/api/promotions/${editingPromotionDocId}`,
+            `${API_BASE}/api/promotions/${editingPromotionDocId}`,
             { data: updatedPromotion },
             {
               headers: {
@@ -135,7 +126,7 @@ function EditPromotion() {
             }
           )
         : await axios.post(
-            'http://localhost:1337/api/promotions',
+            `${API_BASE}/api/promotions`,
             { data: updatedPromotion },
             {
               headers: {
@@ -144,6 +135,7 @@ function EditPromotion() {
               },
             }
           );
+          console.log(response.data);
 
       message.success(`Promotion ${isEditing ? 'updated' : 'created'} successfully!`);
       setIsModalVisible(false);
@@ -156,7 +148,7 @@ function EditPromotion() {
       setPromotionCodeName('');
       setPromotionDiscount('');
 
-      const promotionsResponse = await axios.get('http://localhost:1337/api/promotions?populate=*');
+      const promotionsResponse = await axios.get(`${API_BASE}/api/promotions?populate=*`);
       setPromotions(promotionsResponse.data.data);
       setFilteredPromotions(promotionsResponse.data.data);
     } catch (error) {
@@ -184,7 +176,7 @@ function EditPromotion() {
       title: 'Are you sure you want to delete this promotion?',
       onOk: async () => {
         try {
-          await axios.delete(`http://localhost:1337/api/promotions/${documentId}`, {
+          await axios.delete(`${API_BASE}/api/promotions/${documentId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -258,7 +250,7 @@ function EditPromotion() {
               <div className="edit-promotion-table-cell">
                 {promo.PromotePromo?.url && (
                   <img
-                    src={`http://localhost:1337${promo.PromotePromo.url}`}
+                    src={`${API_BASE}${promo.PromotePromo.url}`}
                     alt="Promotion"
                     className="promotion-image"
                     width="100"
@@ -331,7 +323,8 @@ function EditPromotion() {
               <div>
                 <p>Current Image:</p>
                 <img
-                  src={promotionImage instanceof File ? URL.createObjectURL(promotionImage) : `http://localhost:1337${promotionImage}`} alt="Current Promotion"
+                  src={promotionImage instanceof File ? URL.createObjectURL(promotionImage) : `${API_BASE}${promotionImage}`} 
+                  alt="Current Promotion"
                   style={{ width: '100px', height: '100px' }}
                 />
               </div>

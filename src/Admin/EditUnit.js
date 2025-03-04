@@ -5,6 +5,8 @@ import { UploadOutlined } from '@ant-design/icons';
 import "./EditUnit.css";
 
 const { Option } = Select;
+const token = process.env.REACT_APP_STRAPI_API_TOKEN;
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
 function EditUnit() {
     const [units, setUnits] = useState([]);
@@ -20,14 +22,13 @@ function EditUnit() {
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [loading, setLoading] = useState(false);
     
-    const token = process.env.REACT_APP_STRAPI_API_TOKEN;
-    const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 
     const pageSize = 10;
     const fetchUnitsWithSearch = useCallback(async (page) => {
         setLoading(true);
         
-        let url = `http://localhost:1337/api/units?populate=course&pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
+        let url = `${API_BASE}/api/units?populate=course&pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
         
         if (searchTerm) {
             url += `&filters[$or][0][unitname][$containsi]=${encodeURIComponent(searchTerm)}`;
@@ -53,11 +54,11 @@ function EditUnit() {
         } finally {
             setLoading(false);
         }
-    }, [searchTerm, token, pageSize]);
+    }, [searchTerm, pageSize]);
 
     const fetchCourses = useCallback(async () => {
         try {
-            const response = await axios.get("http://localhost:1337/api/courses", {
+            const response = await axios.get(`${API_BASE}/api/courses`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -67,7 +68,7 @@ function EditUnit() {
             console.error("Error fetching courses:", error);
             message.error("Failed to fetch courses. Please try again.");
         }
-    }, [token]);
+    }, []);
 
     useEffect(() => {
         fetchUnitsWithSearch(currentPage);
@@ -119,12 +120,14 @@ function EditUnit() {
         };
 
         try {
-            const response = await axios.put(`http://localhost:1337/api/units/${currentUnit.documentId}?populate=*`, updatedUnit, {
+            const response = await axios.put(`${API_BASE}/api/units/${currentUnit.documentId}?populate=*`, updatedUnit, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
             });
+            
+            console.log('Updated Unit Response:', response.data);
 
             fetchUnitsWithSearch(currentPage); 
             message.success("Unit updated successfully!");
@@ -137,7 +140,7 @@ function EditUnit() {
 
     const handleDelete = (unitDocumentId) => {
         axios
-            .delete(`http://localhost:1337/api/units/${unitDocumentId}`, {
+            .delete(`${API_BASE}/api/units/${unitDocumentId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -171,7 +174,7 @@ function EditUnit() {
         formData.append("files", file);
 
         try {
-            const response = await axios.post("http://localhost:1337/api/upload", formData, {
+            const response = await axios.post(`${API_BASE}/api/upload`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${token}`,
@@ -299,7 +302,7 @@ function EditUnit() {
                             <div>
                                 <p>Current Video:</p>
                                 <video width="200" controls>
-                                    <source src={`http://localhost:1337${videoFile.url}`} type="video/mp4" />
+                                    <source src={`${API_BASE}${videoFile.url}`} type="video/mp4" />
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
@@ -316,7 +319,7 @@ function EditUnit() {
                         {pdfFile && pdfFile.url && (
                             <div>
                                 <p>Current PDF File:</p>
-                                <a href={`http://localhost:1337${pdfFile.url}`} target="_blank" rel="noopener noreferrer">
+                                <a href={`${API_BASE}${pdfFile.url}`} target="_blank" rel="noopener noreferrer">
                                     View PDF
                                 </a>
                             </div>

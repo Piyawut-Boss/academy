@@ -28,7 +28,7 @@ function Shopping() {
   useEffect(() => {
     const fetchOrderHistory = async () => {
       try {
-        const response = await axios.get('http://localhost:1337/api/payments?1=1&populate=*');
+        const response = await axios.get(`${API_BASE}/api/payments?1=1&populate=*`);
         setOrderHistory(response.data.data);
       } catch (error) {
         console.error('Error fetching order history:', error);
@@ -46,7 +46,7 @@ function Shopping() {
 
   const applyPromoCode = async () => {
     try {
-      const response = await axios.get('http://localhost:1337/api/promotions?populate=*');
+      const response = await axios.get(`${API_BASE}/api/promotions?populate=*`);
       const promotions = response.data.data;
       const foundPromo = promotions.find(promo => promo.CodeName === promoCode);
 
@@ -91,7 +91,7 @@ function Shopping() {
         Promotepic ? (
           <motion.img
             whileHover={{ scale: 1.1 }}
-            src={`http://localhost:1337${Promotepic.url}`}
+            src={`${API_BASE}${Promotepic.url}`}
             alt="Preview"
             className="course-image"
           />

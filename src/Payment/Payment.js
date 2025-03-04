@@ -41,7 +41,7 @@ function Payment() {
             formData.append('files', file);
 
             console.log('Uploading file:', file);
-            const uploadRes = await axios.post('http://localhost:1337/api/upload', formData);
+            const uploadRes = await axios.post(`${API_BASE}/api/upload`, formData);
             console.log('Upload response:', uploadRes.data);
 
             if (!uploadRes.data || uploadRes.data.length === 0) {
@@ -82,7 +82,7 @@ function Payment() {
             };
 
             console.log('Making payment request with data:', paymentData);
-            const paymentRes = await axios.post('http://localhost:1337/api/payments', paymentData, { headers });
+            const paymentRes = await axios.post(`${API_BASE}/api/payments`, paymentData, { headers });
             console.log('Payment response:', paymentRes);
 
             if (paymentRes.status === 200 || paymentRes.status === 201) {
@@ -112,7 +112,7 @@ function Payment() {
                 Promotepic && Promotepic.url ? (
                     <motion.img
                         whileHover={{ scale: 1.1 }}
-                        src={`http://localhost:1337${Promotepic.url}`}
+                        src={`${API_BASE}${Promotepic.url}`}
                         alt='Preview'
                         className='course-image'
                         style={{ width: 80, height: 50, objectFit: 'cover' }}
@@ -180,7 +180,7 @@ function Payment() {
                         className="confirm-button"
                         disabled={loading || cartCourses.length === 0}
                     >
-                        {loading ? <Spin /> : 'ยืนยันการชำระเงิน'}
+                        {loading ? <Spin /> : 'ยืนยันการ��ำระเงิน'}
                     </Button>
                 </div>
             </div>

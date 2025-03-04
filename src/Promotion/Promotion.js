@@ -1,148 +1,165 @@
 // Promotion.js
 import React, { useEffect, useState } from "react";
+import "./Promotion.css";
 
-function Promotion() {
-    const [promotions, setPromotions] = useState([]);
+function PromotionList() {
+    const [allPromotions, setAllPromotions] = useState([]);
     const [filteredPromotions, setFilteredPromotions] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [isSearchClicked, setIsSearchClicked] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 4;
+    const [currentSlide, setCurrentSlide] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:1337/api/promotions")
+        fetch("http://localhost:1337/api/promotions?populate=*")
             .then(response => response.json())
             .then(data => {
+                console.log("Fetched Promotions:", data); // Check if data is fetched correctly
                 if (data && data.data) {
-                    // ทำซ้ำรายการ 3 ครั้ง
-                    const repeatedPromotions = Array(2).fill(data.data).flat();
-                    setPromotions(repeatedPromotions);
-                    setFilteredPromotions(repeatedPromotions);
+                    const uniquePromotions = Array.from(new Map(data.data.map(promo => [promo.id, promo])).values());
+                    setAllPromotions(uniquePromotions);
+                    setFilteredPromotions(uniquePromotions);
                 }
             })
             .catch(error => console.error("Error fetching promotions:", error));
     }, []);
 
-    const handleSearch = () => {
-        setIsSearchClicked(true);
-        setTimeout(() => setIsSearchClicked(false), 200);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % filteredPromotions.length);
+        }, 3000); // เลื่อนอัตโนมัติทุก 3 วินาที
+        return () => clearInterval(interval);
+    }, [filteredPromotions]);
 
+    const searchPromotions = () => {
         if (searchTerm.trim() === "") {
-            setFilteredPromotions(promotions);
+            setFilteredPromotions(allPromotions); // Reset to show all if search is empty
             return;
         }
 
         const searchText = searchTerm.toLowerCase();
-        const results = promotions.filter(promo =>
+        const results = allPromotions.filter(promo =>
             promo.PromitionName?.toLowerCase().includes(searchText) ||
             promo.Discription?.toLowerCase().includes(searchText) ||
             promo.CodeName?.toLowerCase().includes(searchText)
         );
         setFilteredPromotions(results);
+        setCurrentPage(1);
     };
 
-    const handleInputChange = (e) => {
+    const updateSearchTerm = (e) => {
         const value = e.target.value;
         setSearchTerm(value);
-
+        // Reset to show all if search is empty
         if (value.trim() === "") {
-            setFilteredPromotions(promotions);
+            setFilteredPromotions(allPromotions);
+        } else {
+            searchPromotions(); // Filter results
         }
     };
 
+    const handleSearchClick = () => {
+        setIsSearchClicked(true);
+        setTimeout(() => setIsSearchClicked(false), 200);
+        searchPromotions(); // Search on button click
+    };
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredPromotions.slice(indexOfFirstItem, indexOfLastItem);
+
+    const getPromotionImage = (promo) => {
+        if (promo.PromotePromo?.url) {
+            return `http://localhost:1337${promo.PromotePromo.url}`;
+        }
+        return "http://localhost:1337/api/promotions?populate=PromotePromo";
+    };
+
     return (
-        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "20px" }}>
-            <header className="header" style={{ textAlign: "center" }}>
-                <h1 className="title" style={{ marginBottom: "20px" }}>โปรโมชั่น</h1>
-                <h2 style={{ color: "#FFC900", fontSize: "2rem", fontWeight: "bold", marginTop: "20px" }}>
-                    HAPPY LEARNING ACADEMY
-                </h2>
+        <div className="container">
+            <header className="header">
+                <h1 className="title">โปรโมชั่น</h1>
+                <h2 className="subtitle">HAPPY LEARNING ACADEMY</h2>
             </header>
 
-            {/* ✅ ค้นหา */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "40px", gap: "10px" }}>
-                <input
-                    type="text"
-                    placeholder="ค้นหาโปรโมชั่น..."
-                    value={searchTerm}
-                    onChange={handleInputChange}
-                    style={{
-                        padding: "10px",
-                        fontSize: "16px",
-                        borderRadius: "5px",
-                        border: "1px solid #ccc",
-                        width: "60%"
-                    }}
-                />
-                <button
-                    onClick={handleSearch}
-                    style={{
-                        padding: "10px 15px",
-                        fontSize: "16px",
-                        fontWeight: "bold",
-                        border: "none",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                        backgroundColor: isSearchClicked ? "#800080" : "#FFC900",
-                        color: "#fff",
-                        transition: "background-color 0.2s ease-in-out"
-                    }}
-                >
-                    ค้นหา
-                </button>
-            </div>
-
-            {/* ✅ รายการโปรโมชั่น */}
-            {filteredPromotions.length > 0 ? (
-                filteredPromotions.map((promo, index) => (
-                    <div key={`${promo.id}-${index}`}
-                        style={{
-                            borderRadius: "10px",
-                            padding: "20px",
-                            marginBottom: "20px",
-                            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
-                            backgroundColor: index % 2 === 0 ? "#CBBFE0" : "#FFF4BC",
-                            textAlign: "center",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            gap: "15px",
-                            transition: "transform 0.2s ease-in-out", // ทำให้เด้งขึ้นเมื่อ hover
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-5px)"} // เด้งขึ้น 5px
-                        onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"} // กลับที่เดิม
+            <div className="search-slider-container">
+                <div className="search-box">
+                    <input
+                        type="text"
+                        placeholder="ค้นหาโปรโมชั่น..."
+                        value={searchTerm}
+                        onChange={updateSearchTerm}  // Real-time search
+                        className="search-input"
+                    />
+                    <button
+                        onClick={handleSearchClick}
+                        className={`search-button ${isSearchClicked ? "clicked" : ""}`}
                     >
-                        <img
-                            src={promo.CodeName === "summer"
-                                ? "http://localhost:1337/uploads/summer_3b14ccbd3e.png"
-                                : "http://localhost:1337/uploads/Valentine_1200a394df.png"}
-                            alt={promo.PromitionName}
-                            style={{
-                                width: "250px",
-                                height: "150px",
-                                objectFit: "cover",
-                                borderRadius: "10px"
-                            }}
-                        />
+                        ค้นหา
+                    </button>
+                </div>
 
-                        <div style={{ flex: 1, padding: "20px", textAlign: "left" }}>
-                            <h2 style={{ color: "#333", fontSize: "1.5rem", marginBottom: "10px" }}>
-                                {promo.PromitionName || "ไม่มีชื่อโปรโมชัน"}
-                            </h2>
-                            <p style={{ color: "#666", fontSize: "1rem" }}>
-                                {promo.Discription || "ไม่มีรายละเอียดโปรโมชัน"}
-                            </p>
-                            <p style={{ fontWeight: "bold", color: "#FF5733", fontSize: "1.2rem" }}>
-                                ส่วนลด: {promo.Discount}%
-                            </p>
+                <div className="slider-container">
+                    <div className="slider-wrapper">
+                        <div
+                            className="slider"
+                            style={{ transform: `translateX(-${currentSlide * 100}%)`, transition: "transform 0.5s ease-in-out" }}
+                        >
+                            {filteredPromotions.length > 0 && filteredPromotions.map((promo, index) => (
+                                <div key={index} className={`slide ${index % 2 === 0 ? "even" : "odd"}`}>
+                                    <img
+                                        src={getPromotionImage(promo)}
+                                        alt={promo.PromitionName || "ไม่มีชื่อโปรโมชัน"}
+                                        className="slider-image"
+                                    />
+                                    <div className="slider-details">
+                                        <h2 className="slider-title">{promo.PromitionName || "ไม่มีชื่อโปรโมชัน"}</h2>
+                                        <p className="slider-description">{promo.Discription || "ไม่มีรายละเอียดโปรโมชัน"}</p>
+                                        <p className="slider-discount">ส่วนลด: {promo.Discount}%</p>
+                                        <p className="slider-code">รหัสโปรโมชั่น: {promo.CodeName || "ไม่มีรหัส"}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="slider-indicators">
+                            {filteredPromotions.map((_, index) => (
+                                <span
+                                    key={index}
+                                    className={`indicator ${index === currentSlide ? "active" : ""}`}
+                                    onClick={() => setCurrentSlide(index)}
+                                >
+                                    •
+                                </span>
+                            ))}
                         </div>
                     </div>
-                ))
+                </div>
+            </div>
+
+            {currentItems.length > 0 ? (
+                currentItems.map((promo, index) => {
+                    return (
+                        <div key={promo.id} className={`promotion-item ${index % 2 === 0 ? "even" : "odd"}`}>
+                            <img
+                                src={getPromotionImage(promo)}
+                                alt={promo.PromitionName || "ไม่มีชื่อโปรโมชัน"}
+                                className="promotion-image"
+                            />
+                            <div className="promotion-details">
+                                <h2 className="promotion-title">{promo.PromitionName || "ไม่มีชื่อโปรโมชัน"}</h2>
+                                <p className="promotion-description">{promo.Discription || "ไม่มีรายละเอียดโปรโมชัน"}</p>
+                                <p className="promotion-discount">ส่วนลด: {promo.Discount}%</p>
+                                <p className="promotion-code">รหัสโปรโมชั่น: {promo.CodeName || "ไม่มีรหัส"}</p>
+                            </div>
+                        </div>
+                    );
+                })
             ) : (
-                <p style={{ textAlign: "center", color: "#999", fontSize: "1.2rem" }}>
-                    ❌ ไม่พบโปรโมชั่นที่ค้นหา
-                </p>
+                <p className="no-results">❌ ไม่พบโปรโมชั่นที่ค้นหา</p>
             )}
         </div>
     );
 }
 
-export default Promotion;
+export default PromotionList;

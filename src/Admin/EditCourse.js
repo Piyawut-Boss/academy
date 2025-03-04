@@ -32,7 +32,7 @@ function EditCourse() {
   useEffect(() => {
     fetchCourses();
     axios
-      .get("http://localhost:1337/api/units")
+      .get(`${API_BASE}/api/units`)
       .then((response) => {
         setUnits(response.data.data);
       })
@@ -41,7 +41,7 @@ function EditCourse() {
 
   const fetchCourses = () => {
     axios
-      .get("http://localhost:1337/api/courses?populate=*")
+      .get(`${API_BASE}/api/courses?populate=*`)
       .then((response) => {
         setCourses(response.data.data);
       })
@@ -88,7 +88,7 @@ function EditCourse() {
       }
     };
 
-    axios.put(`http://localhost:1337/api/courses/${currentCourse.documentId}`, updatedCourse, {
+    axios.put(`${API_BASE}/api/courses/${currentCourse.documentId}`, updatedCourse, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -119,7 +119,7 @@ function EditCourse() {
         Promotepic: promotionImage ? { id: promotionImage.id } : null,
       };
 
-      await axios.post('http://localhost:1337/api/courses', { data: courseData }, {
+      await axios.post(`${API_BASE}/api/courses`, { data: courseData }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -135,7 +135,7 @@ function EditCourse() {
 
   const handleDeleteCourse = async (courseId) => {
     try {
-      await axios.delete(`http://localhost:1337/api/courses/${courseId}`, {
+      await axios.delete(`${API_BASE}/api/courses/${courseId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -187,9 +187,9 @@ function EditCourse() {
     formData.append("files", file);
 
     try {
-      const response = await axios.post("http://localhost:1337/api/upload", formData, {
+      const response = await axios.post(`${API_BASE}/api/upload`, formData, {
         headers: {
-          Authorization: `Bearer ${token}`,
+           Authorization: `Bearer ${token}`,
         },
       });
 
@@ -209,32 +209,9 @@ function EditCourse() {
     setPdfFile(file);
   };
 
-  const uploadFile = async (file) => {
-    if (!file) return null;
-
-    const formData = new FormData();
-    formData.append("files", file);
-
-    try {
-      const response = await axios.post("http://localhost:1337/api/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.data && response.data.length > 0) {
-        return response.data[0];
-      }
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      return null;
-    }
-  };
-
   const handleDeletePdf = async (unitId) => {
     try {
-      await axios.put(`http://localhost:1337/api/units/${unitId}`, {
+      await axios.put(`${API_BASE}/api/units/${unitId}`, {
         data: {
           File: null,
         }
@@ -247,7 +224,7 @@ function EditCourse() {
 
       // Refresh the units list
       axios
-        .get("http://localhost:1337/api/units")
+        .get(`${API_BASE}/api/units`)
         .then((response) => {
           setUnits(response.data.data);
         })
@@ -326,7 +303,7 @@ function EditCourse() {
               <td>{course.units ? course.units.map((unit) => unit.unitname).join(", ") : "No Units"}</td>
               <td>{course.Price}</td>
               <td>{course.realprice}</td>
-              <td>{course.Promotepic?.url ? <img src={`http://localhost:1337${course.Promotepic.url}`} alt="Promotion" style={{ width: "50px", cursor: "pointer" }} onClick={() => handleImageClick(`http://localhost:1337${course.Promotepic.url}`)} /> : "No Image"}</td>
+              <td>{course.Promotepic?.url ? <img src={`${API_BASE}${course.Promotepic.url}`} alt="Promotion" style={{ width: "50px", cursor: "pointer" }} onClick={() => handleImageClick(`${API_BASE}${course.Promotepic.url}`)} /> : "No Image"}</td>
               <td>
                 <Button icon={<Edit />} onClick={() => showModal(course)}>Edit</Button>
                 <Button
@@ -414,10 +391,10 @@ function EditCourse() {
             <div>
               <p>Current Promotion Image:</p>
               <img
-                src={`http://localhost:1337${promotionImage.url || promotionImage}`}
+                src={`${API_BASE}${promotionImage.url || promotionImage}`}
                 alt="Promotion"
                 style={{ maxWidth: "200px", cursor: "pointer" }}
-                onClick={() => handleImageClick(`http://localhost:1337${promotionImage.url || promotionImage}`)}
+                onClick={() => handleImageClick(`${API_BASE}${promotionImage.url || promotionImage}`)}
               />
             </div>
           )}
@@ -432,7 +409,7 @@ function EditCourse() {
           {currentCourse && currentCourse.units && currentCourse.units.map(unit => (
             unit.File && (
               <div key={unit.documentId}>
-                <a href={`http://localhost:1337${unit.File.url}`} target="_blank" rel="noopener noreferrer">
+                <a href={`${API_BASE}${unit.File.url}`} target="_blank" rel="noopener noreferrer">
                   View PDF
                 </a>
                 <Button
@@ -493,10 +470,10 @@ function EditCourse() {
               <div>
                 <p>Current Promotion Image:</p>
                 <img
-                  src={`http://localhost:1337${promotionImage.url || promotionImage}`}
+                  src={`${API_BASE}${promotionImage.url || promotionImage}`}
                   alt="Promotion"
                   style={{ maxWidth: "200px", cursor: "pointer" }}
-                  onClick={() => handleImageClick(`http://localhost:1337${promotionImage.url || promotionImage}`)}
+                  onClick={() => handleImageClick(`${API_BASE}${promotionImage.url || promotionImage}`)}
                 />
               </div>
             )}

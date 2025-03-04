@@ -13,13 +13,13 @@ const Study = () => {
   const [currentUnit, setCurrentUnit] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [videoTime, setVideoTime] = useState('00:00');
+  const [, setVideoTime] = useState('00:00');
 
   console.log('Document ID:', documentId);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:1337/api/courses?filters[documentId][$eq]=${documentId}&populate[units][populate][]=video&populate[units][populate][]=File`)
+      .get(`${API_BASE}/api/courses?filters[documentId][$eq]=${documentId}&populate[units][populate][]=video&populate[units][populate][]=File`)
       .then(response => {
         console.log('Full Response:', response);
         console.log('Response Data:', response.data);
@@ -137,7 +137,7 @@ const Study = () => {
                     onTimeUpdate={handleTimeUpdate}
                     onLoadedMetadata={handleVideoLoaded}
                   >
-                    <source src={`http://localhost:1337${currentUnit.video.url}`} type="video/mp4" />
+                    <source src={`${API_BASE}${currentUnit.video.url}`} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
                 ) : (
@@ -153,7 +153,7 @@ const Study = () => {
                 {currentUnit?.File?.url ? (
                   <button
                     onClick={() =>
-                      handleDownloadPDF(`http://localhost:1337${currentUnit.File.url}`, currentUnit.File.name)
+                      handleDownloadPDF(`${API_BASE}${currentUnit.File.url}`, currentUnit.File.name)
                     }
                     className="study-download-button"
                   >

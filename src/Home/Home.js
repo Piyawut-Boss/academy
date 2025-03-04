@@ -31,13 +31,13 @@ const Home = () => {
 
   useEffect(() => {
     // Banners
-    fetch("http://localhost:1337/api/banners?populate=*")
+    fetch(`${API_BASE}/api/banners?populate=*`)
       .then((response) => response.json())
       .then((data) => {
         if (data.data) {
           const bannerImages = data.data.map((item) => {
             const banner = item.Banner;
-            let imageUrl = banner.url ? "http://localhost:1337" + banner.url : "https://via.placeholder.com/1200x250";
+            let imageUrl = banner.url ? `${API_BASE}` + banner.url : "https://via.placeholder.com/1200x250";
             return { id: item.id, imageUrl: imageUrl };
           });
           setBanners(bannerImages);
@@ -46,13 +46,13 @@ const Home = () => {
       .catch((error) => console.error("Error fetching banners:", error));
 
     // Tutors
-    fetch("http://localhost:1337/api/tutors?populate=image")
+    fetch(`${API_BASE}/api/tutors?populate=image`)
       .then((response) => response.json())
       .then((data) => {
         if (data.data) {
           const tutorImageData = data.data.map((item) => {
             const imageUrl = item.image?.url
-              ? "http://localhost:1337" + item.image.url
+              ? `${API_BASE}` + item.image.url
               : "https://via.placeholder.com/150";
             return { id: item.id, name: item.Name, imageUrl: imageUrl };
           });
@@ -62,13 +62,13 @@ const Home = () => {
       .catch((error) => console.error("Error fetching tutors image:", error));
 
     // Congracts
-    fetch("http://localhost:1337/api/congracts?populate=*")
+    fetch(`${API_BASE}/api/congracts?populate=*`)
       .then((response) => response.json())
       .then((data) => {
         if (data.data) {
           const congractImages = data.data.map((item) => {
             const imageUrl = item.image?.url
-              ? "http://localhost:1337" + item.image.url
+              ? `${API_BASE}` + item.image.url
               : "https://via.placeholder.com/150";
             return { id: item.id, name: item.name, imageUrl: imageUrl };
           });
@@ -78,14 +78,14 @@ const Home = () => {
       .catch((error) => console.error("Error fetching congracts images:", error));
 
     // Congrate2
-    fetch("http://localhost:1337/api/congrate2s?populate=*")
+    fetch(`${API_BASE}/api/congrate2s?populate=*`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data) {
           const congrate2Data = data.data.map((item) => ({
             id: item.id,
             name: item.name,
-            imageUrl: item.image?.url ? "http://localhost:1337" + item.image.url : "https://via.placeholder.com/150",
+            imageUrl: item.image?.url ? `${API_BASE}` + item.image.url : "https://via.placeholder.com/150",
           }));
           setCongrate2s(congrate2Data);
         }
@@ -93,7 +93,7 @@ const Home = () => {
       .catch((error) => console.error("Error fetching congrate2s:", error));
 
     // Recommended
-    fetch("http://localhost:1337/api/courses?populate=*")
+    fetch(`${API_BASE}/api/courses?populate=*`)
       .then((response) => response.json())
       .then((data) => {
         if (data.data) {
@@ -101,7 +101,7 @@ const Home = () => {
             course.categories?.some(category => category.Category === "Recommend")
           ).map((item) => {
             const imageUrl = item.Promotepic?.url
-              ? `http://localhost:1337${item.Promotepic.url}`
+              ? `${API_BASE}${item.Promotepic.url}`
               : "https://via.placeholder.com/150";
             return {
               id: item.id,

@@ -3,6 +3,9 @@ import './User.css';
 import { Button, Card, Row, Col, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
+
 function User() {
   const [user, setUser] = useState(null);
   const [userCourses, setUserCourses] = useState([]);
@@ -27,7 +30,7 @@ function User() {
       const fetchUserCourses = async () => {
         setLoading(true);
         try {
-          const response = await fetch(`http://localhost:1337/api/courses?filters[users][id][$eq]=${user.id}&populate=users`);
+          const response = await fetch(`${API_BASE}/api/courses?filters[users][id][$eq]=${user.id}&populate=users`);
           if (!response.ok) {
             throw new Error('Failed to fetch user courses');
           }
@@ -35,7 +38,7 @@ function User() {
 
           const documentIds = userCoursesData.data.map(course => course.documentId);
           if (documentIds.length > 0) {
-            const fetchCoursesDetails = await fetch(`http://localhost:1337/api/courses?filters[documentId][$in]=${documentIds.join('&filters[documentId][$in]=')}&populate=*`);
+            const fetchCoursesDetails = await fetch(`${API_BASE}/api/courses?filters[documentId][$in]=${documentIds.join('&filters[documentId][$in]=')}&populate=*`);
             if (!fetchCoursesDetails.ok) {
               throw new Error('Failed to fetch course details');
             }
@@ -118,7 +121,7 @@ function User() {
           {userCourses.length > 0 ? (
             userCourses.map((course) => {
               const { Title, Description, Price, realprice, id, Promotepic } = course;
-              const imageUrl = Promotepic ? `http://localhost:1337${Promotepic.url}` : '';
+              const imageUrl = Promotepic ? `${API_BASE}${Promotepic.url}` : '';
 
               return (
                 <Col xs={24} sm={12} md={8} lg={6} key={id}>

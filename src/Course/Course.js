@@ -15,7 +15,7 @@ function CountdownSection() {
   useEffect(() => {
     const fetchCountDownData = async () => {
       try {
-        const response = await fetch("http://localhost:1337/api/count-downs");
+        const response = await fetch(`${API_BASE}/api/count-downs`);
         const data = await response.json();
         setCountDownData(data.data || []);
       } catch (error) {
@@ -115,7 +115,7 @@ function Course() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch("http://localhost:1337/api/courses?populate=*");
+        const response = await fetch(`${API_BASE}/api/courses?populate=*`);
         const data = await response.json();
         setCourses(data.data || []);
       } catch (error) {
@@ -133,7 +133,7 @@ function Course() {
       const fetchUserCourses = async () => {
         setLoading(true);
         try {
-          const response = await fetch(`http://localhost:1337/api/courses?filters[users][id][$eq]=${user.id}&populate=users`);
+          const response = await fetch(`${API_BASE}/api/courses?filters[users][id][$eq]=${user.id}&populate=users`);
           if (!response.ok) {
             throw new Error('Failed to fetch user courses');
           }
@@ -141,7 +141,7 @@ function Course() {
 
           const documentIds = userCoursesData.data.map(course => course.documentId);
           if (documentIds.length > 0) {
-            const fetchCoursesDetails = await fetch(`http://localhost:1337/api/courses?filters[documentId][$in]=${documentIds.join('&filters[documentId][$in]=')}&populate=*`);
+            const fetchCoursesDetails = await fetch(`${API_BASE}/api/courses?filters[documentId][$in]=${documentIds.join('&filters[documentId][$in]=')}&populate=*`);
             if (!fetchCoursesDetails.ok) {
               throw new Error('Failed to fetch course details');
             }
@@ -165,7 +165,7 @@ function Course() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const categoryResponse = await fetch("http://localhost:1337/api/categories");
+        const categoryResponse = await fetch(`${API_BASE}/api/categories`);
         const categoryData = await categoryResponse.json();
         setCategoryData(categoryData.data || []);
       } catch (error) {
@@ -247,7 +247,7 @@ function Course() {
               <Row gutter={[16, 16]}>
                 {userCourses.map((course) => {
                   const { Title, Description, Price, realprice, id, Promotepic, EndTime } = course;
-                  const imageUrl = Promotepic ? `http://localhost:1337${Promotepic.url}` : '';
+                  const imageUrl = Promotepic ? `${API_BASE}${Promotepic.url}` : '';
 
                   return (
                     <Col xs={24} sm={12} md={8} lg={6} key={id}>
@@ -306,7 +306,7 @@ function Course() {
               <Row gutter={[16, 16]}>
                 {filteredCourses.slice(0, showAllCourses[category] ? filteredCourses.length : 4).map((course) => {
                   const { Title, Description, Price, realprice, id, Promotepic, EndTime } = course;
-                  const imageUrl = Promotepic ? `http://localhost:1337${Promotepic.url}` : '';
+                  const imageUrl = Promotepic ? `${API_BASE}${Promotepic.url}` : '';
 
                   return (
                     <Col xs={24} sm={12} md={8} lg={6} key={id}>

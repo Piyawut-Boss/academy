@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { Modal, message } from 'antd';
 import './EditPayment.css';
 
+const token = process.env.REACT_APP_STRAPI_API_TOKEN;
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 function EditPayment() {
   const [payments, setPayments] = useState([]);
   const [, setCourses] = useState([]);
@@ -17,8 +20,7 @@ function EditPayment() {
   const [filterUser, setFilterUser] = useState('All');
   const navigate = useNavigate();
 
-  const token = process.env.REACT_APP_STRAPI_API_TOKEN;
-  const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 
 
   useEffect(() => {
@@ -29,7 +31,7 @@ function EditPayment() {
       return;
     }
 
-    axios.get('http://localhost:1337/api/payments?populate=*')
+    axios.get(`${API_BASE}/api/payments?populate=*`)
       .then(response => {
         console.log('API Response:', response.data);
         setPayments(response.data.data);
@@ -39,7 +41,7 @@ function EditPayment() {
         setPayments([]);
       });
 
-    axios.get('http://localhost:1337/api/courses')
+    axios.get(`${API_BASE}/api/courses`)
       .then(response => {
         setCourses(response.data.data);
       })
@@ -47,7 +49,7 @@ function EditPayment() {
         console.error('Error fetching courses:', error);
       });
 
-    axios.get('http://localhost:1337/api/users')
+    axios.get(`${API_BASE}/api/users`)
       .then(response => {
         setUsers(response.data);
       })
@@ -58,7 +60,7 @@ function EditPayment() {
 
   const handleEdit = (payment) => {
     setEditingPayment(payment);
-    setPreviewImage(payment.payment_proof ? `http://localhost:1337${payment.payment_proof.url}` : null);
+    setPreviewImage(payment.payment_proof ? `${API_BASE}${payment.payment_proof.url}` : null);
   };
 
   const handleSave = async () => {
@@ -76,7 +78,7 @@ function EditPayment() {
 
       // อัปเดตสถานะการชำระเงิน
       await axios.put(
-        `http://localhost:1337/api/payments/${editingPayment.documentId}`,
+        `${API_BASE}/api/payments/${editingPayment.documentId}`,
         updateData,
         {
           headers: {
@@ -94,7 +96,7 @@ function EditPayment() {
         if (userId && courseIds.length > 0) {
           // ดึงข้อมูล user ปัจจุบัน
           const userResponse = await axios.get(
-            `http://localhost:1337/api/users/${userId}?populate=courses`,
+            `${API_BASE}/api/users/${userId}?populate=courses`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -106,7 +108,7 @@ function EditPayment() {
           const updatedCourses = [...new Set([...existingCourses, ...courseIds])]; // ป้องกันการเพิ่มคอร์สซ้ำซ้อน
 
           await axios.put(
-            `http://localhost:1337/api/users/${userId}`,
+            `${API_BASE}/api/users/${userId}`,
             { courses: updatedCourses },
             {
               headers: {
@@ -119,7 +121,7 @@ function EditPayment() {
       }
 
       // รีเฟรชข้อมูลหลังอัปเดตสำเร็จ
-      const response = await axios.get('http://localhost:1337/api/payments?populate=*');
+      const response = await axios.get(`${API_BASE}/api/payments?populate=*`);
       setPayments(response.data.data);
       setEditingPayment(null);
       setSelectedFile(null);
@@ -228,10 +230,10 @@ function EditPayment() {
               <div className="table-cell">
                 {payment.payment_proof ? (
                   <img
-                    src={`http://localhost:1337${payment.payment_proof.url}`}
+                    src={`${API_BASE}${payment.payment_proof.url}`}
                     alt="Payment Proof"
                     className="payment-proof-image"
-                    onClick={() => handleImageClick(`http://localhost:1337${payment.payment_proof.url}`)}
+                    onClick={() => handleImageClick(`${API_BASE}${payment.payment_proof.url}`)}
                   />
                 ) : (
                   'No Proof'
