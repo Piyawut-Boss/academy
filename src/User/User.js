@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './User.css';  
-import { Button, Card, Row, Col, Modal } from 'antd';  
+import './User.css';
+import { Button, Card, Row, Col, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
-
-
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
 function User() {
   const [user, setUser] = useState(null);
@@ -13,7 +10,7 @@ function User() {
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentCourse, setCurrentCourse] = useState(null);
-  const [showHeart, setShowHeart] = useState(false);  // ตรงที่แสดงหัวใจ
+  const [showHeart, setShowHeart] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,17 +23,16 @@ function User() {
   }, []);
 
   useEffect(() => {
-    if ( user?.id) {
+    if (user?.id) {
       const fetchUserCourses = async () => {
-        setLoading(true);  
+        setLoading(true);
         try {
           const response = await fetch(`http://localhost:1337/api/courses?filters[users][id][$eq]=${user.id}&populate=users`);
           if (!response.ok) {
             throw new Error('Failed to fetch user courses');
           }
           const userCoursesData = await response.json();
-          
-        
+
           const documentIds = userCoursesData.data.map(course => course.documentId);
           if (documentIds.length > 0) {
             const fetchCoursesDetails = await fetch(`http://localhost:1337/api/courses?filters[documentId][$in]=${documentIds.join('&filters[documentId][$in]=')}&populate=*`);
@@ -44,27 +40,26 @@ function User() {
               throw new Error('Failed to fetch course details');
             }
             const coursesDetailsData = await fetchCoursesDetails.json();
-            setUserCourses(coursesDetailsData.data || []);  
+            setUserCourses(coursesDetailsData.data || []);
           } else {
-            setUserCourses([]);  
+            setUserCourses([]);
           }
         } catch (error) {
           console.error('Error fetching user courses:', error);
-          setError('Error fetching data');  
+          setError('Error fetching data');
         } finally {
-          setLoading(false); 
+          setLoading(false);
         }
       };
-      
 
       fetchUserCourses();
     }
-  }, [ user?.id]);
+  }, [user?.id]);
 
   const handleClick = () => {
     setShowHeart(true);
     setTimeout(() => {
-      setShowHeart(false); 
+      setShowHeart(false);
     }, 1500);
   };
 
@@ -88,17 +83,31 @@ function User() {
 
   return (
     <div className="user-profile">
-      <div className="user-details">
-        <h2 className="profile-title">User Profile</h2>
-        <p className="welcome-message">Welcome to the User Profile page!</p>
-
-        <div className="profile-circle" onClick={handleClick}>
-          <span className="smiley-face">😊</span>
-          {showHeart && <span className="heart">❤️</span>}  {/* แสดงหัวใจเมื่อคลิก */}
+      <div className="user-details-card">
+        <div className="profile-grid">
+          <div className="profile-info">
+            <div className="profile-header">
+              <div className="profile-circle" onClick={handleClick}>
+                <span className="smiley-face">😊</span>
+                {showHeart && <span className="heart">❤️</span>}
+              </div>
+              <div className="profile-text">
+                <h1 className="profile-name">{user.username}</h1>
+                <p className="profile-email">{user.email}</p>
+              </div>
+            </div>
+          </div>
+          <div className="profile-stats-grid">
+            <div className="stat-card">
+              <span className="stat-number">{userCourses.length}</span>
+              <span className="stat-label">Enrolled Courses</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-number">0</span>
+              <span className="stat-label">Completed</span>
+            </div>
+          </div>
         </div>
-
-        <h3 className="username">Username: {user.username}</h3>
-        <p className="email">Email: {user.email}</p>
       </div>
 
       <h2>My Courses</h2>
@@ -119,11 +128,11 @@ function User() {
                   >
                     <Card.Meta
                       title={Title ?? 'No title provided'}
-                      description={Description ?? 'รายละเอียดคอร์สไม่ระบุ'}
+                      description={Description ? `${Description.slice(0, 100)}...` : 'รายละเอียดคอร์สไม่ระบุ'}
                     />
                     <div className="price">
-                      <span className="price-original">{Price ? Price.toLocaleString() : 'No price available'} บาท</span>
-                      <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'No discount price available'} บาท</span>
+                      <span className="price-original">{Price ? `${Price.toLocaleString()} บาท` : 'No price available'}</span>
+                      <span className="price-discounted">{realprice ? `${realprice.toLocaleString()} บาท` : 'No discount price available'}</span>
                     </div>
                     <div className="buttons">
                       <Button type="link" className="details-button" onClick={() => handleViewDetails(course)}>
@@ -143,6 +152,7 @@ function User() {
         </Row>
       )}
 
+      {/* Modal for course details */}
       {currentCourse && (
         <Modal
           title={currentCourse.Title}
