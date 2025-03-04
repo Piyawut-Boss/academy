@@ -1,52 +1,86 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Menu, Dropdown, Avatar } from 'antd';
+import { UserOutlined, LogoutOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import './Header.css';
 import happyLearningLogo from './happy-learning-logo.png';
-import { ShoppingCartOutlined } from '@ant-design/icons';
 
 function Header() {
     const navigate = useNavigate();
-
-    // ✅ ดึงข้อมูล User และ Role อย่างถูกต้อง
+    const location = useLocation();
     const user = JSON.parse(localStorage.getItem('user'));
-    const isLoggedIn = !!localStorage.getItem('jwt'); // แปลงเป็น Boolean
+    const isLoggedIn = !!localStorage.getItem('jwt');
 
-    // ✅ ฟังก์ชัน Logout
     const handleLogout = () => {
         localStorage.removeItem('jwt');
         localStorage.removeItem('user');
         navigate('/login');
     };
 
+    const userMenu = (
+        <Menu>
+            <Menu.Item key="profile" onClick={() => navigate('/user')}>
+                <UserOutlined /> Profile
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="logout" onClick={handleLogout} danger>
+                <LogoutOutlined /> Logout
+            </Menu.Item>
+        </Menu>
+    );
+
+    const isActiveLink = (path) => {
+        return location.pathname === path ? 'active-link' : '';
+    };
+
     return (
         <header className="header-container">
-            <div className="logo">
-                <img src={happyLearningLogo} alt="Logo" className="logo-image" />
+            <div className="nav-left">
+                <div className="logo">
+                    <img 
+                        src={happyLearningLogo} 
+                        alt="Logo" 
+                        className="logo-image" 
+                        onClick={() => navigate('/')}
+                        style={{ cursor: 'pointer' }}
+                    />
+                </div>
+                <nav>
+                    <ul className="nav-list main-nav">
+                        <li><Link to="/" className={isActiveLink('/')}>หน้าหลัก</Link></li>
+                        <li><Link to="/course" className={isActiveLink('/course')}>คอร์สเรียนทั้งหมด</Link></li>
+                        <li><Link to="/howto" className={isActiveLink('/howto')}>วิธีการสั่งซื้อ</Link></li>
+                        <li><Link to="/promotion" className={isActiveLink('/promotion')}>โปรโมชั่น</Link></li>
+                        <li><Link to="/aboutus" className={isActiveLink('/aboutus')}>เกี่ยวกับเรา</Link></li>
+                    </ul>
+                </nav>
             </div>
-            <nav>
-                <ul className="nav-list">
-                    <li><Link to="/">หน้าหลัก</Link></li>
-                    <li><Link to="/course">คอร์สเรียนทั้งหมด</Link></li>
-                    <li><Link to="/howto">วิธีการสั่งซื้อ</Link></li>
-                    <li><Link to="/promotion">โปรโมชั่น</Link></li>
-                    <li><Link to="/aboutus">เกี่ยวกับเรา</Link></li>
-
-
-                    {/* 🔹 ไอคอนตะกร้าสินค้า */}
-                    <li><Link to="/shopping"><ShoppingCartOutlined style={{ fontSize: '28px' }} /></Link></li>
-
-                    {/* ✅ แสดงปุ่ม Login ถ้ายังไม่ได้ล็อกอิน */}
-                    {!isLoggedIn && <li><Link to="/login">Login</Link></li>}
-
-                    {/* ✅ แสดงชื่อ User หากล็อกอินแล้ว */}
-                    {isLoggedIn && user && (
-                        <li><Link to="/user">{user.username}</Link></li> 
+            <div className="nav-right">
+                <ul className="nav-list user-nav">
+                    <li>
+                        <Link to="/shopping" className="cart-icon">
+                            <ShoppingCartOutlined style={{ fontSize: '26px' }} />
+                        </Link>
+                    </li>
+                    {!isLoggedIn && (
+                        <li>
+                            <Link to="/login" className="login-button">
+                                เข้าสู่ระบบ
+                            </Link>
+                        </li>
                     )}
-
-                    {/* ✅ แสดงปุ่ม Logout หากล็อกอินแล้ว */}
-                    {isLoggedIn && <li><button style={{ marginRight: '20px' }} onClick={handleLogout}>Logout </button></li>}
+                    {isLoggedIn && user && (
+                        <li>
+                            <Dropdown overlay={userMenu} trigger={['click']}>
+                                <div className="user-menu">
+                                    <Avatar size="small" icon={<UserOutlined />} />
+                                    <span>{user.username}</span>
+                                </div>
+                            </Dropdown>
+                        </li>
+                    )}
                 </ul>
-            </nav>
+            </div>
         </header>
     );
 }

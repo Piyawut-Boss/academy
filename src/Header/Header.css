@@ -1,58 +1,155 @@
 .header-container {
-    background-color: #473E91; /* สีพื้นหลังของ header */
-    color: white;
-    padding: 10px 20px; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    height: 75px; 
-    position: fixed;
-    z-index: 1000;
-    width: 100%;
-  }
-  
-  .header-container .logo {
-    display: flex; /* ใช้ flexbox สำหรับจัดตำแหน่งโลโก้ */
-    align-items: center; /* จัดตำแหน่งแนวตั้งให้กลาง */
-    
-  }
-  
-  .header-container .logo-image {
-    width: 150px; /* ปรับขนาดความกว้างของภาพ */
-    height: auto; /* ปรับความสูงอัตโนมัติเพื่อไม่ให้เบี้ยว */
-    margin-right: 10px; /* ช่องว่างระหว่างภาพและข้อความ */
-  }
-  
+  background: rgba(71, 62, 145, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 0.8rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  position: fixed;
+  z-index: 1000;
+  width: 100%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  width: 110px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.logo-image:hover {
+  transform: scale(1.05);
+}
+
+.nav-list {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-list a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.nav-list a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.cart-icon {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-size: 1.2em;
+}
+
+.cart-icon:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+  scale: 1.05;
+}
+
+.user-menu {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.user-menu:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.active-link {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.login-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.login-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-right {
+  margin-left: auto;
+}
+
+.main-nav {
+  margin-left: 2rem;
+}
+
+.user-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.main-nav {
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
   .nav-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: flex-start; /* จัดตำแหน่งเมนูไปทางซ้าย */
-    gap: 20px;
-    font-size: 1.05rem;
-    margin-top: 15px;
-    margin-left: 20px; 
- 
+    gap: 1rem;
   }
   
   .nav-list a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    
-    
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
   }
   
-  .nav-list a:hover {
-    text-decoration: underline;
+  .nav-left {
+    gap: 1rem;
   }
   
-  .nav-list button {
-    background-color: transparent;
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
+  .main-nav {
+    margin-left: 1rem;
+    gap: 1rem;
   }
-  
+}
