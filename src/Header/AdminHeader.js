@@ -50,12 +50,12 @@ function Header() {
                         <li><Link to="/" className={isActiveLink('/')}>หน้าหลัก</Link></li>
                         <li><Link to="/course" className={isActiveLink('/course')}>คอร์สเรียน</Link></li>
                         <li><Link to="/promotion" className={isActiveLink('/promotion')}>โปรโมชั่น</Link></li>
-                        <li><Link to="/admin/EditPayment" className={`nav-button ${isActiveLink('/admin/EditPayment')}`}>Payment</Link></li>
-                        <li><Link to="/admin/EditUser" className={isActiveLink('/admin/EditUser')}>User</Link></li>
-                        <li><Link to="/admin/EditCourse" className={isActiveLink('/admin/EditCourse')}>Course</Link></li>
-                        <li><Link to="/admin/EditPromotion" className={isActiveLink('/admin/EditPromotion')}>Promotion</Link></li>
-                        <li><Link to="/admin/EditUnit" className={isActiveLink('/admin/EditUnit')}>Unit</Link></li>
-                        <li><Link to="/admin/DashBoard" className={isActiveLink('/admin/DashBoard')}>Dashboard</Link></li>
+                        <li><Link to="/admin/EditPayment" className={`nav-button ${isActiveLink('/admin/EditPayment')}`}>การจัดการการชำระเงิน</Link></li>
+                        <li><Link to="/admin/EditUser" className={isActiveLink('/admin/EditUser')}>การจัดการผู้ใช้</Link></li>
+                        <li><Link to="/admin/EditCourse" className={isActiveLink('/admin/EditCourse')}>การจัดการคอร์ส</Link></li>
+                        <li><Link to="/admin/EditPromotion" className={isActiveLink('/admin/EditPromotion')}>การจัดการโปรโมชั่น</Link></li>
+                        <li><Link to="/admin/EditUnit" className={isActiveLink('/admin/EditUnit')}>การจัดการยูนิต</Link></li>
+                        <li><Link to="/admin/DashBoard" className={isActiveLink('/admin/DashBoard')}>แดชบอร์ด</Link></li>
                     </ul>
                 </nav>
             </div>
