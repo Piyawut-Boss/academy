@@ -87,18 +87,23 @@ function Shopping() {
       title: 'ภาพตัวอย่าง',
       dataIndex: 'Promotepic',
       key: 'Promotepic',
-      render: (Promotepic) => (
-        Promotepic ? (
+      render: (Promotepic) => {
+        console.log(Promotepic.url); 
+        return Promotepic && Promotepic.url ? (
           <motion.img
             whileHover={{ scale: 1.1 }}
-            src={`${API_BASE}${Promotepic.url}`}
+            src={`${Promotepic.url}`}
             alt="Preview"
             className="course-image"
           />
         ) : (
-          <Empty description="ไม่มีภาพ" />
-        )
-      ),
+          <img
+            src="https://via.placeholder.com/150"
+            alt="default"
+            className="course-image"
+          />
+        );
+      }
     },
     {
       title: 'ชื่อคอร์ส',

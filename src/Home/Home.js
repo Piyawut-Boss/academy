@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Row, Col, Card, Carousel, Typography, Button, FloatButton } from "antd";
-import { UpOutlined, TeamOutlined, TrophyOutlined, BookOutlined, PhoneOutlined, PlusOutlined, CloseOutlined } from '@ant-design/icons';
+import { Layout, Row, Col, Card, Carousel, Typography, Button, FloatButton, message, Modal } from "antd";
+import { UpOutlined, TeamOutlined, TrophyOutlined, BookOutlined, PhoneOutlined, PlusOutlined, CloseOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import myImage from '../images/in.png';
 import fbImage from '../images/facebook.png';
 import lineImage from '../images/line.png';
 import igImage from '../images/instagram.png';
 import ytImage from '../images/youtube.png';
+import { useNavigate } from 'react-router-dom';
 
 import './Home.css';
 
@@ -13,24 +14,80 @@ const { Content } = Layout;
 const { Title, Text } = Typography;
 const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
-
 const Home = () => {
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [banners, setBanners] = useState([]);
   const [tutors, setTutors] = useState([]);
   const [congracts, setCongracts] = useState([]);
   const [congrate2s, setCongrate2s] = useState([]);
   const [recommendedCourses, setRecommendedCourses] = useState([]);
   const [showFloatButtons, setShowFloatButtons] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [currentCourse, setCurrentCourse] = useState(null);
+
+  useEffect(() => {
+    const loggedInStatus = localStorage.getItem('user');
+    setIsLoggedIn(loggedInStatus === 'true');
+  }, []);
 
   const addToCart = (course) => {
-    const storedCartCourses = localStorage.getItem('cartCourses');
-    const cartCourses = storedCartCourses ? JSON.parse(storedCartCourses) : [];
-    cartCourses.push(course);
+    const loggedInUser = localStorage.getItem("user");
+
+    // ถ้าผู้ใช้ไม่ได้ล็อกอินให้ไปหน้าล็อกอิน
+    if (!loggedInUser) {
+      navigate("/login");
+      return;
+    }
+
+    // ดึงข้อมูลตะกร้าจาก localStorage
+    const cartCourses = JSON.parse(localStorage.getItem('cartCourses')) || [];
+
+    // ตรวจสอบว่าคอร์สนี้มีในตะกร้าแล้วหรือไม่
+    if (cartCourses.some(item => item.id === course.id)) {
+      message.warning(`${course.title} มีในตะกร้าแล้ว`);
+      return;
+    }
+
+    console.log(cartCourses);
+
+    // สร้างข้อมูลคอร์สที่จะเพิ่มลงตะกร้า
+    const courseToAdd = {
+      id: course.id,
+      Title: course.title || 'N/A',
+      Description: course.description || 'ไม่มีรายละเอียด',
+      Price: course.price || 0,
+      realprice: course.realprice || 0,
+      Promotepic: course.Promotepic || {
+        url: 'https://via.placeholder.com/150',
+        name: 'default-course-image'
+      },
+      categories: course.categories || []
+    };
+
+    // เพิ่มคอร์สลงในตะกร้า
+    cartCourses.push(courseToAdd);
     localStorage.setItem('cartCourses', JSON.stringify(cartCourses));
+
+    // อัพเดตจำนวนคอร์สในตะกร้า
+    setCartCount(cartCourses.length);
+
+    // แสดงข้อความเมื่อเพิ่มคอร์สลงตะกร้า
+    message.success(`${courseToAdd.Title} ได้ถูกเพิ่มลงในตะกร้าแล้ว`);
+  };
+
+  const handleViewDetails = (course) => {
+    setCurrentCourse(course);
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setCurrentCourse(null);
   };
 
   useEffect(() => {
-    // Banners
     fetch(`${API_BASE}/api/banners?populate=*`)
       .then((response) => response.json())
       .then((data) => {
@@ -44,8 +101,10 @@ const Home = () => {
         }
       })
       .catch((error) => console.error("Error fetching banners:", error));
+  }, []);
 
-    // Tutors
+  // ดึงข้อมูล Tutors
+  useEffect(() => {
     fetch(`${API_BASE}/api/tutors?populate=image`)
       .then((response) => response.json())
       .then((data) => {
@@ -60,8 +119,10 @@ const Home = () => {
         }
       })
       .catch((error) => console.error("Error fetching tutors image:", error));
+  }, []);
 
-    // Congracts
+  // ดึงข้อมูล Congracts
+  useEffect(() => {
     fetch(`${API_BASE}/api/congracts?populate=*`)
       .then((response) => response.json())
       .then((data) => {
@@ -76,8 +137,10 @@ const Home = () => {
         }
       })
       .catch((error) => console.error("Error fetching congracts images:", error));
+  }, []);
 
-    // Congrate2
+  // ดึงข้อมูล Congrate2
+  useEffect(() => {
     fetch(`${API_BASE}/api/congrate2s?populate=*`)
       .then((res) => res.json())
       .then((data) => {
@@ -91,11 +154,13 @@ const Home = () => {
         }
       })
       .catch((error) => console.error("Error fetching congrate2s:", error));
+  }, []);
 
-    // Recommended
+  useEffect(() => {
     fetch(`${API_BASE}/api/courses?populate=*`)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         if (data.data) {
           const recommendedCourses = data.data.filter(course =>
             course.categories?.some(category => category.Category === "Recommend")
@@ -109,14 +174,27 @@ const Home = () => {
               description: item.Description,
               price: item.Price,
               realprice: item.realprice,
+              Promotepic: item.Promotepic
+                ? {
+                  url: `${API_BASE}${item.Promotepic.url}`,
+                  name: item.Promotepic.name || 'course-image'
+                }
+                : null,
               imageUrl: imageUrl,
+              categories: item.categories || []
             };
           });
           setRecommendedCourses(recommendedCourses);
         }
       })
       .catch((error) => console.error("Error fetching recommended courses:", error));
+  }, []);
 
+  // อัปเดตจำนวนสินค้าในตะกร้าเมื่อคอมโพเนนต์โหลด
+  useEffect(() => {
+    const storedCartCourses = localStorage.getItem('cartCourses');
+    const cartCourses = storedCartCourses ? JSON.parse(storedCartCourses) : [];
+    setCartCount(cartCourses.length);
   }, []);
 
   return (
@@ -217,40 +295,27 @@ const Home = () => {
           <p className="cc-description">สอบเข้ามหาลัยฯ ไปด้วยกัน !!</p>
 
           <Row gutter={[16, 16]}>
-            {recommendedCourses.length > 0 ? (
-              recommendedCourses.slice(0, 4).map((course) => {
-                const { title, description, price, realprice, id, imageUrl } = course;
-                return (
-                  <Col xs={24} sm={12} md={8} lg={6} key={id}>
-                    <Card
-                      hoverable
-                      cover={imageUrl ? (
-                        <img alt={title} src={imageUrl} />
-                      ) : (
-                        <div className="no-image">
-                          <span>ไม่มีภาพ</span>
-                        </div>
-                      )}
-                    >
-                      <Card.Meta
-                        title={title ?? 'ชื่อคอร์สไม่ระบุ'}
-                        description={description ?? 'รายละเอียดคอร์สไม่ระบุ'}
-                      />
-                      <div className="price">
-                        <span className="price-original">{price ? price.toLocaleString() : 'ราคาปกติไม่ระบุ'} บาท</span>
-                        <span className="price-discounted">{realprice ? realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท</span>
-                      </div>
-                      <div className="buttons">
-                        <Button type="link" className="details-button">อ่านรายละเอียด</Button>
-                        <Button type="primary" className="enroll-button" onClick={() => addToCart(course)}>สมัครเรียน</Button>
-                      </div>
-                    </Card>
-                  </Col>
-                );
-              })
-            ) : (
-              <div><Text>ไม่พบข้อมูลคอร์สที่แนะนำ</Text></div>
-            )}
+            {recommendedCourses.slice(0, 4).map((course) => (
+              <Col xs={24} sm={12} md={8} lg={6} key={course.id}>
+                <Card
+                  hoverable
+                  cover={<img alt={course.title} src={course.imageUrl} />}
+                >
+                  <Card.Meta
+                    title={course.title ?? 'ชื่อคอร์สไม่ระบุ'}
+                    description={course.description ?? 'รายละเอียดคอร์สไม่ระบุ'}
+                  />
+                  <div className="price">
+                    <span className="price-original">{course.price ? course.price.toLocaleString() : 'ราคาปกติไม่ระบุ'} บาท</span>
+                    <span className="price-discounted">{course.realprice ? course.realprice.toLocaleString() : 'ราคาหลังลดไม่ระบุ'} บาท</span>
+                  </div>
+                  <div className="buttons">
+                    <Button type="link" className="details-button" onClick={() => handleViewDetails(course)}>อ่านรายละเอียด</Button>
+                    <Button type="primary" className="enroll-button" onClick={() => addToCart(course)}>เพิ่มลงตะกร้า</Button>
+                  </div>
+                </Card>
+              </Col>
+            ))}
           </Row>
         </div>
 
@@ -332,6 +397,32 @@ const Home = () => {
               }}
             />
           </FloatButton.Group>
+        )}
+
+        {currentCourse && (
+          <Modal
+            title={currentCourse.title}
+            visible={isModalVisible}
+            onCancel={handleCancel}
+            footer={[
+              <Button key="back" onClick={handleCancel}>ปิด</Button>,
+              <Button key="submit" type="primary" onClick={() => addToCart(currentCourse)}>
+                สมัครเรียน
+              </Button>
+            ]}
+          >
+            <p>{currentCourse.description}</p>
+            <div className="unit-names">
+              <h4>Units:</h4>
+              {currentCourse.units && currentCourse.units.map(unit => (
+                <p key={unit.id}>{unit.unitname}</p>
+              ))}
+            </div>
+            <div className="price">
+              <span className="price-original">{currentCourse.price.toLocaleString()} บาท</span>
+              <span className="price-discounted">{currentCourse.realprice.toLocaleString()} บาท</span>
+            </div>
+          </Modal>
         )}
       </Content>
     </Layout>
