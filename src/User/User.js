@@ -113,7 +113,7 @@ function User() {
         </div>
       </div>
 
-      <h2>My Courses</h2>
+      <h2>คอร์สของฉัน</h2>
       {loading ? (
         <p>Loading your courses...</p>
       ) : (

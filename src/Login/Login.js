@@ -94,7 +94,7 @@ const Login = () => {
         onClick={() => navigate(-1)}
         className="back-button"
       >
-        Back
+        กลับ
       </Button>
       <motion.div
         initial={{ scale: 0.95, opacity: 0 }}
@@ -103,12 +103,12 @@ const Login = () => {
       >
         <Card className="login-container">
           <h2 className="text-3xl font-bold mb-8">
-            {isRegister ? 'Create Account!' : 'Welcome Back!'}
+            {isRegister ? 'สร้างบัญชีผู้ใช้ !' : 'ยินดีต้อนรับ !'}
           </h2>
           <form onSubmit={isRegister ? handleRegister : handleLogin} className="space-y-6">
             <div className="input-group">
               <Input
-                placeholder="Username"
+                placeholder="ชื่อผู้ใช้"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 size="large"
@@ -119,7 +119,7 @@ const Login = () => {
             {isRegister && (
               <div className="input-group">
                 <Input
-                  placeholder="Email"
+                  placeholder="อีเมล"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   size="large"
@@ -130,7 +130,7 @@ const Login = () => {
             )}
             <div className="input-group">
               <Input.Password
-                placeholder="Password"
+                placeholder="รหัสผ่าน"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 size="large"
@@ -141,7 +141,7 @@ const Login = () => {
             {isRegister && (
               <div className="input-group">
                 <Input.Password
-                  placeholder="Confirm Password"
+                  placeholder="ยืนยันรหัสผ่าน"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   size="large"
@@ -157,16 +157,16 @@ const Login = () => {
               className="login-button"
               disabled={isLoading}
             >
-              {isLoading ? 'Loading...' : isRegister ? 'Sign Up' : 'Login'}
+              {isLoading ? 'Loading...' : isRegister ? 'สร้างบัญชี' : 'เข้าสู่ระบบ'}
             </Button>
           </form>
           <p className="mt-6">
-            {isRegister ? 'Already have an account?' : "Don't have an account?"}{' '}
+            {isRegister ? 'Already have an account?' : "ยังไม่มีบัญชีใช่หรือไม่ ?"}{' '}
             <span
               onClick={() => setIsRegister(!isRegister)}
               className="toggle-text font-semibold cursor-pointer"
             >
-              {isRegister ? 'Login' : 'Register'}
+              {isRegister ? 'เข้าสู่ระบบ' : 'สมัคร'}
             </span>
           </p>
         </Card>

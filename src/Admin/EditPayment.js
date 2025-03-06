@@ -143,11 +143,15 @@ function EditPayment() {
     setSelectedImage(null);
   };
 
-  const filteredPayments = payments.filter(payment => {
-    const statusMatch = filterStatus === 'All' || payment.payment_status === filterStatus;
-    const userMatch = filterUser === 'All' || payment.user?.documentId === filterUser;
-    return statusMatch && userMatch;
-  });
+  
+  const filteredPayments = [...payments]
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) 
+    .filter(payment => {
+      const statusMatch = filterStatus === 'All' || payment.payment_status === filterStatus;
+      const userMatch = filterUser === 'All' || payment.user?.documentId === filterUser;
+      return statusMatch && userMatch;
+    });
+
 
   return (
     <div className="edit-user-container">
@@ -166,7 +170,7 @@ function EditPayment() {
             <option value="Rejected">Rejected</option>
           </select>
         </div>
-        
+
         <div className="filter-group">
           <label htmlFor="filterUser">Filter by User:</label>
           <select
@@ -190,7 +194,7 @@ function EditPayment() {
             <div className="table-cell">User</div>
             <div className="table-cell">Course</div>
             <div className="table-cell">Payment Proof</div>
-            <div className="table-cell">Created At</div>
+            <div className="table-cell">Payment Price</div>
             <div className="table-cell">Updated At</div>
             <div className="table-cell">Action</div>
           </div>
@@ -240,7 +244,7 @@ function EditPayment() {
                 )}
               </div>
               <div className="table-cell">
-                {new Date(payment.createdAt).toLocaleDateString() || 'N/A'}
+                {payment?.totalAmount ? `${payment.totalAmount.toLocaleString()} บาท` : 'N/A'}
               </div>
               <div className="table-cell">
                 {new Date(payment.updatedAt).toLocaleDateString() || 'N/A'}

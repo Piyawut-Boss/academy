@@ -74,8 +74,8 @@ function Header() {
                             <Dropdown overlay={userMenu} trigger={['click']}>
                                 <div className="user-menu">
                                     <Avatar size="small" icon={<UserOutlined />} />
-                                    <span>{user.username}</span>
-                                </div>
+                                    <span style={{ color: "white" }}>{user.username}</span>
+                                    </div>
                             </Dropdown>
                         </li>
                     )}

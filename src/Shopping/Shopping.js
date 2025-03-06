@@ -92,7 +92,7 @@ function Shopping() {
         return Promotepic && Promotepic.url ? (
           <motion.img
             whileHover={{ scale: 1.1 }}
-            src={`${Promotepic.url}`}
+            src={`${API_BASE}${Promotepic.url}`}
             alt="Preview"
             className="course-image"
           />
