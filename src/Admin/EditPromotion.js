@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Modal, Select, message, Input, Button } from 'antd';
 import './EditPromotion.css';
+import config from '../config';
 
-const token = process.env.REACT_APP_STRAPI_API_TOKEN;
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
+const API_BASE = config.apiBaseUrl;
+const token = config.apiToken;
 
 function EditPromotion() {
   const [promotions, setPromotions] = useState([]);

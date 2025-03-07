@@ -4,8 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { Input, Button, notification, Card } from 'antd';
 import { motion } from 'framer-motion';
 import './Login.css';
+import config from '../config';
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
+const API_BASE = config.apiBaseUrl;
+
 
 const Login = () => {
   const [username, setUsername] = useState('');

@@ -1,6 +1,9 @@
 // Promotion.js
 import React, { useEffect, useState } from "react";
 import "./Promotion.css";
+import config from '../config';
+
+const API_BASE = config.apiBaseUrl;
 
 function PromotionList() {
     const [allPromotions, setAllPromotions] = useState([]);
@@ -12,7 +15,7 @@ function PromotionList() {
     const [currentSlide, setCurrentSlide] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:1337/api/promotions?populate=*")
+        fetch(`${API_BASE}/api/promotions?populate=*`)
             .then(response => response.json())
             .then(data => {
                 console.log("Fetched Promotions:", data); // Check if data is fetched correctly
@@ -71,9 +74,9 @@ function PromotionList() {
 
     const getPromotionImage = (promo) => {
         if (promo.PromotePromo?.url) {
-            return `http://localhost:1337${promo.PromotePromo.url}`;
+            return `${API_BASE}${promo.PromotePromo.url}`;
         }
-        return "http://localhost:1337/api/promotions?populate=PromotePromo";
+        return `${API_BASE}/api/promotions?populate=PromotePromo`;
     };
 
     return (

@@ -7,8 +7,13 @@ import lineImage from '../images/line.png';
 import igImage from '../images/instagram.png';
 import ytImage from '../images/youtube.png';
 import './Aboutus.css';
+import config from '../config';
+
+
 
 const { Text } = Typography;
+const API_BASE = config.apiBaseUrl;
+
 
 const InfoCard = ({ title, desc }) => (
   <div className="aboutus-info-card">
@@ -41,7 +46,7 @@ const Aboutus = () => {
   const [showFloatButtons, setShowFloatButtons] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:1337/api/tutors?populate=image")
+    fetch(`${API_BASE}/api/tutors?populate=image`)
       .then((response) => response.json())
       .then((data) => {
         if (data.data) {

@@ -5,9 +5,11 @@ import { motion } from 'framer-motion';
 import { ShoppingCart, CreditCard, Trash2 } from 'lucide-react';
 import axios from 'axios';
 import './Shopping.css';
+import config from '../config';
+
+const API_BASE = config.apiBaseUrl;
 
 const { Option } = Select;
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
 
 function Shopping() {

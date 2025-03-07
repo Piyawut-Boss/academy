@@ -3,10 +3,11 @@ import axios from "axios";
 import { Modal, Button, Input, Form, Select, Pagination, Upload, message } from "antd";
 import { UploadOutlined } from '@ant-design/icons';
 import "./EditUnit.css";
+import config from '../config';
 
+const API_BASE = config.apiBaseUrl;
+const token = config.apiToken;
 const { Option } = Select;
-const token = process.env.REACT_APP_STRAPI_API_TOKEN;
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
 function EditUnit() {
     const [units, setUnits] = useState([]);

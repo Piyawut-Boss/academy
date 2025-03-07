@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Modal, Input, message, Select, Form } from 'antd';
-import { Edit, Plus, Trash2 } from 'lucide-react';
+import {Plus, Trash2 } from 'lucide-react';
 import "./EditCourse.css";
+import config from '../config';
 
+const API_BASE = config.apiBaseUrl;
+const token = config.apiToken;
 const { confirm } = Modal;
 
-const token = process.env.REACT_APP_STRAPI_API_TOKEN;
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
 
 function EditCourse() {

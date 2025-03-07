@@ -3,8 +3,10 @@ import { Card, Button, Row, Col, message, Modal } from 'antd';
 import './Course.css';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import config from '../config';
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
+const API_BASE = config.apiBaseUrl;
+
 
 
 function CountdownSection() {

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Modal, Button, Input, message, Select } from 'antd';
-import { Edit, UserPlus } from 'lucide-react';
+import {UserPlus } from 'lucide-react';
 import './EditUser.css';
+import config from '../config';
 
-const token = process.env.REACT_APP_STRAPI_API_TOKEN;
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
+const API_BASE = config.apiBaseUrl;
+const token = config.apiToken;
 
 function EditUser() {
     const [users, setUsers] = useState([]);

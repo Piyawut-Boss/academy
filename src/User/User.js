@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './User.css';
 import { Button, Card, Row, Col, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import config from '../config';
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
+const API_BASE = config.apiBaseUrl;
 
 
 function User() {

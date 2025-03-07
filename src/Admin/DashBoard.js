@@ -4,10 +4,12 @@ import { Row, Col, Spin, Alert, Typography } from "antd";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, CartesianGrid } from "recharts";
 import { UserOutlined, DollarOutlined, RiseOutlined, BookOutlined } from "@ant-design/icons";
 import "./DashBoard.css";
+import config from '../config';
+
+const API_BASE = config.apiBaseUrl;
 
 const { Title, Text } = Typography;
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
 function DashBoard() {
   const [loading, setLoading] = useState(true);

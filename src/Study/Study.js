@@ -3,8 +3,9 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './Study.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import config from '../config';
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
+const API_BASE = config.apiBaseUrl;
 
 const Study = () => {
   const { documentId } = useParams();

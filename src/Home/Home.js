@@ -1,29 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { Layout, Row, Col, Card, Carousel, Typography, Button, FloatButton, message, Modal } from "antd";
-import { UpOutlined, TeamOutlined, TrophyOutlined, BookOutlined, PhoneOutlined, PlusOutlined, CloseOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { UpOutlined, TeamOutlined, TrophyOutlined, BookOutlined, PhoneOutlined, PlusOutlined, CloseOutlined} from '@ant-design/icons';
 import myImage from '../images/in.png';
 import fbImage from '../images/facebook.png';
 import lineImage from '../images/line.png';
 import igImage from '../images/instagram.png';
 import ytImage from '../images/youtube.png';
 import { useNavigate } from 'react-router-dom';
-
 import './Home.css';
+import config from '../config';
+
+const API_BASE = config.apiBaseUrl;
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
 
 const Home = () => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [, setIsLoggedIn] = useState(false);
   const [banners, setBanners] = useState([]);
   const [tutors, setTutors] = useState([]);
   const [congracts, setCongracts] = useState([]);
   const [congrate2s, setCongrate2s] = useState([]);
   const [recommendedCourses, setRecommendedCourses] = useState([]);
   const [showFloatButtons, setShowFloatButtons] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
+  const [, setCartCount] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentCourse, setCurrentCourse] = useState(null);
 
