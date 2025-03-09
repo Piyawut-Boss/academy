@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import config from '../config';
 
 const API_BASE = config.apiBaseUrl;
+const token = config.apiToken;
 
 
 function User() {
@@ -31,7 +32,7 @@ function User() {
       const fetchUserCourses = async () => {
         setLoading(true);
         try {
-          const response = await fetch(`${API_BASE}/api/courses?filters[users][id][$eq]=${user.id}&populate=users`);
+          const response = await fetch(`${API_BASE}/api/courses?filters[user][id][$eq]=${user.id}&populate=user`);
           if (!response.ok) {
             throw new Error('Failed to fetch user courses');
           }
@@ -39,7 +40,11 @@ function User() {
 
           const documentIds = userCoursesData.data.map(course => course.documentId);
           if (documentIds.length > 0) {
-            const fetchCoursesDetails = await fetch(`${API_BASE}/api/courses?filters[documentId][$in]=${documentIds.join('&filters[documentId][$in]=')}&populate=*`);
+            const fetchCoursesDetails = await fetch(`${API_BASE}/api/courses?filters[documentId][$in]=${documentIds.join('&filters[documentId][$in]=')}&populate=*`, {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
             if (!fetchCoursesDetails.ok) {
               throw new Error('Failed to fetch course details');
             }

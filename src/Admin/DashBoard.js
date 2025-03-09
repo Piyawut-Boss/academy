@@ -7,7 +7,6 @@ import "./DashBoard.css";
 import config from '../config';
 
 const API_BASE = config.apiBaseUrl;
-
 const { Title, Text } = Typography;
 
 
@@ -35,7 +34,7 @@ function DashBoard() {
 
   const chartColors = [colors.primary, colors.success, colors.warning, colors.danger, colors.purple, colors.cyan, colors.magenta, colors.volcano, colors.gold];
 
-  const formatCurrency = (value) => `฿${value.toLocaleString()}`;
+  const formatCurrency = (value) => `฿${value.toLocaleString()}`; 
 
   const fetchTotalUsers = useCallback(async () => {
     try {
@@ -229,7 +228,7 @@ function DashBoard() {
         }
       }
     });
-  
+
     // แปลงเป็น Array และเรียงลำดับตามรายได้จากมากไปน้อย
     return Object.entries(courseStats)
       .map(([courseTitle, data]) => ({
@@ -249,11 +248,11 @@ function DashBoard() {
       const paymentData = payment.attributes || payment;
       const paymentStatus = paymentData.payment_status;
       const totalAmount = paymentData.totalAmount || 0;
-      const createdAt = paymentData.createdAt || paymentData.created_at;
+      const updatedAt = paymentData.updatedAt || paymentData.updatedAt;
 
       if (paymentStatus === "Approved") {
         total += totalAmount;
-        if (createdAt && new Date(createdAt).getMonth() === thisMonth) {
+        if (updatedAt && new Date(updatedAt).getMonth() === thisMonth) {
           monthly += totalAmount;
         }
       }
@@ -290,7 +289,7 @@ function DashBoard() {
 
         categories.forEach((category) => {
           const categoryData = category.attributes || category;
-          const categoryName = categoryData.Category || categoryData.name || "Unknown Category";
+          const categoryName = categoryData.Category || "Unknown Category";
           categoryRevenue[categoryName] = (categoryRevenue[categoryName] || 0) + totalAmount;
         });
       }

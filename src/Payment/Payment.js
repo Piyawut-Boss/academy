@@ -8,6 +8,8 @@ import './Payment.css';
 import config from '../config';
 
 const API_BASE = config.apiBaseUrl;
+const token = config.apiToken;
+
 
 
 function Payment() {
@@ -42,8 +44,12 @@ function Payment() {
             const formData = new FormData();
             formData.append('files', file);
 
+            const headers = {
+                'Authorization': `Bearer ${token}`
+            };
+
             console.log('Uploading file:', file);
-            const uploadRes = await axios.post(`${API_BASE}/api/upload`, formData);
+            const uploadRes = await axios.post(`${API_BASE}/api/upload`, formData, { headers });
             console.log('Upload response:', uploadRes.data);
 
             if (!uploadRes.data || uploadRes.data.length === 0) {
@@ -76,12 +82,6 @@ function Payment() {
             };
 
             console.log('Full Payment Data:', JSON.stringify(paymentData, null, 2));
-
-            const userToken = localStorage.getItem('jwt');
-            const headers = {
-                'Authorization': `Bearer ${userToken}`,
-                'Content-Type': 'application/json'
-            };
 
             console.log('Making payment request with data:', paymentData);
             const paymentRes = await axios.post(`${API_BASE}/api/payments`, paymentData, { headers });
@@ -164,7 +164,7 @@ function Payment() {
                 )}
 
                 <div className="payment-actions">
-                    <Link to='/shopping' className='back-button'>แก้ไขคำสั่งซื้อ</Link>
+                    <Link to='/shopping' className='back-button'>แก้ไ���คำสั่งซื้อ</Link>
 
                     <h3 className="total-amount">
                         ยอดรวมที่ต้องจ่าย: {displayedAmount ? parseFloat(displayedAmount).toLocaleString() : totalAmount.toLocaleString()} บาท

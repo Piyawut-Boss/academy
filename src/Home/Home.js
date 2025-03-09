@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Layout, Row, Col, Card, Carousel, Typography, Button, FloatButton, message, Modal } from "antd";
-import { UpOutlined, TeamOutlined, TrophyOutlined, BookOutlined, PhoneOutlined, PlusOutlined, CloseOutlined} from '@ant-design/icons';
+import { UpOutlined, TeamOutlined, TrophyOutlined, BookOutlined, PhoneOutlined, PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import myImage from '../images/in.png';
 import fbImage from '../images/facebook.png';
 import lineImage from '../images/line.png';
@@ -18,7 +18,6 @@ const { Title, Text } = Typography;
 
 const Home = () => {
   const navigate = useNavigate();
-  const [, setIsLoggedIn] = useState(false);
   const [banners, setBanners] = useState([]);
   const [tutors, setTutors] = useState([]);
   const [congracts, setCongracts] = useState([]);
@@ -29,24 +28,16 @@ const Home = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentCourse, setCurrentCourse] = useState(null);
 
-  useEffect(() => {
-    const loggedInStatus = localStorage.getItem('user');
-    setIsLoggedIn(loggedInStatus === 'true');
-  }, []);
-
   const addToCart = (course) => {
     const loggedInUser = localStorage.getItem("user");
 
-    // ถ้าผู้ใช้ไม่ได้ล็อกอินให้ไปหน้าล็อกอิน
     if (!loggedInUser) {
       navigate("/login");
       return;
     }
 
-    // ดึงข้อมูลตะกร้าจาก localStorage
     const cartCourses = JSON.parse(localStorage.getItem('cartCourses')) || [];
 
-    // ตรวจสอบว่าคอร์สนี้มีในตะกร้าแล้วหรือไม่
     if (cartCourses.some(item => item.id === course.id)) {
       message.warning(`${course.title} มีในตะกร้าแล้ว`);
       return;
@@ -54,7 +45,6 @@ const Home = () => {
 
     console.log(cartCourses);
 
-    // สร้างข้อมูลคอร์สที่จะเพิ่มลงตะกร้า
     const courseToAdd = {
       id: course.id,
       Title: course.title || 'N/A',
@@ -68,14 +58,11 @@ const Home = () => {
       categories: course.categories || []
     };
 
-    // เพิ่มคอร์สลงในตะกร้า
     cartCourses.push(courseToAdd);
     localStorage.setItem('cartCourses', JSON.stringify(cartCourses));
 
-    // อัพเดตจำนวนคอร์สในตะกร้า
     setCartCount(cartCourses.length);
 
-    // แสดงข้อความเมื่อเพิ่มคอร์สลงตะกร้า
     message.success(`${courseToAdd.Title} ได้ถูกเพิ่มลงในตะกร้าแล้ว`);
   };
 
@@ -105,7 +92,6 @@ const Home = () => {
       .catch((error) => console.error("Error fetching banners:", error));
   }, []);
 
-  // ดึงข้อมูล Tutors
   useEffect(() => {
     fetch(`${API_BASE}/api/tutors?populate=image`)
       .then((response) => response.json())
@@ -123,7 +109,6 @@ const Home = () => {
       .catch((error) => console.error("Error fetching tutors image:", error));
   }, []);
 
-  // ดึงข้อมูล Congracts
   useEffect(() => {
     fetch(`${API_BASE}/api/congracts?populate=*`)
       .then((response) => response.json())
@@ -141,7 +126,6 @@ const Home = () => {
       .catch((error) => console.error("Error fetching congracts images:", error));
   }, []);
 
-  // ดึงข้อมูล Congrate2
   useEffect(() => {
     fetch(`${API_BASE}/api/congrate2s?populate=*`)
       .then((res) => res.json())
@@ -176,12 +160,7 @@ const Home = () => {
               description: item.Description,
               price: item.Price,
               realprice: item.realprice,
-              Promotepic: item.Promotepic
-                ? {
-                  url: `${API_BASE}${item.Promotepic.url}`,
-                  name: item.Promotepic.name || 'course-image'
-                }
-                : null,
+              Promotepic: item.Promotepic,
               imageUrl: imageUrl,
               categories: item.categories || []
             };
@@ -192,7 +171,7 @@ const Home = () => {
       .catch((error) => console.error("Error fetching recommended courses:", error));
   }, []);
 
-  // อัปเดตจำนวนสินค้าในตะกร้าเมื่อคอมโพเนนต์โหลด
+
   useEffect(() => {
     const storedCartCourses = localStorage.getItem('cartCourses');
     const cartCourses = storedCartCourses ? JSON.parse(storedCartCourses) : [];
@@ -406,7 +385,11 @@ const Home = () => {
             visible={isModalVisible}
             onCancel={handleCancel}
             footer={[
-              <Button key="back" onClick={handleCancel}>ปิด</Button>,
+              <Button key="back" onClick={handleCancel}
+              >
+                ปิด
+              </Button>,
+              
               <Button key="submit" type="primary" onClick={() => addToCart(currentCourse)}>
                 สมัครเรียน
               </Button>

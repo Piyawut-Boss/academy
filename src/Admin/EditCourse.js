@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Modal, Input, message, Select, Form } from 'antd';
-import {Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import "./EditCourse.css";
 import config from '../config';
 
@@ -99,7 +99,6 @@ function EditCourse() {
         message.success("Course updated successfully!");
         setIsModalVisible(false);
         setCurrentCourse(null);
-        // Refresh the courses list
         fetchCourses();
       })
       .catch(error => {
@@ -134,15 +133,14 @@ function EditCourse() {
     }
   };
 
-  const handleDeleteCourse = async (courseId) => {
+  const handleDeleteCourse = async (documentId) => {
     try {
-      await axios.delete(`${API_BASE}/api/courses/${courseId}`, {
+      await axios.delete(`${API_BASE}/api/courses/${documentId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      // Refresh the courses list
       fetchCourses();
 
       message.success("Course deleted successfully!");
@@ -164,13 +162,16 @@ function EditCourse() {
       },
     });
   };
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredCourses = courses.filter(course =>
+    course.Title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleUnitChange = (value) => {
     setSelectedUnits(value);
-  };
-
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
   };
 
   const handleImageChange = (e) => {
@@ -223,7 +224,6 @@ function EditCourse() {
         },
       });
 
-      // Refresh the units list
       axios
         .get(`${API_BASE}/api/units`)
         .then((response) => {
@@ -261,9 +261,7 @@ function EditCourse() {
     setSelectedImage(null);
   };
 
-  const filteredCourses = courses.filter(course =>
-    course.Title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
 
   return (
     <div className="edit-course-container">
@@ -306,7 +304,10 @@ function EditCourse() {
               <td>{course.realprice}</td>
               <td>{course.Promotepic?.url ? <img src={`${API_BASE}${course.Promotepic.url}`} alt="Promotion" style={{ width: "50px", cursor: "pointer" }} onClick={() => handleImageClick(`${API_BASE}${course.Promotepic.url}`)} /> : "No Image"}</td>
               <td>
-                <Button className="edit-course-button" onClick={() => showModal(course)}>Edit</Button>
+                <Button className="edit-course-button" onClick={() => showModal(course)}
+                >
+                  Edit
+                </Button>
                 <Button
                   className="edit-button-delete"
                   onClick={() => showDeleteCourseConfirm(course.documentId)}
@@ -320,7 +321,7 @@ function EditCourse() {
         </tbody>
       </table>
       <Modal
-        title="Edit Course Details"
+        title="Edit Course Details" 
         visible={isModalVisible}
         onCancel={handleCancel}
         onOk={handleSave}

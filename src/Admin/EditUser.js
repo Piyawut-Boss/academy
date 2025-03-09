@@ -26,19 +26,27 @@ function EditUser() {
 
 
     useEffect(() => {
-        axios.get(`${API_BASE}/api/users?populate=*`)
-            .then(response => {
-                const filteredUsers = response.data.filter(user => 
-                    user.role?.type === 'authenticated' || 
-                    !user.role?.type.toLowerCase().includes('admin')
-                );
-                setUsers(filteredUsers);
-            })
-            .catch(error => setError('Error fetching users'));
+        axios.get(`${API_BASE}/api/users?populate=*`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            const filteredUsers = response.data.filter(user => 
+                user.role?.type === 'authenticated' || 
+                !user.role?.type.toLowerCase().includes('admin')
+            );
+            setUsers(filteredUsers);
+        })
+        .catch(error => setError('Error fetching users'));
 
-        axios.get(`${API_BASE}/api/courses`)
-            .then(response => setCourses(response.data.data))
-            .catch(error => console.error('Error fetching courses:', error));
+        axios.get(`${API_BASE}/api/courses`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then(response => setCourses(response.data.data))
+        .catch(error => console.error('Error fetching courses:', error));
     }, []);                                                                                                                                                                                                         
 
     const handleEdit = (user) => {
